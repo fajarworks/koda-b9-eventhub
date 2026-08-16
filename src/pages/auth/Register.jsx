@@ -1,9 +1,32 @@
-// Register.jsx
-import { FiEye } from "react-icons/fi";
-import { Link } from "react-router";
+import React from "react";
+import { FiEye, FiEyeOff } from "react-icons/fi";
+import { Link, useNavigate } from "react-router";
 import Logo from "../../components/Logo";
+import { useForm } from "react-hook-form";
 
 function Register() {
+  const [showPassword, setShowPassword] = React.useState(false);
+  const navigate = useNavigate();
+  const handleShowPass = () => {
+    setShowPassword((prev) => {
+      return !prev;
+    });
+  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    users.push(data);
+    localStorage.setItem("users", JSON.stringify(users));
+    navigate("/auth/login");
+  };
+
   return (
     <div className="w-full max-w-md mx-auto h-full flex flex-col justify-center">
       <div className="lg:hidden">
@@ -48,7 +71,10 @@ function Register() {
           </span>
           <div className="flex-1 border-t border-gray-300" />
         </div>
-        <form className="flex flex-col gap-2 sm:gap-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col gap-2 sm:gap-4"
+        >
           <div className="flex flex-col gap-1 sm:gap-2">
             <label
               htmlFor="fullname"
@@ -57,22 +83,39 @@ function Register() {
               Full Name
             </label>
             <input
+              {...register("fullName", { required: true })}
               type="text"
-              name="fullname"
               id="fullname"
               className="text-color-text border border-gray-300 w-full px-3 py-1.5 sm:py-2.5 text-sm sm:text-base rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
             />
+            {errors.fullName?.type === "required" && (
+              <p role="alert" className="text-red-500">
+                Full name is required
+              </p>
+            )}
           </div>
           <div className="flex flex-col gap-1 sm:gap-2">
             <label htmlFor="email" className="text-xs sm:text-sm font-medium">
               Email address
             </label>
             <input
+              {...register("email", {
+                required: "email can't be empty",
+                validate: (value) => {
+                  const user = JSON.parse(localStorage.getItem("users")) || [];
+                  const emailExist = user.some(
+                    (user) => user.email.toLowerCase() === value.toLowerCase(),
+                  );
+                  return !emailExist || "email already exist";
+                },
+              })}
               type="email"
-              name="email"
               id="email"
               className="text-color-text border border-gray-300 w-full px-3 py-1.5 sm:py-2.5 text-sm sm:text-base rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
             />
+            {errors.email && (
+              <p className="text-red-500">{errors.email.message}</p>
+            )}
           </div>
           <div className="flex flex-col gap-1 sm:gap-2">
             <label
@@ -83,13 +126,29 @@ function Register() {
             </label>
             <div className="relative">
               <input
-                type="password"
-                name="password"
+                {...register("password", {
+                  required: "password can't be empty",
+                  minLength: {
+                    value: 8,
+                    message: "password must be more than 8 characters",
+                  },
+                })}
+                type={showPassword ? "text" : "password" }
                 id="password"
                 className="text-color-text border border-gray-300 w-full px-3 py-1.5 sm:py-2.5 pr-8 sm:pr-10 text-sm sm:text-base rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
               />
-              <FiEye className="absolute top-1/2 -translate-y-1/2 right-2 sm:right-4 cursor-pointer text-gray-500 w-4 sm:w-5 h-4 sm:h-5" />
+              <span
+                onClick={handleShowPass}
+                className="absolute top-1/2 -translate-y-1/2 right-2 sm:right-4 cursor-pointer text-gray-500 w-4 sm:w-5 h-4 sm:h-5"
+              >
+                {showPassword ? <FiEyeOff /> : <FiEye />}
+              </span>
             </div>
+            {errors.password && (
+              <p role="alert" className="text-red-500">
+                {errors.password.message}
+              </p>
+            )}
           </div>
           <div className="flex flex-col gap-1 sm:gap-2">
             <label
@@ -100,18 +159,24 @@ function Register() {
             </label>
             <div className="relative">
               <input
-                type="password"
-                name="confirmPassword"
+                type={showPassword ? "text"  : "password"}
+                {...register("confirmPassword", {
+                  validate: (value) =>
+                    value === getValues("password") || "password doesn't match",
+                })}
                 id="confirmPassword"
                 className="text-color-text border border-gray-300 w-full px-3 py-1.5 sm:py-2.5 pr-8 sm:pr-10 text-sm sm:text-base rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
               />
-              <button>
-                <FiEye className="absolute top-1/2 -translate-y-1/2 right-2 sm:right-4 cursor-pointer text-gray-500 w-4 sm:w-5 h-4 sm:h-5" />
-              </button>
+              <span className="absolute top-1/2 -translate-y-1/2 right-2 sm:right-4 cursor-pointer text-gray-500 w-4 sm:w-5 h-4 sm:h-5">
+                {showPassword ? <FiEyeOff /> : <FiEye />}
+              </span>
             </div>
+            {errors.confirmPassword && (
+              <p className="text-red-500">{errors.confirmPassword.message}</p>
+            )}
           </div>
           <div className="text-color-text flex gap-2 py-2">
-            <input type="checkbox" id="terms" name="terms" />
+            <input type="checkbox" id="terms" name="terms" required />
             <label htmlFor="terms">
               I agree to the{" "}
               <Link className="text-primary">Terms of Service </Link>and{" "}
