@@ -9,9 +9,11 @@ function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [users] = useLocalStorage("users", [])
   const [, setUserActive] = useLocalStorage("userActive", null)
-  console.log(users);
-
   const navigate = useNavigate()
+
+  const adminEmail = import.meta.env.VITE_ADMIN_EMAIL
+  const adminPass = import.meta.env.VITE_ADMIN_PASSWORD
+
 
   const {
     register,
@@ -26,6 +28,17 @@ function Login() {
     });
   };
   const onSubmit = (data) => {
+    if (data.email === adminEmail && data.password === adminPass) {
+      const admin = {
+        fullName: "Admin Nih",
+        email: adminEmail,
+        role: "admin"
+      }
+      setUserActive(admin)
+      navigate("/explore")
+      return
+    }
+
     const userFound = users.find(
       (user) =>
         user.email.toLowerCase() === data.email.toLowerCase() &&
