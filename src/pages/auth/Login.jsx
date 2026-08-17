@@ -2,10 +2,16 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { FiEye } from "react-icons/fi";
 import { FiEyeOff } from "react-icons/fi";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [users] = useLocalStorage("users", [])
+  const [, setUserActive] = useLocalStorage("userActive", null)
+  console.log(users);
+
+  const navigate = useNavigate()
 
   const {
     register,
@@ -20,7 +26,6 @@ function Login() {
     });
   };
   const onSubmit = (data) => {
-    const users = JSON.parse(localStorage.getItem("users")) || [];
     const userFound = users.find(
       (user) =>
         user.email.toLowerCase() === data.email.toLowerCase() &&
@@ -31,9 +36,10 @@ function Login() {
       setError("password", { message: "wrong email or password" });
       return;
     }
-    console.log(userFound);
 
-    localStorage.setItem("userActive", JSON.stringify(userFound));
+
+    setUserActive(userFound)
+    navigate("/explore")
   };
 
   return (
@@ -89,13 +95,13 @@ function Login() {
                     message: "password must be more than 8 characters",
                   },
                 })}
-                type={showPassword ? "password" : "text"}
+                type={showPassword ? "text" : "password"}
                 id="password"
                 className="text-color-text border border-gray-300 w-full px-3 py-2.5 pr-10 rounded-lg focus:outline-primary "
               />
-              <span onClick={handleShowPassword} className="absolute top-1/2 -translate-y-1/2 cursor-pointer right-4">
-                {showPassword ?   <FiEyeOff />: <FiEye />}
-              </span>
+              <button type="button" onClick={handleShowPassword} className="absolute top-1/2 -translate-y-1/2 cursor-pointer right-4">
+                {showPassword ?   <FiEyeOff/>: <FiEye />}
+              </button>
             </div>
             {errors.password && (
               <p className="text-red-500">{errors.password.message}</p>

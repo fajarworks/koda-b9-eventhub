@@ -3,9 +3,11 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
 import Logo from "../../components/Logo";
 import { useForm } from "react-hook-form";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 function Register() {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [user, setUser] = useLocalStorage("users", [])
   const navigate = useNavigate();
   const handleShowPass = () => {
     setShowPassword((prev) => {
@@ -20,10 +22,10 @@ function Register() {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    users.push(data);
-    localStorage.setItem("users", JSON.stringify(users));
+    // const users = JSON.parse(localStorage.getItem("users")) || [];
+    setUser([...user,data])
+    // users.push(data);
+    // localStorage.setItem("users", JSON.stringify(users));
     navigate("/auth/login");
   };
 
@@ -102,7 +104,8 @@ function Register() {
               {...register("email", {
                 required: "email can't be empty",
                 validate: (value) => {
-                  const user = JSON.parse(localStorage.getItem("users")) || [];
+                  // const user = JSON.parse(localStorage.getItem("users")) || [];
+
                   const emailExist = user.some(
                     (user) => user.email.toLowerCase() === value.toLowerCase(),
                   );
