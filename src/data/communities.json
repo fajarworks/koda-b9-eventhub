@@ -1,0 +1,42 @@
+[
+  {
+    "id": "com-001",
+    "name": "Bandung Go Community",
+    "description": "The premier Go programming community in Bandung — weekly meetups, workshops, and study groups for Gophers of all levels.",
+    "image": "/images/communities/bandung-go-community.png",
+    "tags": ["Technology", "Programming"],
+    "members": 847,
+    "upcomingEvents": 3,
+    "location": "Bandung"
+  },
+  {
+    "id": "com-002",
+    "name": "Jakarta AI & ML Club",
+    "description": "Researchers, practitioners, and enthusiasts exploring machine learning, LLMs, and the future of applied AI.",
+    "image": "/images/communities/jakarta-ai-ml-club.png",
+    "tags": ["AI", "Technology"],
+    "members": 2341,
+    "upcomingEvents": 5,
+    "location": "Jakarta"
+  },
+  {
+    "id": "com-003",
+    "name": "Indonesia Frontend Devs",
+    "description": "The largest frontend community in Indonesia. React, Vue, Svelte, performance, accessibility, and everything in between.",
+    "image": "/images/communities/indonesia-frontend-devs.png",
+    "tags": ["Technology", "Programming"],
+    "members": 5621,
+    "upcomingEvents": 4,
+    "location": "Nationwide"
+  },
+  {
+    "id": "com-004",
+    "name": "Product Minds Indonesia",
+    "description": "Product managers, designers, and builders sharing frameworks, tools, and career advice for growing in product roles.",
+    "image": "/images/communities/product-minds-indonesia.png",
+    "tags": ["Business", "Career"],
+    "members": 1203,
+    "upcomingEvents": 2,
+    "location": "Jakarta"
+  }
+]
