@@ -2,6 +2,7 @@ import React from "react";
 import { BsShare } from "react-icons/bs";
 import { CiChat1 } from "react-icons/ci";
 import { FiArrowLeft, FiUsers } from "react-icons/fi";
+import events from "../../data/events.json"
 import {
   LuBookmark,
   LuCalendar,
@@ -9,13 +10,17 @@ import {
   LuMapPin,
   LuSendHorizontal,
 } from "react-icons/lu";
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
+import TagBadge from "../../components/TagBadge";
 
 function EventDetailPage() {
+  const { id } = useParams()
+  const event = events.find((e)=> e.id === id)
+  const progress = Math.min( (event.attendees / event.capacity) * 100, 100 )
   return (
     <main className="p-6">
       <div className="flex">
-        <Link className="flex items-center gap-2 py-2">
+        <Link to="/events" className="flex items-center gap-2 py-2">
           <FiArrowLeft /> Back to Events
         </Link>
       </div>
@@ -24,27 +29,21 @@ function EventDetailPage() {
           <div className="w-full rounded-lg overflow-hidden">
             <img
               className="w-full object-cover"
-              src="/images/image1.png"
-              alt="event"
+              src= {event.image  || "/images/image1.png"}
+              alt= {event.title}
             />
           </div>
-          <div>
-            <span>Technology</span>
-            <span>Programming</span>
-            <span>Available</span>
+          <div className="flex gap-2">
+            {event.tags.map((t) => (
+              <TagBadge key={t} label={t}/>
+            ))}
           </div>
-          <h1 className="font-medium text-2xl">Go Concurrency Workshop</h1>
+
+          <h1 className="font-medium text-2xl">{event.title}</h1>
           <div className="py-2">
             <h2 className="font-medium text-xl py-2">About this event</h2>
             <p className="text-color-text">
-              A deep-dive workshop into Go concurrency patterns — goroutines,
-              channels, select statements, and real-world use cases. Suitable
-              for intermediate Go developers ready to write production-grade
-              concurrent code. We'll cover common pitfalls, race conditions, and
-              how to use the sync package effectively. Bring your laptop and be
-              ready to write a lot of code. We'll build three mini-projects
-              throughout the day: a rate limiter, a worker pool, and a
-              concurrent web scraper.
+              {event.description}
             </p>
           </div>
           <div>
@@ -199,30 +198,30 @@ function EventDetailPage() {
               <span>Event Info</span>
               <span className="flex gap-1 items-center text-color-text">
                 <LuCalendar />
-                Aug 22, 2026
+                {event.date}
               </span>
               <span className="flex gap-1 items-center text-color-text">
                 <LuClock />
-                09:00 – 17:00 WIB
+                {event.time} WIB
               </span>
               <span className="flex gap-1 items-center text-color-text">
                 <LuMapPin />
-                Bandung
+                {event.location}
               </span>
-              <div>
+              <div className="flex items-center gap-2 ">
                 <FiUsers />
-                <span>48% full · 52 spots left</span>
+                <span className="text-color-text">{Math.round((event.attendees / event.capacity) * 100) }% full · {event.capacity - event.attendees } spots left</span>
               </div>
             </div>
             <div className="flex gap-1.5 items-center text-color-text justify-between flex-col">
               <div className="w-full flex justify-between">
-                <span>48 attendees</span>
-                <span>100 capacity</span>
+                <span>{event.attendees} attendees</span>
+                <span>{event.capacity} capacity</span>
               </div>
-              <div className="w-full bg-gray-100 rounded-full h-2">
+              <div className="w-full bg-gray-300 rounded-full h-2">
                 <div
                   className="bg-green-500 h-2 rounded-full"
-                  style={{ width: "48%" }}
+                  style={{ width: `${progress}%` }}
                 ></div>
               </div>
             </div>
