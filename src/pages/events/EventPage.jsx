@@ -14,6 +14,7 @@ function EventPage() {
     "Programming",
     "Music",
   ];
+
   const location = [
     "All Location",
     "Bandung",
@@ -22,96 +23,108 @@ function EventPage() {
     "Yogyakarta",
     "Online",
   ];
-  const sortBy = ["Upcoming", "Most Popular", "Almost Full", "Recently Added"];
+
+  const sortBy = [
+    "Upcoming",
+    "Most Popular",
+    "Almost Full",
+    "Recently Added",
+  ];
+
   return (
-    <>
-      <main className=" max-w-7xl mx-auto px-5 min-h-screen">
-        <div className="flex w-full bg-white">
-          <form className="w-full flex gap-2 my-center py-4">
+    <main className="min-h-screen">
+      <div className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4">
+          <form className="w-full flex gap-2 items-center py-4">
             <div className="w-full relative">
-              <div className="absolute left-2 top-1/2 -translate-y-1/2 ">
-                <FiSearch color="gray" />
-              </div>
+              <FiSearch
+                className="absolute left-3 top-1/2 -translate-y-1/2"
+                color="gray"
+              />
+
               <input
-                className="w-full bg-gray-100 rounded-lg px-8 py-2.5 focus:outline-primary text-color-text"
+                className="w-full bg-gray-100 rounded-lg px-9 py-2.5 focus:outline-primary text-color-text"
                 type="text"
                 id="search"
                 name="search"
                 placeholder="Search events..."
               />
             </div>
-            <div className="flex my-center gap-2 border border-gray-300 px-3 py-2.5 rounded-lg">
+            <button
+              type="button"
+              className="flex items-center gap-2 border border-gray-300 px-3 py-2.5 rounded-lg whitespace-nowrap"
+            >
               <LuSlidersHorizontal />
-              <button className="text-color-text">Filters</button>
-            </div>
+              <span className="text-color-text">Filters</span>
+            </button>
           </form>
+          <div className="flex flex-col gap-4 pb-5">
+            <div>
+              <p className="text-color-text text-sm mb-2">
+                CATEGORY
+              </p>
+              <div className="flex gap-2 flex-wrap">
+                {categories.map((item) => (
+                  <button
+                    className="border border-gray-300 px-3 py-1 rounded-lg text-color-text cursor-pointer"
+                    key={item}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-color-text text-sm mb-2">
+                LOCATION
+              </p>
+
+              <div className="flex gap-2 flex-wrap">
+                {location.map((item) => (
+                  <button
+                    className="border border-gray-300 px-3 py-1 rounded-lg text-color-text cursor-pointer"
+                    key={item}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-color-text text-sm mb-2">
+                SORT BY
+              </p>
+              <div className="flex gap-2 flex-wrap">
+                {sortBy.map((item) => (
+                  <button
+                    className="border border-gray-300 px-3 py-1 rounded-lg text-color-text cursor-pointer"
+                    key={item}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-2 bg-white">
-          <div>
-          <p className="text-color-text">CATEGORY</p>
-          <div className="flex gap-1 flex-wrap items-center ">
-            {categories.map((item, idx) => {
-              return (
-                <button
-                  className="border border-gray px-3 py-1 rounded-lg text-color-text cursor-pointer"
-                  key={idx}
-                >
-                  {item}
-                </button>
-              );
-            })}
-          </div>
-          </div>
-          <div>
-          <p className="text-color-text">LOCATION</p>
-          <div className="flex gap-1 flex-wrap items-center ">
-            {location.map((item, idx) => {
-              return (
-                <button
-                  className="border border-gray px-3 py-1 rounded-lg text-color-text cursor-pointer"
-                  key={idx}
-                >
-                  {item}
-                </button>
-              );
-            })}
-          </div>
-          </div>
-          <div>
-          <p className="text-color-text">SORT BY</p>
-          <div className="flex gap-1 flex-wrap items-center ">
-            {sortBy.map((item, idx) => {
-              return (
-                <button
-                  className="border border-gray px-3 py-1 rounded-lg text-color-text cursor-pointer"
-                  key={idx}
-                >
-                  {item}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-          </div>
-        <div className="py-3">
-          <p>
-            <span className="font-bold">{events.length} </span>
-            events found
-          </p>
-        </div>
-        <div className="grid grid-cols-1 gap-2 lg:grid-cols-3 ">
+      </div>
+      <section className="max-w-7xl mx-auto px-4 py-6">
+        <p className="text-color-text mb-4">
+          <span className="font-bold">{events.length}</span>{" "}
+          events found
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
           {events.map((event) => (
             <EventItemCard key={event.id} event={event} />
           ))}
         </div>
-        <div className="flex my-center p-6">
+        <div className="flex justify-center p-6">
           <button className="border border-gray-500 text-color-text rounded-lg px-3 py-1 cursor-pointer">
             Load more events
           </button>
         </div>
-      </main>
-    </>
+      </section>
+    </main>
   );
 }
-
 export default EventPage;
