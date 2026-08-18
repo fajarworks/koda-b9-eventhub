@@ -26,6 +26,7 @@ export default function CommunityDetail() {
       </div>
       <div className=" mx-auto mt-3">
         <div className="relative h-48 md:h-56  overflow-hidden bg-gray-900 flex items-end">
+
           <div className="w-full flex items-end justify-between p-5">
             <div>
               <h1 className="text-white text-2xl font-bold">
@@ -42,8 +43,6 @@ export default function CommunityDetail() {
           </div>
         </div>
       </div>
-
-      {/* Description card */}
       <div className="max-w-5xl mx-auto px-4 mt-4">
         <div className="bg-white border border-gray-200 rounded-xl p-4">
           <p className="text-gray-600 text-sm mb-3">{community.description}</p>
@@ -54,7 +53,6 @@ export default function CommunityDetail() {
           </div>
         </div>
       </div>
-
       <div className="max-w-5xl mx-auto px-4 mt-5 border-b border-gray-200">
         <div className="flex gap-6">
           {tabs.map((tab) => (
@@ -73,11 +71,10 @@ export default function CommunityDetail() {
         </div>
       </div>
 
-      {/* Content */}
       <div className="max-w-5xl mx-auto px-4 py-5">
         {activeTab === "Events" && (
           <>
-            <h2 className="text-xs font-semibold text-gray-400 tracking-wide mb-3">
+            <h2 className="text-xs font-semibold text-gray-400 mb-3">
               UPCOMING
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
