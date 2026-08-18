@@ -13,7 +13,7 @@ function AuthLayout() {
       <section className="bg-radial from-orange-900 from-5% to-black hidden lg:block h-full overflow-hidden">
         <SidePanel />
       </section>
-      <section className=" w-full flex items-center justify-center px-3 sm:px-6 lg:px-10">
+      <section className=" w-full flex items-center px-3 sm:px-6 lg:px-10">
         <Outlet />
       </section>
     </main>
