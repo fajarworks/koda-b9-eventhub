@@ -1,10 +1,33 @@
+import React from "react";
 import { LuBookmark, LuCalendar, LuMapPin, LuUsers } from "react-icons/lu";
 import { Link } from "react-router";
 import TagBadge from "./TagBadge";
+import useLocalStorage from "../hooks/useLocalStorage";
+import ModalLoginALert from "./ModalLoginAlert";
 function EventItemCard({ event }) {
 
   const progress = Math.min( (event.attendees / event.capacity) * 100, 100 )
+  const [userActive] = useLocalStorage("userActive", null)
+  const [show, setShow] = React.useState(false)
+
+
+  const handleJoinEvent = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (!userActive) {
+      setShow(true)
+    }
+  }
+
+  const handleBookmark = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (!userActive) {
+      setShow(true)
+    }
+  }
   return (
+    <>
     <Link to={`/events/${event.id}`} className="block h-full">
       <article className="w-full max-w-sm h-full overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm hover:-translate-y-0.5 hover:shadow-md flex flex-col">
         <div className="relative">
@@ -56,15 +79,15 @@ function EventItemCard({ event }) {
           </div>
           <div className="w-full flex items-center gap-2 py-2 mt-auto">
             <button
-              onClick={(e) => e.preventDefault()}
-              className="w-full bg-primary px-3 py-1.5 text-white rounded-lg"
+              onClick={handleJoinEvent}
+              className="w-full bg-primary px-3 py-1.5 text-white rounded-lg cursor-pointer"
             >
               Join Event
             </button>
 
             <button
-              onClick={(e) => e.preventDefault()}
-              className="p-2 rounded-lg border border-gray-300 flex items-center"
+              onClick={handleBookmark}
+              className="p-2 rounded-lg border border-gray-300 flex items-center cursor-pointer"
             >
               <LuBookmark />
             </button>
@@ -72,6 +95,8 @@ function EventItemCard({ event }) {
         </div>
       </article>
     </Link>
+        <ModalLoginALert show={show} setShow={setShow}/>
+    </>
   );
 }
 
