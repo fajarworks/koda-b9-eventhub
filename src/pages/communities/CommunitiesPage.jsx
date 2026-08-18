@@ -6,7 +6,7 @@ function CommunitiesPage() {
   return (
     <main className="">
       <section className="bg-black px-4 py-10  flex my-center ">
-        <div className="max-w-3xl">
+        <div className="max-w-7xl">
           <h1 className="text-white font-bold text-center text-2xl pb-2">
             Explore Communities
           </h1>
