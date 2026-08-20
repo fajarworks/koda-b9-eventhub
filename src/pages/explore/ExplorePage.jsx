@@ -18,7 +18,7 @@ function ExplorePage() {
             </div>
             <div className="flex my-center text-center pb-8">
               <h1 className="font-bold text-white text-4xl">
-                Find events <br/> that{" "}
+                Find events <br /> that{" "}
                 <span className="text-primary">actually matter</span> to you
               </h1>
             </div>
@@ -100,8 +100,8 @@ function ExplorePage() {
             <h1>What community says</h1>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
-            <article>
-              <div className="p-6 border border-gray-300 rounded-lg bg-white shadow-md">
+            <article className="h-full">
+              <div className="p-6 border border-gray-300 rounded-lg bg-white shadow-md h-full">
                 <p className="text-primary text-2xl px-2">"</p>
                 <p className="text-color-text p-4">
                   EventHub completely changed how I network. I met my current
@@ -122,8 +122,8 @@ function ExplorePage() {
                 </div>
               </div>
             </article>
-            <article>
-              <div className="p-5 border border-gray-300 rounded-lg bg-white shadow-md">
+            <article className="h-full">
+              <div className="p-6 border border-gray-300 rounded-lg bg-white shadow-md h-full">
                 <p className="text-primary text-2xl px-2">"</p>
                 <p className="text-color-text p-4">
                   We used to manage event registrations over WhatsApp groups.
@@ -143,8 +143,8 @@ function ExplorePage() {
                 </div>
               </div>
             </article>
-            <article>
-              <div className="p-6 border border-gray-300 rounded-lg bg-white shadow-md">
+            <article className="h-full">
+              <div className="p-6 border border-gray-300 rounded-lg bg-white shadow-md h-full">
                 <p className="text-primary text-2xl px-2">"</p>
                 <p className="text-color-text p-4">
                   I love that I can filter by city and category in one place.
@@ -167,14 +167,18 @@ function ExplorePage() {
             </article>
           </div>
         </section>
-        <footer className="p-6">
-          <div className="bg-black flex flex-col my-center rounded-lg  p-8 min-w-sm">
+        <footer className=" flex p-6 justify-center">
+          <div className="bg-black flex flex-col my-center rounded-lg p-8 w-full">
             <div className="flex  my-center gap-2">
               <span className="px-2 py-0.5 rounded-xl bg-blue-400/10 backdrop-blur-3xl  text-blue-500 shadow-sm">
                 Techonology
               </span>
-              <span className="px-2 py-0.5 rounded-xl bg-blue-400/10 backdrop-blur-3xl text-blue-300">AI</span>
-              <span className="px-2 py-0.5 rounded-xl bg-purple-500/10 backdrop-blur-2xl text-purple-500">Design</span>
+              <span className="px-2 py-0.5 rounded-xl bg-blue-400/10 backdrop-blur-3xl text-blue-300">
+                AI
+              </span>
+              <span className="px-2 py-0.5 rounded-xl bg-purple-500/10 backdrop-blur-2xl text-purple-500">
+                Design
+              </span>
             </div>
             <h1 className="text-white text-2xl font-bold text-center text-wrap pt-4">
               Ready to find your community?
@@ -183,7 +187,7 @@ function ExplorePage() {
               Join thousands of developers, designers, and makers in Indonesia's
               most active tech communities.
             </p>
-            <div className="flex gap-2 lg:flex-col pt-6">
+            <div className="flex gap-2 flex-col lg:flex-row pt-6">
               <Link className="bg-primary text-white px-6 py-3 rounded-lg text-center cursor-pointer max-w-sm">
                 Explore Event
               </Link>
