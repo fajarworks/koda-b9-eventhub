@@ -1,5 +1,5 @@
 import React from "react";
-import { FiBell, FiMenu, FiMoon, FiX } from "react-icons/fi";
+import { FiBell, FiMenu, FiMoon, FiUsers, FiX } from "react-icons/fi";
 import Logo from "./Logo";
 import Navbar from "./Navbar";
 import useLocalStorage from "../hooks/useLocalStorage";
@@ -21,17 +21,17 @@ function Header() {
 
   return (
     <header className="w-full px-6 py-4 bg-white border-b border-gray-300 sticky top-0 z-50">
-      <nav className="flex mx-auto max-w-7xl justify-between">
+      <nav className="flex mx-auto justify-between">
         <div className="flex items-center gap-2">
           <Logo className="text-black" />
           <Navbar />
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-center gap-2">
           <div>
             {userActive ? (
               <Link to="/notifications">
-                <FiBell size={23} />
+                <FiBell size={24} />
               </Link>
             ) : (
               <p className=" hidden lg:block text-color-text pr-1">
@@ -73,18 +73,22 @@ function Header() {
                 </button>
 
                 {isMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-50">
-                    <div className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 ">
+                  <div className="absolute right-0 mt-2 w-50 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-50 text-clip">
+                    <div className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-default">
                       <p className="font-medium">
                         {personalInfo?.fullName || userActive.fullName}
                       </p>
                     </div>
-                    <div className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 ">
+                    <div className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-default">
                       <p>{personalInfo?.email || userActive.email}</p>
                     </div>
+                    <Link to="/profile" className="flex items-center gap-2 w-full px-4 py-2 text-sm text-color-text hover:bg-gray-100">
+                      <span><FiUsers/></span>
+                      <span>Profile</span>
+                    </Link>
                     <button
                       onClick={handleSignOut}
-                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 cursor-pointer"
+                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100 cursor-pointer"
                     >
                       Sign Out
                     </button>
