@@ -4,10 +4,11 @@ import { Link, useNavigate } from "react-router";
 import Logo from "../../components/Logo";
 import { useForm } from "react-hook-form";
 import useLocalStorage from "../../hooks/useLocalStorage";
+import toast, { Toaster } from "react-hot-toast";
 
 function Register() {
   const [showPassword, setShowPassword] = React.useState(false);
-  const [user, setUser] = useLocalStorage("users", [])
+  const [user, setUser] = useLocalStorage("users", []);
   const navigate = useNavigate();
   const handleShowPass = () => {
     setShowPassword((prev) => {
@@ -22,12 +23,18 @@ function Register() {
   } = useForm();
 
   const onSubmit = (data) => {
-    setUser([...user,data])
-    navigate("/auth/login");
+    setUser([...user, data]);
+
+    toast.success("registrasi berhasil", { duration: 1500 });
+
+    setTimeout(() => {
+      navigate("/auth/login");
+    }, 2000);
   };
 
   return (
     <div className="w-full max-w-md mx-auto h-full flex flex-col justify-center">
+      <Toaster/>
       <div className="lg:hidden">
         <Logo className="text-black" />
       </div>
@@ -131,7 +138,7 @@ function Register() {
                     message: "password must be more than 8 characters",
                   },
                 })}
-                type={showPassword ? "text" : "password" }
+                type={showPassword ? "text" : "password"}
                 id="password"
                 className="text-color-text border border-gray-300 w-full px-3 py-1.5 sm:py-1.5 pr-8 sm:pr-10 text-sm sm:text-base rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
               />
@@ -157,7 +164,7 @@ function Register() {
             </label>
             <div className="relative">
               <input
-                type={showPassword ? "text"  : "password"}
+                type={showPassword ? "text" : "password"}
                 {...register("confirmPassword", {
                   validate: (value) =>
                     value === getValues("password") || "password doesn't match",
@@ -170,21 +177,30 @@ function Register() {
               </span>
             </div>
             {errors.confirmPassword && (
-              <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>
+              <p className="text-red-500 text-sm">
+                {errors.confirmPassword.message}
+              </p>
             )}
           </div>
           <div className="text-color-text flex gap-2 py-2">
-            <input type="checkbox" id="terms" {...register("terms", {required: "please check the 'terms of service and privacy and policy' to proceed"})} required/>
+            <input
+              type="checkbox"
+              id="terms"
+              {...register("terms", {
+                required:
+                  "please check the 'terms of service and privacy and policy' to proceed",
+              })}
+              required
+            />
             <label htmlFor="terms">
               I agree to the{" "}
               <Link className="text-primary">Terms of Service </Link>and{" "}
               <Link className="text-primary">Privacy and Policy</Link>
             </label>
           </div>
-            {errors.terms && (
-              <p className="text-red-500 text-sm">{ errors.terms.message}</p>
-            )
-              }
+          {errors.terms && (
+            <p className="text-red-500 text-sm">{errors.terms.message}</p>
+          )}
           <button
             type="submit"
             className="w-full px-3 py-1.5 sm:py-1.5 bg-primary rounded-lg text-white cursor-pointer hover:opacity-90 transition text-sm sm:text-base mt-1"

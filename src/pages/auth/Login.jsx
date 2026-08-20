@@ -4,16 +4,16 @@ import { FiEye } from "react-icons/fi";
 import { FiEyeOff } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
 import useLocalStorage from "../../hooks/useLocalStorage";
+import toast, { Toaster } from "react-hot-toast";
 
 function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
-  const [users] = useLocalStorage("users", [])
-  const [, setUserActive] = useLocalStorage("userActive", null)
-  const navigate = useNavigate()
+  const [users] = useLocalStorage("users", []);
+  const [, setUserActive] = useLocalStorage("userActive", null);
+  const navigate = useNavigate();
 
-  const adminEmail = import.meta.env.VITE_ADMIN_EMAIL
-  const adminPass = import.meta.env.VITE_ADMIN_PASSWORD
-
+  const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
+  const adminPass = import.meta.env.VITE_ADMIN_PASSWORD;
 
   const {
     register,
@@ -32,11 +32,11 @@ function Login() {
       const admin = {
         fullName: "Admin Nih",
         email: adminEmail,
-        role: "admin"
-      }
-      setUserActive(admin)
-      navigate("/explore")
-      return
+        role: "admin",
+      };
+      setUserActive(admin);
+      navigate("/explore");
+      return;
     }
 
     const userFound = users.find(
@@ -50,13 +50,17 @@ function Login() {
       return;
     }
 
+    toast.success("berhasil login", { duration: 1500 });
 
-    setUserActive(userFound)
-    navigate("/explore")
+    setUserActive(userFound);
+    setTimeout(() => {
+      navigate("/explore");
+    }, 1500);
   };
 
   return (
     <div className=" max-w-md w-full mx-auto">
+      <Toaster />
       <div className="w-full">
         <div className="flex flex-col gap-2">
           <h1 className="font-semibold text-2xl">Welcome Back</h1>
@@ -112,8 +116,12 @@ function Login() {
                 id="password"
                 className="text-color-text border border-gray-300 w-full px-3 py-2.5 pr-10 rounded-lg focus:outline-primary "
               />
-              <button type="button" onClick={handleShowPassword} className="absolute top-1/2 -translate-y-1/2 cursor-pointer right-4">
-                {showPassword ?   <FiEyeOff/>: <FiEye />}
+              <button
+                type="button"
+                onClick={handleShowPassword}
+                className="absolute top-1/2 -translate-y-1/2 cursor-pointer right-4"
+              >
+                {showPassword ? <FiEyeOff /> : <FiEye />}
               </button>
             </div>
             {errors.password && (
