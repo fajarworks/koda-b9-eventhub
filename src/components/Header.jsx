@@ -3,7 +3,7 @@ import { FiBell, FiMenu, FiMoon, FiUsers, FiX } from "react-icons/fi";
 import Logo from "./Logo";
 import Navbar from "./Navbar";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import NavbarMobile from "./NavbarMobile";
 
 function Header() {
@@ -12,12 +12,18 @@ function Header() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isMobileMenu, setIsMobileMenu] = React.useState(false);
   const personalInfo = users.find((u) => u.email === userActive?.email);
+  const navigate = useNavigate()
 
   const handleSignOut = () => {
     setUserActive(null);
     setIsMenuOpen(false);
     setIsMobileMenu(false);
   };
+
+  const handleProfile = () => {
+    setIsMenuOpen(false)
+    navigate("/profile")
+  }
 
   return (
     <header className="w-full px-6 py-4 bg-white border-b border-gray-300 sticky top-0 z-50">
@@ -82,10 +88,10 @@ function Header() {
                     <div className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-default">
                       <p>{personalInfo?.email || userActive.email}</p>
                     </div>
-                    <Link to="/profile" className="flex items-center gap-2 w-full px-4 py-2 text-sm text-color-text hover:bg-gray-100">
+                    <div onClick={handleProfile} className="flex items-center gap-2 w-full px-4 py-2 text-sm text-color-text hover:bg-gray-100">
                       <span><FiUsers/></span>
                       <span>Profile</span>
-                    </Link>
+                    </div>
                     <button
                       onClick={handleSignOut}
                       className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100 cursor-pointer"
