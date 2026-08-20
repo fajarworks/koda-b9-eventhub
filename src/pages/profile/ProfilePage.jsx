@@ -1,9 +1,17 @@
 import React from "react";
 import { LuMapPin, LuPencil } from "react-icons/lu";
+import EditProfileModal from "../../components/EditProfileModal";
+import { Toaster } from "react-hot-toast";
 
 function ProfilePage() {
+  const [isShow, setIsShow] = React.useState(false);
+  const handleEditProfile = () => {
+    setIsShow((prev) => !prev);
+  };
   return (
     <main>
+      <Toaster/>
+      <EditProfileModal isShow={isShow} setIsShow={setIsShow} />
       <div className="max-w-5xl mx-auto p-6">
         <div className=" flex gap-3">
           <div className="w-20 h-20 rounded-xl overflow-hidden">
@@ -18,7 +26,7 @@ function ProfilePage() {
                 </p>
               </div>
               <div>
-                <button className="border border-gray-300 flex items-center px-2 py-0.5 rounded-lg gap-2 text-color-text">
+                <button onClick={handleEditProfile} type="button" className="border border-gray-300 flex items-center px-2 py-0.5 rounded-lg gap-2 text-color-text hover:bg-gray-300  cursor-pointer">
                   <LuPencil />
                   Edit Profile
                 </button>
@@ -44,7 +52,7 @@ function ProfilePage() {
         </div>
         <div className="grid grid-cols-3 py-6 w-full">
           <div className="text-center">
-            <p   className="font-medium text-xl">3</p>
+            <p className="font-medium text-xl">3</p>
             <p>Events</p>
           </div>
           <div className="text-center border-gray-300 border-l-2 border-r-2">
@@ -52,7 +60,7 @@ function ProfilePage() {
             <p>Communities</p>
           </div>
           <div className="text-center">
-            <p  className="font-medium text-xl">0</p>
+            <p className="font-medium text-xl">0</p>
             <p>Saved</p>
           </div>
         </div>
