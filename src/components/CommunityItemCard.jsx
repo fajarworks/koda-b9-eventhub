@@ -3,6 +3,7 @@ import { FiCalendar, FiUsers } from "react-icons/fi";
 import { Link } from "react-router";
 import useLocalStorage from "../hooks/useLocalStorage";
 import ModalLoginALert from "./ModalLoginAlert";
+import TagBadge from "./TagBadge";
 
 function CommunityItemCard({ communities }) {
   const [userActive] = useLocalStorage("userActive", null)
@@ -16,20 +17,12 @@ function CommunityItemCard({ communities }) {
 
 }
   }
-  const tagColors = {
-    Technology: "bg-blue-50 text-blue-700",
-    Workshop: "bg-purple-50 text-purple-700",
-    Programming: "bg-green-50 text-green-700",
-    Business: "bg-orange-50 text-orange-700",
-    Design: "bg-pink-50 text-pink-700",
-    Career: "bg-orange-50 text-orange-700",
-    AI: "bg-blue-50 text-blue-700",
-  };
+
 
   return (
     <>
     <Link
-      to={`/community/${communities.id}`}
+      to={`/communities/${communities.id}`}
       className="block h-full"
     >
       <article className="w-full max-w-sm h-full overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md flex flex-col">
@@ -53,14 +46,7 @@ function CommunityItemCard({ communities }) {
           </div>
           <div className="flex gap-2 flex-wrap mt-2">
             {communities.tags.map((tag) => (
-              <span
-                key={tag}
-                className={`rounded-full px-2.5 py-1 text-xs font-medium ${
-                  tagColors[tag] || "bg-gray-50 text-gray-700"
-                }`}
-              >
-                {tag}
-              </span>
+              <TagBadge key={tag} label={tag}/>
             ))}
           </div>
           <div className="flex items-center gap-4 py-2 text-color-text">
