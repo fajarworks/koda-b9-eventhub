@@ -14,6 +14,7 @@ import ProfilePage from "../pages/profile/ProfilePage";
 import ProtectedRoute from "./ProtectedRoute";
 import NotificationPage from "../pages/profile/NotificationPage";
 import OrganizerDashboard from "../pages/dashboard/OrganizerDashboard";
+import CreateEvent from "../pages/CreateEvent";
 
 function App() {
   return (
@@ -28,7 +29,8 @@ function App() {
 
       {/* Main Router*/}
       <Route path="/" element={<MainLayout />}>
-      <Route path="organizer-dashboard" element={<OrganizerDashboard/>} />
+        <Route path="organizer-dashboard" element={<OrganizerDashboard />} />
+        <Route path="create-event" element={<CreateEvent/> } />
         <Route index element={<Navigate to={"explore"} replace />} />
         <Route path="explore" element={<ExplorePage />} />
         <Route path="events">
