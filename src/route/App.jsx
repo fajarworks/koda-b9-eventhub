@@ -12,6 +12,8 @@ import CommunityDetail from "../pages/communities/CommunityDetail";
 import MyEventPage from "../pages/myevents/MyEventPage";
 import ProfilePage from "../pages/profile/ProfilePage";
 import ProtectedRoute from "./ProtectedRoute";
+import NotificationPage from "../pages/profile/NotificationPage";
+import OrganizerDashboard from "../pages/dashboard/OrganizerDashboard";
 
 function App() {
   return (
@@ -21,10 +23,12 @@ function App() {
         <Route index element={<Navigate to={"login"} replace />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+        <Route path="forgot-password" element={<ForgotPassword/>}/>
       </Route>
 
       {/* Main Router*/}
       <Route path="/" element={<MainLayout />}>
+      <Route path="organizer-dashboard" element={<OrganizerDashboard/>} />
         <Route index element={<Navigate to={"explore"} replace />} />
         <Route path="explore" element={<ExplorePage />} />
         <Route path="events">
@@ -38,6 +42,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="profile" element={<ProfilePage />} />
           <Route path="my-events" element={<MyEventPage />} />
+          <Route path="notifications" element={<NotificationPage/>}/>
         </Route>
       </Route>
     </Routes>
