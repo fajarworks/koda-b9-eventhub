@@ -4,7 +4,7 @@ import { Link } from "react-router";
 function CreateEvent() {
   return (
     <div className="min-h-screen">
-      <div className="border-b border-gray-300 bg-white">
+      {/* <div className="border-b border-gray-300 bg-white">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between w-full">
             <div className="flex gap-2">
@@ -34,7 +34,7 @@ function CreateEvent() {
             </div>
           </div>
         </div>
-      </div>
+      </div>*/}
       <div className="max-w-7xl mx-auto p-8">
         <div>
           <h1 className="font-bold text-2xl">Basic Information</h1>
