@@ -15,6 +15,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import NotificationPage from "../pages/profile/NotificationPage";
 import OrganizerDashboard from "../pages/dashboard/OrganizerDashboard";
 import CreateEvent from "../pages/CreateEvent";
+import CreateEventLayout from "../layouts/CreateEventLayout";
 
 function App() {
   return (
@@ -29,8 +30,6 @@ function App() {
 
       {/* Main Router*/}
       <Route path="/" element={<MainLayout />}>
-        <Route path="organizer-dashboard" element={<OrganizerDashboard />} />
-        <Route path="create-event" element={<CreateEvent/> } />
         <Route index element={<Navigate to={"explore"} replace />} />
         <Route path="explore" element={<ExplorePage />} />
         <Route path="events">
@@ -45,6 +44,11 @@ function App() {
           <Route path="profile" element={<ProfilePage />} />
           <Route path="my-events" element={<MyEventPage />} />
           <Route path="notifications" element={<NotificationPage/>}/>
+        </Route>
+
+        <Route path="organizer-dashboard" element={<OrganizerDashboard />} />
+        <Route path="create-event" element={<CreateEventLayout/>} >
+        <Route path="" element={<CreateEvent/> } />
         </Route>
       </Route>
     </Routes>
