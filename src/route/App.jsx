@@ -16,6 +16,9 @@ import NotificationPage from "../pages/profile/NotificationPage";
 import OrganizerDashboard from "../pages/dashboard/OrganizerDashboard";
 import CreateEvent from "../pages/CreateEvent";
 import CreateEventLayout from "../layouts/CreateEventLayout";
+import CreateEvent2 from "../pages/CreateEvent2";
+import CreateEvent3 from "../pages/CreateEvent3";
+import CreateEventSuccess from "../pages/CreateEventSuccess";
 
 function App() {
   return (
@@ -48,8 +51,11 @@ function App() {
 
         <Route path="organizer-dashboard" element={<OrganizerDashboard />} />
         <Route path="create-event" element={<CreateEventLayout/>} >
-        <Route path="" element={<CreateEvent/> } />
+          <Route path="" element={<CreateEvent />} />
+          <Route path="2" element={<CreateEvent2 />} />
+          <Route path="3" element={<CreateEvent3 />} />
         </Route>
+        <Route path="create-event-success" element={ <CreateEventSuccess/> } />
       </Route>
     </Routes>
   );
