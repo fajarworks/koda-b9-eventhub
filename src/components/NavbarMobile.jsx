@@ -10,26 +10,21 @@ import { Link } from "react-router";
 
 function NavbarMobile({ userActive, onClose, onSignOut }) {
   return (
-    <div className="absolute right-2 top-20 w-72 bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden z-50">
+    <div className="absolute right-0 top-14 w-72 bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden z-50">
       {userActive ? (
         <>
-          {/* Profile */}
           <div className="p-4 flex items-center gap-3">
             <img
               src="/images/alex-kim.jpg"
               alt="Profile"
               className="w-12 h-12 rounded-full object-cover"
             />
-
             <div>
               <p className="font-semibold">{userActive.fullName}</p>
               <p className="text-sm text-gray-400">{userActive.email}</p>
             </div>
           </div>
-
           <div className="border-t border-gray-200" />
-
-          {/* Navigation */}
           <div className="py-2">
             <Link
               to="/explore"
@@ -76,10 +71,7 @@ function NavbarMobile({ userActive, onClose, onSignOut }) {
               <span>My Profile</span>
             </Link>
           </div>
-
           <div className="border-t border-gray-200" />
-
-          {/* Sign Out */}
           <button
             onClick={onSignOut}
             className="w-full flex items-center gap-4 px-5 py-4 text-red-500 hover:bg-red-50"
@@ -109,8 +101,7 @@ function NavbarMobile({ userActive, onClose, onSignOut }) {
               <FiCompass size={20} />
               <span>Events</span>
             </Link>
-
-            <Link
+                    <Link
               to="/communities"
               onClick={onClose}
               className="flex items-center gap-4 px-5 py-3 hover:bg-orange-50"
@@ -118,7 +109,6 @@ function NavbarMobile({ userActive, onClose, onSignOut }) {
               <FiUsers size={20} />
               <span>Communities</span>
             </Link>
-
             <Link
               to="/my-events"
               onClick={onClose}
@@ -127,7 +117,6 @@ function NavbarMobile({ userActive, onClose, onSignOut }) {
               <FiCalendar size={20} />
               <span>My Events</span>
             </Link>
-
             <Link
               to="/profile"
               onClick={onClose}

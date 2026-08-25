@@ -2,20 +2,22 @@ import React from "react";
 import { FiBell, FiMenu, FiMoon, FiUsers, FiX } from "react-icons/fi";
 import Logo from "./Logo";
 import Navbar from "./Navbar";
-import useLocalStorage from "../hooks/useLocalStorage";
 import { Link, useNavigate } from "react-router";
 import NavbarMobile from "./NavbarMobile";
+import { useDispatch, useSelector } from "react-redux";
+import {logout} from "../redux/slices/authSlices"
 
 function Header() {
-  const [userActive, setUserActive] = useLocalStorage("userActive", null);
-  const [users] = useLocalStorage("users", []);
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isMobileMenu, setIsMobileMenu] = React.useState(false);
+  const users = useSelector(state => state.users.users)
+  const userActive = useSelector(state => state.auth.auth)
+  const dispatch = useDispatch()
   const personalInfo = users.find((u) => u.email === userActive?.email);
   const navigate = useNavigate()
 
   const handleSignOut = () => {
-    setUserActive(null);
+    dispatch(logout())
     setIsMenuOpen(false);
     setIsMobileMenu(false);
   };

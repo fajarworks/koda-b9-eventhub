@@ -1,8 +1,8 @@
 import { NavLink } from "react-router";
-import useLocalStorage from "../hooks/useLocalStorage";
+import { useSelector } from "react-redux";
 
 function Navbar() {
-    const [userActive] = useLocalStorage("userActive", null)
+  const isLoggedin = useSelector(state => state.auth.auth)
   return (
     <ul className=" hidden lg:flex flex-col lg:flex-row text-color-text gap-2" >
       <li>
@@ -20,7 +20,6 @@ function Navbar() {
           )}
         </NavLink>
       </li>
-
       <li>
         <NavLink to="/events">
           {({ isActive }) => (
@@ -53,7 +52,7 @@ function Navbar() {
         </NavLink>
       </li>
 
-      {userActive && (<li>
+      {isLoggedin && (<li>
         <NavLink to="/my-events">
           {({ isActive }) => (
             <span
