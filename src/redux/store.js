@@ -2,6 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import storage from "redux-persist/es/storage";
 import usersReducer from "./slices/registerSlices.js";
 import authReducer from "./slices/authSlices.js";
+import eventReducer from "./slices/eventSlices.js"
+import communityReducer from "./slices/communitySlices.js"
 import {
   FLUSH,
   PAUSE,
@@ -23,10 +25,24 @@ const persistAuthConfig = {
   storage
 }
 
+const persistEventConfig = {
+  key: "events",
+  storage,
+  whitelist: ["events"]
+}
+
+const persistCommunityConfig = {
+  key: "communities",
+  storage,
+  whitelist: ["communities"]
+}
+
 const store = configureStore({
   reducer: {
     users: persistReducer(persistUsersConfig, usersReducer),
-    auth: persistReducer(persistAuthConfig, authReducer)
+    auth: persistReducer(persistAuthConfig, authReducer),
+    events: persistReducer(persistEventConfig, eventReducer),
+    communities: persistReducer(persistCommunityConfig, communityReducer )
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
