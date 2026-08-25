@@ -1,42 +1,561 @@
 [
   {
-    "id": "com-001",
+    "id": 1,
     "name": "Bandung Go Community",
-    "description": "The premier Go programming community in Bandung — weekly meetups, workshops, and study groups for Gophers of all levels.",
-    "image": "/images/communities/bandung-go-community.png",
-    "tags": ["Technology", "Programming"],
-    "members": 847,
+    "description": "The premier Go programming community in Bandung — weekly meetups, workshops, and deep dives into concurrency, backend architecture, and everything Golang.",
+    "image": "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?auto=format&fit=crop&w=1600&q=80",
+    "tags": [
+      "Technology",
+      "Programming"
+    ],
+    "members": [],
     "upcomingEvents": 3,
-    "location": "Bandung"
+    "memberList": [
+      {
+        "id": 1,
+        "name": "Ahmad Fauzan",
+        "role": "Staff Engineer, Tokopedia",
+        "avatar": "https://i.pravatar.cc/100?img=13"
+      },
+      {
+        "id": 2,
+        "name": "Dina Rahayu",
+        "role": "Backend Lead, Traveloka",
+        "avatar": "https://i.pravatar.cc/100?img=5"
+      },
+      {
+        "id": 3,
+        "name": "Rizky Pratama",
+        "role": "Community Organizer",
+        "avatar": "https://i.pravatar.cc/100?img=12"
+      },
+      {
+        "id": 4,
+        "name": "Dian Purnama",
+        "role": "Backend Developer",
+        "avatar": "https://i.pravatar.cc/100?img=25"
+      },
+      {
+        "id": 5,
+        "name": "Siti Rahayu",
+        "role": "Software Engineer",
+        "avatar": "https://i.pravatar.cc/100?img=32"
+      }
+    ],
+    "discussions": [
+      {
+        "id": 1,
+        "author": {
+          "name": "Rizky Pratama",
+          "avatar": "https://i.pravatar.cc/100?img=12"
+        },
+        "timeAgo": "1d ago",
+        "message": "Welcome everyone to our community! Excited to have so many new members join this month."
+      },
+      {
+        "id": 2,
+        "author": {
+          "name": "Dina Rahayu",
+          "avatar": "https://i.pravatar.cc/100?img=5"
+        },
+        "timeAgo": "3d ago",
+        "message": "Has anyone tried the new generics features in Go 1.22? Would love to discuss at the next meetup."
+      },
+      {
+        "id": 3,
+        "author": {
+          "name": "Ahmad Fauzan",
+          "avatar": "https://i.pravatar.cc/100?img=13"
+        },
+        "timeAgo": "5d ago",
+        "message": "Reminder: the concurrency workshop this Saturday. Slots are filling up fast!"
+      }
+    ]
   },
   {
-    "id": "com-002",
-    "name": "Jakarta AI & ML Club",
-    "description": "Researchers, practitioners, and enthusiasts exploring machine learning, LLMs, and the future of applied AI.",
-    "image": "/images/communities/jakarta-ai-ml-club.png",
-    "tags": ["AI", "Technology"],
-    "members": 2341,
-    "upcomingEvents": 5,
-    "location": "Jakarta"
-  },
-  {
-    "id": "com-003",
-    "name": "Indonesia Frontend Devs",
-    "description": "The largest frontend community in Indonesia. React, Vue, Svelte, performance, accessibility, and everything in between.",
-    "image": "/images/communities/indonesia-frontend-devs.png",
-    "tags": ["Technology", "Programming"],
-    "members": 5621,
-    "upcomingEvents": 4,
-    "location": "Nationwide"
-  },
-  {
-    "id": "com-004",
-    "name": "Product Minds Indonesia",
-    "description": "Product managers, designers, and builders sharing frameworks, tools, and career advice for growing in product roles.",
-    "image": "/images/communities/product-minds-indonesia.png",
-    "tags": ["Business", "Career"],
-    "members": 1203,
+    "id": 2,
+    "name": "Jakarta Frontend Devs",
+    "description": "A community for frontend engineers in Jakarta focused on React, performance optimization, and modern UI engineering practices.",
+    "image": "https://images.unsplash.com/photo-1517134191118-9d595e4c8c2b?auto=format&fit=crop&w=1600&q=80",
+    "tags": [
+      "Technology",
+      "Frontend"
+    ],
+    "members": [],
     "upcomingEvents": 2,
-    "location": "Jakarta"
+    "memberList": [
+      {
+        "id": 1,
+        "name": "Andini Wulandari",
+        "role": "Community Organizer",
+        "avatar": "https://i.pravatar.cc/100?img=45"
+      },
+      {
+        "id": 2,
+        "name": "Bagus Setiawan",
+        "role": "Senior Frontend Engineer, Gojek",
+        "avatar": "https://i.pravatar.cc/100?img=14"
+      },
+      {
+        "id": 3,
+        "name": "Rian Hidayat",
+        "role": "Frontend Developer",
+        "avatar": "https://i.pravatar.cc/100?img=8"
+      },
+      {
+        "id": 4,
+        "name": "Sinta Dewi",
+        "role": "Senior Frontend Engineer",
+        "avatar": "https://i.pravatar.cc/100?img=48"
+      }
+    ],
+    "discussions": [
+      {
+        "id": 1,
+        "author": {
+          "name": "Rian Hidayat",
+          "avatar": "https://i.pravatar.cc/100?img=8"
+        },
+        "timeAgo": "3h ago",
+        "message": "Is the material suitable for someone with only 6 months of React experience?"
+      },
+      {
+        "id": 2,
+        "author": {
+          "name": "Andini Wulandari",
+          "avatar": "https://i.pravatar.cc/100?img=45"
+        },
+        "timeAgo": "2h ago",
+        "message": "It's a bit challenging, but we still walk through the fundamentals from the start."
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Surabaya Design Circle",
+    "description": "A design community in Surabaya bringing together product designers, UX researchers, and design enthusiasts for hands-on workshops.",
+    "image": "https://images.unsplash.com/photo-1587440871875-191322ee64b0?auto=format&fit=crop&w=1600&q=80",
+    "tags": [
+      "Design",
+      "Product"
+    ],
+    "members": [],
+    "upcomingEvents": 1,
+    "memberList": [
+      {
+        "id": 1,
+        "name": "Putri Anjani",
+        "role": "Community Organizer",
+        "avatar": "https://i.pravatar.cc/100?img=21"
+      },
+      {
+        "id": 2,
+        "name": "Fadli Ramadhan",
+        "role": "Product Designer, Bukalapak",
+        "avatar": "https://i.pravatar.cc/100?img=33"
+      },
+      {
+        "id": 3,
+        "name": "Nadia Kusuma",
+        "role": "UX Researcher, Freelance",
+        "avatar": "https://i.pravatar.cc/100?img=9"
+      },
+      {
+        "id": 4,
+        "name": "Yoga Pratama",
+        "role": "UI Designer",
+        "avatar": "https://i.pravatar.cc/100?img=51"
+      }
+    ],
+    "discussions": [
+      {
+        "id": 1,
+        "author": {
+          "name": "Yoga Pratama",
+          "avatar": "https://i.pravatar.cc/100?img=51"
+        },
+        "timeAgo": "5h ago",
+        "message": "Will there be a certificate of attendance for this one?"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Jakarta Startup Hub",
+    "description": "A network of founders, investors, and operators in Jakarta's startup ecosystem — fundraising talks, pitch practice, and networking nights.",
+    "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1600&q=80",
+    "tags": [
+      "Business",
+      "Startup"
+    ],
+    "members": [],
+    "upcomingEvents": 1,
+    "memberList": [
+      {
+        "id": 1,
+        "name": "Kevin Halim",
+        "role": "Community Organizer",
+        "avatar": "https://i.pravatar.cc/100?img=60"
+      },
+      {
+        "id": 2,
+        "name": "Melissa Tanoto",
+        "role": "Partner, Alpha Ventures",
+        "avatar": "https://i.pravatar.cc/100?img=47"
+      },
+      {
+        "id": 3,
+        "name": "Dimas Aditya",
+        "role": "Founder, Early-stage Startup",
+        "avatar": "https://i.pravatar.cc/100?img=19"
+      }
+    ],
+    "discussions": [
+      {
+        "id": 1,
+        "author": {
+          "name": "Dimas Aditya",
+          "avatar": "https://i.pravatar.cc/100?img=19"
+        },
+        "timeAgo": "1d ago",
+        "message": "What's the dress code — formal or smart casual?"
+      },
+      {
+        "id": 2,
+        "author": {
+          "name": "Kevin Halim",
+          "avatar": "https://i.pravatar.cc/100?img=60"
+        },
+        "timeAgo": "20h ago",
+        "message": "Smart casual is fine, it's a pretty relaxed event."
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Yogyakarta Data Community",
+    "description": "A community for data engineers and analysts in Yogyakarta focused on modern data stacks, pipelines, and analytics engineering.",
+    "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1600&q=80",
+    "tags": [
+      "Technology",
+      "Data"
+    ],
+    "members": [],
+    "upcomingEvents": 2,
+    "memberList": [
+      {
+        "id": 1,
+        "name": "Bayu Nugroho",
+        "role": "Community Organizer",
+        "avatar": "https://i.pravatar.cc/100?img=17"
+      },
+      {
+        "id": 2,
+        "name": "Citra Maharani",
+        "role": "Data Engineer, Traveloka",
+        "avatar": "https://i.pravatar.cc/100?img=29"
+      },
+      {
+        "id": 3,
+        "name": "Fikri Ramadhan",
+        "role": "Data Analyst",
+        "avatar": "https://i.pravatar.cc/100?img=41"
+      }
+    ],
+    "discussions": [
+      {
+        "id": 1,
+        "author": {
+          "name": "Fikri Ramadhan",
+          "avatar": "https://i.pravatar.cc/100?img=41"
+        },
+        "timeAgo": "6h ago",
+        "message": "Is the practice dataset provided by the committee or do we bring our own?"
+      },
+      {
+        "id": 2,
+        "author": {
+          "name": "Bayu Nugroho",
+          "avatar": "https://i.pravatar.cc/100?img=17"
+        },
+        "timeAgo": "4h ago",
+        "message": "It's provided — the dataset link will be emailed a day before the event."
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Jakarta Street Photography",
+    "description": "A community of street and travel photographers in Jakarta, organizing photo walks and sharing tips on composition and light.",
+    "image": "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=1600&q=80",
+    "tags": [
+      "Arts",
+      "Photography"
+    ],
+    "members": [],
+    "upcomingEvents": 1,
+    "memberList": [
+      {
+        "id": 1,
+        "name": "Sarah Amelia",
+        "role": "Community Organizer",
+        "avatar": "https://i.pravatar.cc/100?img=36"
+      },
+      {
+        "id": 2,
+        "name": "Aldo Firmansyah",
+        "role": "Hobbyist Photographer",
+        "avatar": "https://i.pravatar.cc/100?img=53"
+      }
+    ],
+    "discussions": [
+      {
+        "id": 1,
+        "author": {
+          "name": "Aldo Firmansyah",
+          "avatar": "https://i.pravatar.cc/100?img=53"
+        },
+        "timeAgo": "2h ago",
+        "message": "Where exactly is the meeting point?"
+      },
+      {
+        "id": 2,
+        "author": {
+          "name": "Sarah Amelia",
+          "avatar": "https://i.pravatar.cc/100?img=36"
+        },
+        "timeAgo": "1h ago",
+        "message": "In front of Fatahillah Museum, it's easy to find."
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Bandung Cyber Security Community",
+    "description": "A community for security enthusiasts and professionals in Bandung covering ethical hacking, penetration testing, and defensive security.",
+    "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1600&q=80",
+    "tags": [
+      "Technology",
+      "Security"
+    ],
+    "members": [],
+    "upcomingEvents": 1,
+    "memberList": [
+      {
+        "id": 1,
+        "name": "Reza Firmansyah",
+        "role": "Community Organizer",
+        "avatar": "https://i.pravatar.cc/100?img=15"
+      },
+      {
+        "id": 2,
+        "name": "Hendra Wijaya",
+        "role": "Security Engineer, GoTo",
+        "avatar": "https://i.pravatar.cc/100?img=22"
+      },
+      {
+        "id": 3,
+        "name": "Lina Marlina",
+        "role": "Penetration Tester, Freelance",
+        "avatar": "https://i.pravatar.cc/100?img=28"
+      },
+      {
+        "id": 4,
+        "name": "Wahyu Saputra",
+        "role": "IT Security Enthusiast",
+        "avatar": "https://i.pravatar.cc/100?img=44"
+      }
+    ],
+    "discussions": [
+      {
+        "id": 1,
+        "author": {
+          "name": "Wahyu Saputra",
+          "avatar": "https://i.pravatar.cc/100?img=44"
+        },
+        "timeAgo": "8h ago",
+        "message": "Do we need a laptop with special specs?"
+      },
+      {
+        "id": 2,
+        "author": {
+          "name": "Reza Firmansyah",
+          "avatar": "https://i.pravatar.cc/100?img=15"
+        },
+        "timeAgo": "7h ago",
+        "message": "A standard laptop is enough, most labs run on cloud-based VMs."
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Semarang Food Community",
+    "description": "A culinary community in Semarang celebrating Indonesian food culture through festivals, tastings, and cooking demos.",
+    "image": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1600&q=80",
+    "tags": [
+      "Food",
+      "Culture"
+    ],
+    "members": [],
+    "upcomingEvents": 1,
+    "memberList": [
+      {
+        "id": 1,
+        "name": "Dewi Anggraini",
+        "role": "Community Organizer",
+        "avatar": "https://i.pravatar.cc/100?img=39"
+      },
+      {
+        "id": 2,
+        "name": "Chef Aryaawa",
+        "role": "Executive Chef, Hotel Grand Candi",
+        "avatar": "https://i.pravatar.cc/100?img=52"
+      },
+      {
+        "id": 3,
+        "name": "Nanda Prasetyo",
+        "role": "Food Enthusiast",
+        "avatar": "https://i.pravatar.cc/100?img=48"
+      },
+      {
+        "id": 4,
+        "name": "Intan Permatasari",
+        "role": "Food Blogger",
+        "avatar": "https://i.pravatar.cc/100?img=31"
+      }
+    ],
+    "discussions": [
+      {
+        "id": 1,
+        "author": {
+          "name": "Nanda Prasetyo",
+          "avatar": "https://i.pravatar.cc/100?img=48"
+        },
+        "timeAgo": "12h ago",
+        "message": "Is there ample car parking? Planning to bring the family."
+      },
+      {
+        "id": 2,
+        "author": {
+          "name": "Dewi Anggraini",
+          "avatar": "https://i.pravatar.cc/100?img=39"
+        },
+        "timeAgo": "10h ago",
+        "message": "Yes, parking is available in the building next door with plenty of capacity."
+      },
+      {
+        "id": 3,
+        "author": {
+          "name": "Intan Permatasari",
+          "avatar": "https://i.pravatar.cc/100?img=31"
+        },
+        "timeAgo": "9h ago",
+        "message": "Is it kid-friendly?"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Malang Flutter Community",
+    "description": "A mobile development community in Malang focused on Flutter and Dart, from beginner-friendly workshops to advanced state management.",
+    "image": "https://images.unsplash.com/photo-1526498460520-4c246339dccb?auto=format&fit=crop&w=1600&q=80",
+    "tags": [
+      "Technology",
+      "Mobile"
+    ],
+    "members": [],
+    "upcomingEvents": 2,
+    "memberList": [
+      {
+        "id": 1,
+        "name": "Fajar Nugraha",
+        "role": "Community Organizer",
+        "avatar": "https://i.pravatar.cc/100?img=11"
+      },
+      {
+        "id": 2,
+        "name": "Galih Prakoso",
+        "role": "Mobile Engineer, Bibit",
+        "avatar": "https://i.pravatar.cc/100?img=26"
+      },
+      {
+        "id": 3,
+        "name": "Ratna Sari",
+        "role": "Mobile Developer",
+        "avatar": "https://i.pravatar.cc/100?img=37"
+      }
+    ],
+    "discussions": [
+      {
+        "id": 1,
+        "author": {
+          "name": "Ratna Sari",
+          "avatar": "https://i.pravatar.cc/100?img=37"
+        },
+        "timeAgo": "4h ago",
+        "message": "Do we need a Mac, or is a regular Windows laptop fine too?"
+      },
+      {
+        "id": 2,
+        "author": {
+          "name": "Fajar Nugraha",
+          "avatar": "https://i.pravatar.cc/100?img=11"
+        },
+        "timeAgo": "3h ago",
+        "message": "Windows, Mac, or Linux all work, as long as the Flutter SDK runs."
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Bali Mindful Living",
+    "description": "A wellness community in Ubud, Bali offering yoga sessions, guided meditation, and mindfulness retreats for all levels.",
+    "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1600&q=80",
+    "tags": [
+      "Health",
+      "Wellness"
+    ],
+    "members": [],
+    "upcomingEvents": 1,
+    "memberList": [
+      {
+        "id": 1,
+        "name": "Made Ayu Kartika",
+        "role": "Community Organizer",
+        "avatar": "https://i.pravatar.cc/100?img=42"
+      },
+      {
+        "id": 2,
+        "name": "Wayan Sudiana",
+        "role": "Certified Yoga Instructor",
+        "avatar": "https://i.pravatar.cc/100?img=30"
+      },
+      {
+        "id": 3,
+        "name": "Clara Situmorang",
+        "role": "Wellness Enthusiast",
+        "avatar": "https://i.pravatar.cc/100?img=24"
+      }
+    ],
+    "discussions": [
+      {
+        "id": 1,
+        "author": {
+          "name": "Clara Situmorang",
+          "avatar": "https://i.pravatar.cc/100?img=24"
+        },
+        "timeAgo": "1d ago",
+        "message": "Can total beginners who've never done yoga before join?"
+      },
+      {
+        "id": 2,
+        "author": {
+          "name": "Made Ayu Kartika",
+          "avatar": "https://i.pravatar.cc/100?img=42"
+        },
+        "timeAgo": "22h ago",
+        "message": "Absolutely, this session is designed to be beginner-friendly."
+      }
+    ]
   }
 ]

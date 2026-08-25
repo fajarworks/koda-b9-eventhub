@@ -1,121 +1,478 @@
 [
   {
-    "id": "evt-001",
+    "id": 1,
     "title": "Go Concurrency Workshop",
-    "description": "Hands-on workshop membahas goroutines, channels, dan pola-pola concurrency umum di Go, langsung praktik lewat studi kasus nyata.",
-    "date": "2026-08-22",
-    "time": "09:00",
-    "timezone": "WIB",
+    "tags": [
+      "Technology",
+      "Programming"
+    ],
+    "image": "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1600&q=80",
+    "date": "Aug 22, 2026",
+    "startTime": "09:00",
+    "endTime": "17:00",
     "location": "Bandung",
-    "isOnline": false,
-    "category": "Technology",
-    "tags": ["Technology", "Programming"],
-    "image": "/images/image1.png",
-    "attendees": 48,
+    "attendees": [],
+    "userSaved": [],
     "capacity": 100,
-    "communityId": "com-001",
-    "organizerId": "usr-101"
+    "status": "open",
+    "description": "A deep-dive workshop into Go concurrency patterns — goroutines, channels, select statements, and real-world use cases. Suitable for intermediate Go developers ready to write production-grade concurrent code. We'll cover common pitfalls, race conditions, and how to use the sync package effectively. Bring your laptop and be ready to write a lot of code.\n\nWe'll build three mini-projects throughout the day: a rate limiter, a worker pool, and a concurrent web scraper.",
+    "organizer": {
+      "name": "Rizky Pratama",
+      "community": "Bandung Go Community",
+      "avatar": "https://i.pravatar.cc/150?img=12"
+    },
+    "speakers": [
+      {
+        "name": "Ahmad Fauzan",
+        "role": "Staff Engineer, Tokopedia",
+        "avatar": "https://i.pravatar.cc/150?img=13"
+      },
+      {
+        "name": "Dina Rahayu",
+        "role": "Backend Lead, Traveloka",
+        "avatar": "https://i.pravatar.cc/150?img=5"
+      }
+    ],
+    "discussions": [
+      {
+        "id": 1,
+        "name": "Dian Purnama",
+        "timeAgo": "2h ago",
+        "message": "Super excited for this one — will there be any live coding exercises?",
+        "avatar": "https://i.pravatar.cc/150?img=25"
+      },
+      {
+        "id": 2,
+        "name": "Ahmad Fauzan",
+        "timeAgo": "1h ago",
+        "message": "Yes! The afternoon session is entirely hands-on. Bring your laptop with Go 1.22+ installed.",
+        "avatar": "https://i.pravatar.cc/150?img=13"
+      },
+      {
+        "id": 3,
+        "name": "Siti Rahayu",
+        "timeAgo": "45m ago",
+        "message": "Is there parking nearby? Coming from outside Bandung.",
+        "avatar": "https://i.pravatar.cc/150?img=32"
+      }
+    ]
   },
   {
-    "id": "evt-002",
-    "title": "AI Product Design Summit",
-    "description": "Konferensi seharian membahas irisan antara AI dan product design, dari prototyping cepat sampai etika desain berbasis AI.",
-    "date": "2026-09-05",
-    "time": "08:30",
-    "timezone": "WIB",
+    "id": 2,
+    "title": "React Performance Deep Dive",
+    "tags": [
+      "Technology",
+      "Frontend"
+    ],
+    "image": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&w=1600&q=80",
+    "date": "Sep 05, 2026",
+    "startTime": "10:00",
+    "endTime": "15:00",
     "location": "Jakarta",
-    "isOnline": false,
-    "category": "Design",
-    "tags": ["Design"],
-    "image": "/images/events/ai-product-design-summit.png",
-    "attendees": 234,
-    "capacity": 300,
-    "communityId": "com-002",
-    "organizerId": "usr-102"
+    "attendees": [],
+    "userSaved": [],
+    "capacity": 80,
+    "status": "open",
+    "description": "Pelajari cara mengoptimalkan aplikasi React kelas produksi. Kita akan bahas memoization, code splitting, virtualisasi list, dan cara membaca React DevTools Profiler untuk nemuin bottleneck rendering.\n\nCocok buat frontend developer yang udah paham dasar React dan mau naik level ke optimasi performa.",
+    "organizer": {
+      "name": "Andini Wulandari",
+      "community": "Jakarta Frontend Devs",
+      "avatar": "https://i.pravatar.cc/150?img=45"
+    },
+    "speakers": [
+      {
+        "name": "Bagus Setiawan",
+        "role": "Senior Frontend Engineer, Gojek",
+        "avatar": "https://i.pravatar.cc/150?img=14"
+      }
+    ],
+    "discussions": [
+      {
+        "id": 1,
+        "name": "Rian Hidayat",
+        "timeAgo": "3h ago",
+        "message": "Apakah materinya cocok buat yang baru 6 bulan belajar React?",
+        "avatar": "https://i.pravatar.cc/150?img=8"
+      },
+      {
+        "id": 2,
+        "name": "Andini Wulandari",
+        "timeAgo": "2h ago",
+        "message": "Sedikit menantang, tapi konsep dasarnya tetap dijelasin dari awal kok.",
+        "avatar": "https://i.pravatar.cc/150?img=45"
+      }
+    ]
   },
   {
-    "id": "evt-003",
-    "title": "UX Research Deep Dive",
-    "description": "Workshop intensif soal metodologi UX research: user interview, usability testing, sampai cara mempresentasikan insight ke stakeholder.",
-    "date": "2026-10-20",
-    "time": "10:00",
-    "timezone": "WIB",
-    "location": "Bandung",
-    "isOnline": false,
-    "category": "Design",
-    "tags": ["Design"],
-    "image": "/images/events/ux-research-deep-dive.png",
-    "attendees": 48,
-    "capacity": 50,
-    "communityId": "com-002",
-    "organizerId": "usr-102"
-  },
-  {
-    "id": "evt-004",
-    "title": "Frontend Craft Conference",
-    "description": "Kumpul komunitas frontend Indonesia, bahas React, Vue, performance, dan accessibility dari praktisi industri.",
-    "date": "2026-10-12",
-    "time": "09:00",
-    "timezone": "WIB",
-    "location": "Bandung",
-    "isOnline": false,
-    "category": "Technology",
-    "tags": ["Technology", "Programming"],
-    "image": "/images/events/frontend-craft-conference.png",
-    "attendees": 167,
-    "capacity": 200,
-    "communityId": "com-003",
-    "organizerId": "usr-103"
-  },
-  {
-    "id": "evt-005",
-    "title": "Product Management Masterclass",
-    "description": "Kelas online membahas dasar-dasar product management: roadmapping, prioritization framework, dan cara kerja sama dengan tim engineering.",
-    "date": "2026-09-18",
-    "time": "10:00",
-    "timezone": "WIB",
-    "location": "Online Event",
-    "isOnline": true,
-    "category": "Business",
-    "tags": ["Business", "Career"],
-    "image": "/images/events/product-management-masterclass.png",
-    "attendees": 89,
-    "capacity": 150,
-    "communityId": "com-004",
-    "organizerId": "usr-104"
-  },
-  {
-    "id": "evt-006",
-    "title": "Music Production Bootcamp",
-    "description": "Bootcamp produksi musik dari nol: dasar teori musik, mixing, sampai mastering menggunakan DAW.",
-    "date": "2026-11-03",
-    "time": "13:00",
-    "timezone": "WIB",
+    "id": 3,
+    "title": "UI/UX Design Sprint: Dari Wireframe ke Prototype",
+    "tags": [
+      "Design",
+      "Product"
+    ],
+    "image": "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?auto=format&fit=crop&w=1600&q=80",
+    "date": "Sep 12, 2026",
+    "startTime": "09:30",
+    "endTime": "16:00",
     "location": "Surabaya",
-    "isOnline": false,
-    "category": "Music",
-    "tags": ["Music"],
-    "image": "/images/events/music-production-bootcamp.png",
-    "attendees": 45,
-    "capacity": 60,
-    "communityId": null,
-    "organizerId": "usr-105"
+    "attendees": [],
+    "userSaved": [],
+    "capacity": 50,
+    "status": "open",
+    "description": "Workshop intensif satu hari untuk belajar design sprint ala Google Ventures. Peserta akan dibagi ke dalam tim kecil dan langsung praktik dari riset masalah, sketching, sampai bikin prototype clickable di Figma.\n\nBawa laptop dengan Figma ter-install (versi gratis juga bisa).",
+    "organizer": {
+      "name": "Putri Anjani",
+      "community": "Surabaya Design Circle",
+      "avatar": "https://i.pravatar.cc/150?img=21"
+    },
+    "speakers": [
+      {
+        "name": "Fadli Ramadhan",
+        "role": "Product Designer, Bukalapak",
+        "avatar": "https://i.pravatar.cc/150?img=33"
+      },
+      {
+        "name": "Nadia Kusuma",
+        "role": "UX Researcher, Freelance",
+        "avatar": "https://i.pravatar.cc/150?img=9"
+      }
+    ],
+    "discussions": [
+      {
+        "id": 1,
+        "name": "Yoga Pratama",
+        "timeAgo": "5h ago",
+        "message": "Sertifikat kehadiran ada nggak ya?",
+        "avatar": "https://i.pravatar.cc/150?img=51"
+      }
+    ]
   },
   {
-    "id": "evt-007",
-    "title": "Startup Pitch Night",
-    "description": "Malam pitching buat founder early-stage di depan panel investor dan sesama founder, plus sesi networking.",
-    "date": "2026-09-28",
-    "time": "18:30",
-    "timezone": "WIB",
+    "id": 4,
+    "title": "Startup Founders Meetup: Fundraising 101",
+    "tags": [
+      "Business",
+      "Startup"
+    ],
+    "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1600&q=80",
+    "date": "Sep 18, 2026",
+    "startTime": "18:00",
+    "endTime": "21:00",
     "location": "Jakarta",
-    "isOnline": false,
-    "category": "Business",
-    "tags": ["Business"],
-    "image": "/images/events/startup-pitch-night.png",
-    "attendees": 120,
+    "attendees": [],
+    "userSaved": [],
     "capacity": 120,
-    "communityId": "com-004",
-    "organizerId": "usr-104"
+    "status": "open",
+    "description": "Networking event sekaligus sharing session bareng beberapa founder dan VC lokal. Topik utama: cara nyusun pitch deck, valuasi early-stage startup, dan hal-hal yang sering bikin fundraising gagal di tahap seed.\n\nAda sesi networking santai setelah panel discussion, lengkap dengan makan malam.",
+    "organizer": {
+      "name": "Kevin Halim",
+      "community": "Jakarta Startup Hub",
+      "avatar": "https://i.pravatar.cc/150?img=60"
+    },
+    "speakers": [
+      {
+        "name": "Melissa Tanoto",
+        "role": "Partner, Alpha Ventures",
+        "avatar": "https://i.pravatar.cc/150?img=47"
+      }
+    ],
+    "discussions": [
+      {
+        "id": 1,
+        "name": "Dimas Aditya",
+        "timeAgo": "1d ago",
+        "message": "Dress code-nya gimana ya, formal atau smart casual?",
+        "avatar": "https://i.pravatar.cc/150?img=19"
+      },
+      {
+        "id": 2,
+        "name": "Kevin Halim",
+        "timeAgo": "20h ago",
+        "message": "Smart casual aja, santai kok acaranya.",
+        "avatar": "https://i.pravatar.cc/150?img=60"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Data Engineering Bootcamp: Airflow & dbt",
+    "tags": [
+      "Technology",
+      "Data"
+    ],
+    "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1600&q=80",
+    "date": "Sep 25, 2026",
+    "startTime": "09:00",
+    "endTime": "17:00",
+    "location": "Yogyakarta",
+    "attendees": [],
+    "userSaved": [],
+    "capacity": 60,
+    "status": "open",
+    "description": "Kelas hands-on membangun data pipeline modern menggunakan Apache Airflow untuk orchestration dan dbt untuk transformasi data. Peserta akan langsung praktik bikin pipeline ETL dari data mentah sampai siap dipakai untuk analytics.\n\nDibutuhkan pemahaman dasar SQL dan Python sebelum mengikuti kelas ini.",
+    "organizer": {
+      "name": "Bayu Nugroho",
+      "community": "Yogyakarta Data Community",
+      "avatar": "https://i.pravatar.cc/150?img=17"
+    },
+    "speakers": [
+      {
+        "name": "Citra Maharani",
+        "role": "Data Engineer, Traveloka",
+        "avatar": "https://i.pravatar.cc/150?img=29"
+      }
+    ],
+    "discussions": [
+      {
+        "id": 1,
+        "name": "Fikri Ramadhan",
+        "timeAgo": "6h ago",
+        "message": "Dataset latihannya disediain panitia atau bawa sendiri?",
+        "avatar": "https://i.pravatar.cc/150?img=41"
+      },
+      {
+        "id": 2,
+        "name": "Bayu Nugroho",
+        "timeAgo": "4h ago",
+        "message": "Disediakan, nanti link dataset dikirim H-1 lewat email ya.",
+        "avatar": "https://i.pravatar.cc/150?img=17"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Photography Walk: Golden Hour di Kota Tua",
+    "tags": [
+      "Arts",
+      "Photography"
+    ],
+    "image": "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=1600&q=80",
+    "date": "Oct 03, 2026",
+    "startTime": "15:30",
+    "endTime": "18:30",
+    "location": "Jakarta",
+    "attendees": [],
+    "userSaved": [],
+    "capacity": 30,
+    "status": "open",
+    "description": "Ikutan photo walk santai keliling Kota Tua Jakarta sambil belajar teknik komposisi dan memanfaatkan golden hour untuk hasil foto yang lebih dramatis. Cocok buat semua level, dari pemula sampai yang udah pro.\n\nBawa kamera apapun — DSLR, mirrorless, bahkan smartphone juga oke.",
+    "organizer": {
+      "name": "Sarah Amelia",
+      "community": "Jakarta Street Photography",
+      "avatar": "https://i.pravatar.cc/150?img=36"
+    },
+    "speakers": [],
+    "discussions": [
+      {
+        "id": 1,
+        "name": "Aldo Firmansyah",
+        "timeAgo": "2h ago",
+        "message": "Titik kumpulnya di mana ya persisnya?",
+        "avatar": "https://i.pravatar.cc/150?img=53"
+      },
+      {
+        "id": 2,
+        "name": "Sarah Amelia",
+        "timeAgo": "1h ago",
+        "message": "Di depan Museum Fatahillah, gampang kok dicari.",
+        "avatar": "https://i.pravatar.cc/150?img=36"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Cybersecurity Fundamentals: Ethical Hacking untuk Pemula",
+    "tags": [
+      "Technology",
+      "Security"
+    ],
+    "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1600&q=80",
+    "date": "Oct 10, 2026",
+    "startTime": "09:00",
+    "endTime": "16:00",
+    "location": "Bandung",
+    "attendees": [],
+    "userSaved": [],
+    "capacity": 70,
+    "status": "open",
+    "description": "Workshop pengenalan dunia cybersecurity dan ethical hacking. Materi mencakup reconnaissance, scanning, common vulnerabilities (OWASP Top 10), dan cara berpikir seperti seorang penetration tester secara etis dan legal.\n\nSemua praktik dilakukan di lab environment terisolasi yang sudah disiapkan panitia.",
+    "organizer": {
+      "name": "Reza Firmansyah",
+      "community": "Bandung Cyber Security Community",
+      "avatar": "https://i.pravatar.cc/150?img=15"
+    },
+    "speakers": [
+      {
+        "name": "Hendra Wijaya",
+        "role": "Security Engineer, GoTo",
+        "avatar": "https://i.pravatar.cc/150?img=22"
+      },
+      {
+        "name": "Lina Marlina",
+        "role": "Penetration Tester, Freelance",
+        "avatar": "https://i.pravatar.cc/150?img=28"
+      }
+    ],
+    "discussions": [
+      {
+        "id": 1,
+        "name": "Wahyu Saputra",
+        "timeAgo": "8h ago",
+        "message": "Perlu bawa laptop dengan spek khusus nggak?",
+        "avatar": "https://i.pravatar.cc/150?img=44"
+      },
+      {
+        "id": 2,
+        "name": "Reza Firmansyah",
+        "timeAgo": "7h ago",
+        "message": "Laptop standar aja cukup, sebagian besar lab-nya berbasis VM di cloud.",
+        "avatar": "https://i.pravatar.cc/150?img=15"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Culinary Festival: Rasa Nusantara",
+    "tags": [
+      "Food",
+      "Culture"
+    ],
+    "image": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1600&q=80",
+    "date": "Oct 17, 2026",
+    "startTime": "10:00",
+    "endTime": "21:00",
+    "location": "Semarang",
+    "attendees": [],
+    "userSaved": [],
+    "capacity": 500,
+    "status": "open",
+    "description": "Festival kuliner tahunan yang menghadirkan lebih dari 50 tenant makanan tradisional dari seluruh Indonesia. Ada juga panggung hiburan, cooking demo dari chef lokal, dan area khusus buat anak-anak.\n\nTiket masuk gratis, tinggal bayar makanan dan minuman yang dibeli di lokasi.",
+    "organizer": {
+      "name": "Dewi Anggraini",
+      "community": "Semarang Food Community",
+      "avatar": "https://i.pravatar.cc/150?img=39"
+    },
+    "speakers": [
+      {
+        "name": "Chef Aryaawa",
+        "role": "Executive Chef, Hotel Grand Candi",
+        "avatar": "https://i.pravatar.cc/150?img=52"
+      }
+    ],
+    "discussions": [
+      {
+        "id": 1,
+        "name": "Nanda Prasetyo",
+        "timeAgo": "12h ago",
+        "message": "Ada area parkir mobil yang luas nggak? Rencana bawa keluarga.",
+        "avatar": "https://i.pravatar.cc/150?img=48"
+      },
+      {
+        "id": 2,
+        "name": "Dewi Anggraini",
+        "timeAgo": "10h ago",
+        "message": "Ada, parkir tersedia di area gedung sebelah dengan kapasitas besar.",
+        "avatar": "https://i.pravatar.cc/150?img=39"
+      },
+      {
+        "id": 3,
+        "name": "Intan Permatasari",
+        "timeAgo": "9h ago",
+        "message": "Ramah anak-anak nggak nih acaranya?",
+        "avatar": "https://i.pravatar.cc/150?img=31"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "title": "Mobile App Development dengan Flutter: From Zero to Hero",
+    "tags": [
+      "Technology",
+      "Mobile"
+    ],
+    "image": "https://images.unsplash.com/photo-1526498460520-4c246339dccb?auto=format&fit=crop&w=1600&q=80",
+    "date": "Oct 24, 2026",
+    "startTime": "09:00",
+    "endTime": "17:00",
+    "location": "Malang",
+    "attendees": [],
+    "userSaved": [],
+    "capacity": 90,
+    "status": "open",
+    "description": "Workshop seharian penuh membangun aplikasi mobile cross-platform dengan Flutter dan Dart. Peserta akan belajar widget tree, state management dengan Provider/Riverpod, dan integrasi ke REST API sampai bisa build APK sendiri.\n\nCocok buat pemula yang sudah paham dasar pemrograman, belum tentu harus jago mobile dev sebelumnya.",
+    "organizer": {
+      "name": "Fajar Nugraha",
+      "community": "Malang Flutter Community",
+      "avatar": "https://i.pravatar.cc/150?img=11"
+    },
+    "speakers": [
+      {
+        "name": "Galih Prakoso",
+        "role": "Mobile Engineer, Bibit",
+        "avatar": "https://i.pravatar.cc/150?img=26"
+      }
+    ],
+    "discussions": [
+      {
+        "id": 1,
+        "name": "Ratna Sari",
+        "timeAgo": "4h ago",
+        "message": "Butuh laptop Mac atau Windows biasa juga bisa?",
+        "avatar": "https://i.pravatar.cc/150?img=37"
+      },
+      {
+        "id": 2,
+        "name": "Fajar Nugraha",
+        "timeAgo": "3h ago",
+        "message": "Windows, Mac, atau Linux semua bisa, yang penting Flutter SDK-nya jalan.",
+        "avatar": "https://i.pravatar.cc/150?img=11"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "title": "Yoga & Mindfulness Retreat Sehari",
+    "tags": [
+      "Health",
+      "Wellness"
+    ],
+    "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1600&q=80",
+    "date": "Nov 01, 2026",
+    "startTime": "06:00",
+    "endTime": "12:00",
+    "location": "Ubud, Bali",
+    "attendees": [],
+    "userSaved": [],
+    "capacity": 40,
+    "status": "open",
+    "description": "Retreat singkat untuk menenangkan pikiran lewat sesi yoga pagi, meditasi terpandu, dan sarapan sehat bersama di tengah suasana alam Ubud yang asri. Cocok untuk siapa saja yang mau healing sejenak dari rutinitas kerja.\n\nMatras yoga disediakan panitia, cukup bawa pakaian yang nyaman untuk bergerak.",
+    "organizer": {
+      "name": "Made Ayu Kartika",
+      "community": "Bali Mindful Living",
+      "avatar": "https://i.pravatar.cc/150?img=42"
+    },
+    "speakers": [
+      {
+        "name": "Wayan Sudiana",
+        "role": "Certified Yoga Instructor",
+        "avatar": "https://i.pravatar.cc/150?img=30"
+      }
+    ],
+    "discussions": [
+      {
+        "id": 1,
+        "name": "Clara Situmorang",
+        "timeAgo": "1d ago",
+        "message": "Untuk pemula yang belum pernah yoga sama sekali, bisa ikut nggak?",
+        "avatar": "https://i.pravatar.cc/150?img=24"
+      },
+      {
+        "id": 2,
+        "name": "Made Ayu Kartika",
+        "timeAgo": "22h ago",
+        "message": "Bisa banget, sesi ini memang dirancang ramah untuk pemula.",
+        "avatar": "https://i.pravatar.cc/150?img=42"
+      }
+    ]
   }
 ]
