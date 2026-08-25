@@ -2,19 +2,19 @@ import React from "react";
 import { LuBookmark, LuCalendar, LuMapPin, LuUsers } from "react-icons/lu";
 import { Link } from "react-router";
 import TagBadge from "./TagBadge";
-import useLocalStorage from "../hooks/useLocalStorage";
 import ModalLoginALert from "./ModalLoginAlert";
+import { useSelector } from "react-redux";
 function EventItemCard({ event }) {
 
   const progress = Math.min( (event.attendees / event.capacity) * 100, 100 )
-  const [userActive] = useLocalStorage("userActive", null)
+  const isLoggedin = useSelector(state => state.auth.auth)
   const [show, setShow] = React.useState(false)
 
 
   const handleJoinEvent = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    if (!userActive) {
+    if (!isLoggedin) {
       setShow(true)
     }
   }
@@ -22,7 +22,7 @@ function EventItemCard({ event }) {
   const handleBookmark = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    if (!userActive) {
+    if (!isLoggedin) {
       setShow(true)
     }
   }
@@ -51,7 +51,7 @@ function EventItemCard({ event }) {
           <div className="flex gap-1.5 items-center text-color-text">
             <LuCalendar />
             <span>
-              {event.date} · {event.time} {event.timezone}
+              {event.date} · {event.startTime} WIB
             </span>
           </div>
           <div className="flex gap-1.5 items-center text-color-text">
@@ -61,12 +61,12 @@ function EventItemCard({ event }) {
           <div className="flex gap-1.5 items-center text-color-text">
             <LuUsers />
             <span>
-              {event.attendees} / {event.capacity} attendees
+              {event.attendees.length} / {event.capacity} attendees
             </span>
           </div>
           <div className="w-full flex flex-col gap-2 mt-2">
             <div className="w-full flex justify-between">
-              <span>{event.attendees} attendees</span>
+              <span>{event.attendees.length} attendees</span>
               <span>{event.capacity} capacity</span>
             </div>
 
