@@ -1,5 +1,5 @@
 import React from "react";
-import { FiBell, FiMenu, FiMoon, FiUsers, FiX } from "react-icons/fi";
+import { FiBell, FiGrid, FiMenu, FiMoon, FiUsers, FiX } from "react-icons/fi";
 import Logo from "./Logo";
 import Navbar from "./Navbar";
 import { Link, useNavigate } from "react-router";
@@ -36,6 +36,18 @@ function Header() {
         </div>
 
         <div className="flex items-center justify-center gap-2">
+          <div>
+            {userActive?.role === "organizer" && (
+               <Link
+                 to="/organizer-dashboard"
+                 className="hidden  lg:flex items-center justify-center gap-2 text-color-text p-2 hover:bg-gray-100 rounded-full"
+                 title="Dashboard"
+               >
+                <FiGrid size={24} />
+                Dasboard
+               </Link>
+             )}
+          </div>
           <div>
             {userActive ? (
               <Link to="/notifications">
