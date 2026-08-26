@@ -4,12 +4,13 @@ import { FiArrowLeft } from "react-icons/fi";
 import EventItemCard from "../../components/EventItemCard";
 import TagBadge from "../../components/TagBadge";
 import { useParams } from "react-router";
-import communities from "../../data/communities.json";
+import { useSelector } from "react-redux";
 
 export default function CommunityDetail() {
   const [activeTab, setActiveTab] = useState("Events");
+  const communities = useSelector(state => state.communities.communities)
   const { id } = useParams();
-  const community = communities.find((c) => c.id === id);
+  const community = communities.find((c) => c.id === Number(id));
 
   const filteredEvents = events.filter(
     (e) => e.title === "Go Concurrency Workshop",
@@ -33,7 +34,7 @@ export default function CommunityDetail() {
                 {community.name}
               </h1>
               <p className="text-gray-200 text-sm mt-1">
-                {community.members.toLocaleString()} members ·{" "}
+                {community.members.length} members ·{" "}
                 {community.upcomingEvents} upcoming events
               </p>
             </div>
