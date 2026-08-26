@@ -8,9 +8,9 @@ import Register from "../pages/auth/Register";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import ExplorePage from "../pages/explore/ExplorePage";
 import EventDetailPage from "../pages/events/EventDetailPage";
-import CommunityDetail from "../pages/communities/CommunityDetail";
-import MyEventPage from "../pages/myevents/MyEventPage";
-import ProfilePage from "../pages/profile/ProfilePage";
+// import CommunityDetail from "../pages/communities/CommunityDetail";
+// import MyEventPage from "../pages/myevents/MyEventPage";
+// import ProfilePage from "../pages/profile/ProfilePage";
 import ProtectedRoute from "./ProtectedRoute";
 import NotificationPage from "../pages/profile/NotificationPage";
 import OrganizerDashboard from "../pages/dashboard/OrganizerDashboard";
@@ -19,6 +19,18 @@ import CreateEventLayout from "../layouts/CreateEventLayout";
 import CreateEvent2 from "../pages/CreateEvent2";
 import CreateEvent3 from "../pages/CreateEvent3";
 import CreateEventSuccess from "../pages/CreateEventSuccess";
+import MyEventLayout from "../layouts/MyEventLayout";
+import UpcomingEventPage from "../pages/myevents/UpcomingEventPage";
+import SavedEventPage from "../pages/myevents/SavedEventPage";
+import PastEventPage from "../pages/myevents/PastEventPage";
+import CommunityDetailLayout from "../layouts/CommunityDetailLayout";
+import CommunityEventsPage from "../pages/communities/CommunityEventsPage";
+import CommunityMembersPage from "../pages/communities/CommunityMembersPage";
+import ProfileLayout from "../layouts/ProfileLayout";
+import ProfileEventPage from "../pages/profile/ProfileEventPage";
+import ProfileCommunityPage from "../pages/profile/ProfileCommunityPage";
+import ProfileEventSaved from "../pages/profile/ProfileEventSaved";
+import NotFoundPage from "../pages/NotFoundPage";
 
 function App() {
   return (
@@ -28,7 +40,7 @@ function App() {
         <Route index element={<Navigate to={"login"} replace />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
-        <Route path="forgot-password" element={<ForgotPassword/>}/>
+        <Route path="forgot-password" element={<ForgotPassword />} />
       </Route>
 
       {/* Main Router*/}
@@ -41,21 +53,44 @@ function App() {
         </Route>
         <Route path="communities">
           <Route index element={<CommunitiesPage />} />
-          <Route path=":id" element={<CommunityDetail />} />
+
+          <Route path=":id" element={<CommunityDetailLayout />}>
+            <Route index element={<Navigate to="events" replace />} />
+            <Route path="events" element={<CommunityEventsPage />} />
+            <Route path="members" element={<CommunityMembersPage />} />
+            {/* <Route
+              path="discussion"
+              element={<CommunityDiscussionPage />}
+            />*/}
+          </Route>
         </Route>
         <Route element={<ProtectedRoute />}>
-          <Route path="profile" element={<ProfilePage />} />
-          <Route path="my-events" element={<MyEventPage />} />
-          <Route path="notifications" element={<NotificationPage/>}/>
+          {/* <Route path="profile" element={<ProfilePage />} />*/}
+          {/* <Route path="my-events" element={<MyEventPage />} />*/}
+          <Route path="profile" element={<ProfileLayout />}>
+            <Route index element={ <Navigate to="events" replace/> } />
+            <Route path="events" element={<ProfileEventPage />} />
+            <Route path="communities" element={<ProfileCommunityPage />} />
+            <Route path="saved" element= {<ProfileEventSaved/>}/>
+          </Route>
+          <Route path="notifications" element={<NotificationPage />} />
         </Route>
 
         <Route path="organizer-dashboard" element={<OrganizerDashboard />} />
-        <Route path="create-event" element={<CreateEventLayout/>} >
+        <Route path="create-event" element={<CreateEventLayout />}>
           <Route path="" element={<CreateEvent />} />
           <Route path="2" element={<CreateEvent2 />} />
           <Route path="3" element={<CreateEvent3 />} />
         </Route>
-        <Route path="create-event-success" element={ <CreateEventSuccess/> } />
+
+        <Route path="my-events" element={<MyEventLayout />}>
+          <Route index element={<Navigate to="upcoming" replace />} />
+          <Route path="upcoming" element={<UpcomingEventPage />} />
+          <Route path="past" element={<PastEventPage />} />
+          <Route path="saved" element={<SavedEventPage />} />
+        </Route>
+        <Route path="create-event-success" element={<CreateEventSuccess />} />
+        <Route path="*" element={<NotFoundPage/> } />
       </Route>
     </Routes>
   );
