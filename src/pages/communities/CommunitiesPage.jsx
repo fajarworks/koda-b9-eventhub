@@ -1,8 +1,10 @@
-// import React from 'react';
-import communities from "../../data/communities.json";
+
+import { useSelector } from "react-redux";
 import CommunityItemCard from "../../components/CommunityItemCard";
 import { FiSearch } from "react-icons/fi";
+
 function CommunitiesPage() {
+  const communities = useSelector(state=> state.communities.communities)
   return (
     <main className="">
       <section className="bg-black px-4 py-10  flex my-center ">
