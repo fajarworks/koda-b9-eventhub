@@ -1,9 +1,9 @@
-import useLocalStorage from "../hooks/useLocalStorage";
+import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router";
 
 function ProtectedRoute() {
-  const [userActive] = useLocalStorage("userActive", null);
-  if (!userActive) {
+  const isLoggedIn = useSelector(state => state.auth.auth)
+  if (!isLoggedIn) {
     return <Navigate to="/explore" replace />;
   }
   return <Outlet />;
