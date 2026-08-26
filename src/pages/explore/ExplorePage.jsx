@@ -1,15 +1,19 @@
 import { FiArrowRight, FiSearch } from "react-icons/fi";
-import events from "../../data/events.json";
-import communities from "../../data/communities.json";
+// import events from "../../data/events.json";
+// import communities from "../../data/communities.json";
 import EventItemCard from "../../components/EventItemCard";
 import CommunityItemCard from "../../components/CommunityItemCard";
 import { Link } from "react-router";
+import { useSelector } from "react-redux";
+
 
 function ExplorePage() {
+  const events = useSelector(state => state.events.events)
+  const communities = useSelector(state => state.communities.communities)
   return (
     <>
       <main className="min-h-screen w-full">
-        <section className=" bg-radial from-orange-900 from-5% to-black mx-auto px-4 pt-4 py-10 flex justify-center">
+        <section className=" bg-radial from-orange-900 from-5% to-black mx-auto px-7 pt-4 py-10 flex justify-center">
           <div className="max-w-7xl w-full">
             <div className="flex my-center mb-4">
               <span className="bg-white/10 text-primary  backdrop-blur-3xl rounded-xl border border-white/20 shadow-lg px-3 py-0.5">
