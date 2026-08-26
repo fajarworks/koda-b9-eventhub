@@ -3,17 +3,21 @@ import { useForm } from "react-hook-form";
 import { FiEye } from "react-icons/fi";
 import { FiEyeOff } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
-import useLocalStorage from "../../hooks/useLocalStorage";
+// import useLocalStorage from "../../hooks/useLocalStorage";
 import toast, { Toaster } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../redux/slices/authSlices";
 
 function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
-  const [users] = useLocalStorage("users", []);
-  const [, setUserActive] = useLocalStorage("userActive", null);
-  const navigate = useNavigate();
+  const users = useSelector((state)=> state.users.users)
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
   const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
   const adminPass = import.meta.env.VITE_ADMIN_PASSWORD;
+  const organizerEmail = import.meta.env.VITE_ORGANIZER_EMAIL
+  const organizerPass = import.meta.env.VITE_ORGANIZER_PASSWORD
 
   const {
     register,
@@ -34,16 +38,31 @@ function Login() {
         email: adminEmail,
         role: "admin",
       };
-      setUserActive(admin);
+      // setUserActive(admin);
+      dispatch(login(admin))
       navigate("/explore");
       return;
     }
+
+    if (data.email === organizerEmail && data.password === organizerPass) {
+      const organizer = {
+        fullName: "organizer",
+        email: organizerEmail,
+        role: "organizer"
+      }
+      dispatch(login(organizer))
+      navigate("/explore");
+      return
+    }
+
+
 
     const userFound = users.find(
       (user) =>
         user.email.toLowerCase() === data.email.toLowerCase() &&
         user.password === data.password,
     );
+
     if (!userFound) {
       setError("email", { message: "wrong email or password" });
       setError("password", { message: "wrong email or password" });
@@ -52,7 +71,8 @@ function Login() {
 
     toast.success("berhasil login", { duration: 1500 });
 
-    setUserActive(userFound);
+    // setUserActive(userFound);
+    dispatch(login(userFound))
     setTimeout(() => {
       navigate("/explore");
     }, 1500);
@@ -102,7 +122,7 @@ function Login() {
           <div className="flex flex-col gap-2 my-2">
             <div className="flex justify-between">
               <label htmlFor="password">Password </label>
-              <Link className="text-primary">Forgot Password?</Link>
+              <Link to={"/auth/forgot-password"} className="text-primary">Forgot Password?</Link>
             </div>
             <div className="relative">
               <input
