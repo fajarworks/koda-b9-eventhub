@@ -3,12 +3,17 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
 import Logo from "../../components/Logo";
 import { useForm } from "react-hook-form";
-import useLocalStorage from "../../hooks/useLocalStorage";
+// import useLocalStorage from "../../hooks/useLocalStorage";
 import toast, { Toaster } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser } from "../../redux/slices/registerSlices";
 
 function Register() {
   const [showPassword, setShowPassword] = React.useState(false);
-  const [user, setUser] = useLocalStorage("users", []);
+  const dispatch = useDispatch()
+  // const [user, setUser] = useLocalStorage("users", []);
+  const state = useSelector((state) => state.users.users)
+
   const navigate = useNavigate();
   const handleShowPass = () => {
     setShowPassword((prev) => {
@@ -23,8 +28,8 @@ function Register() {
   } = useForm();
 
   const onSubmit = (data) => {
-    setUser([...user, data]);
-
+    // setUser([...user, data]);
+    dispatch(addUser(data))
     toast.success("registrasi berhasil", { duration: 1500 });
 
     setTimeout(() => {
@@ -108,7 +113,7 @@ function Register() {
               {...register("email", {
                 required: "email can't be empty",
                 validate: (value) => {
-                  const emailExist = user.some(
+                  const emailExist = state.some(
                     (user) => user.email.toLowerCase() === value.toLowerCase(),
                   );
                   return !emailExist || "email already exist";
