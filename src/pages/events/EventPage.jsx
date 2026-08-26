@@ -3,10 +3,38 @@ import { FiSearch } from "react-icons/fi";
 import { LuSlidersHorizontal } from "react-icons/lu";
 import EventItemCard from "../../components/EventItemCard";
 import { useSelector } from "react-redux";
+import { useSearchParams } from "react-router";
 
 function EventPage() {
   const [showFilter, setShowFilter] = React.useState(false);
   const events = useSelector(state => state.events.events)
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const search = searchParams.get("search") || ""
+  const location = searchParams.get("location") || "All location"
+  const category = searchParams.get("category") || "All"
+  const sort = searchParams.get("sortBy") || "Upcoming"
+
+  let filteredEvents = [...events]
+  if (search) {
+    filteredEvents = filteredEvents.filter((event) => event.title.toLowerCase().includes(search.toLowerCase()))
+  }
+  if (category !== "All") {
+    filteredEvents = filteredEvents.filter((event)=> event.tags.includes(category))
+  }
+  if (location !== "All location") {
+    filteredEvents = filteredEvents.filter((event)=> event.location === location)
+  }
+
+  if (sort === "Upcoming") {
+    filteredEvents = filteredEvents.sort((a, b) => new Date(a.date) - new Date(b.date))
+
+  }
+
+  if (sort === "Most Popular") {
+    filteredEvents = filteredEvents.sort((a, b)=> b.attendees.length - a.attendees.length)
+  }
+
 
   const handleShowFilter = () => {
     setShowFilter(prev => !prev)
@@ -15,17 +43,17 @@ function EventPage() {
   };
   const categories = [
     "All",
-    "Technology",
-    "Design",
+    "Arts",
+    "Food",
     "Business",
     "Career",
     "AI",
     "Programming",
-    "Music",
+    "Health",
   ];
 
-  const location = [
-    "All Location",
+  const locations = [
+    "All location",
     "Bandung",
     "Jakarta",
     "Surabaya",
@@ -51,7 +79,19 @@ function EventPage() {
                 type="text"
                 id="search"
                 name="search"
+                value={search}
                 placeholder="Search events..."
+                onChange={(e) => {
+                  setSearchParams((prev) => {
+                    const params = new URLSearchParams(prev)
+                    if (e.target.value) {
+                      params.set("search", e.target.value)
+                      return params
+                    }
+                    params.delete("search")
+                    return params
+                  })
+                }}
               />
             </div>
             <button onClick={handleShowFilter}
@@ -71,8 +111,20 @@ function EventPage() {
                   {categories.map((item) => (
 
                     <button
-                      className="border border-gray-300 px-3 py-1 rounded-lg text-color-text cursor-pointer"
+                      className={`border border-gray-300 px-3 py-1 rounded-lg  $ cursor-pointer ${category === item ? "bg-primary text-white" :" text-color-text"}`}
+
                       key={item}
+                      onClick={() => {
+                        setSearchParams((prev) => {
+                          const params = new URLSearchParams(prev)
+                          if (item !== "All") {
+                            params.set("category", item)
+                            return params
+                          }
+                          params.delete("category")
+                          return params
+                        })
+                      }}
                     >
                       {item}
                     </button>
@@ -83,10 +135,21 @@ function EventPage() {
                 <p className="text-color-text text-sm mb-2">LOCATION</p>
 
                 <div className="flex gap-2 flex-wrap">
-                  {location.map((item) => (
+                  {locations.map((item) => (
                     <button
-                      className="border border-gray-300 px-3 py-1 rounded-lg text-color-text cursor-pointer"
+                      className={`border border-gray-300 px-3 py-1 rounded-lg  $ cursor-pointer ${location === item ? "bg-primary text-white" :" text-color-text"}`}
                       key={item}
+                      onClick={()=>{
+                        setSearchParams((prev) => {
+                          const params = new URLSearchParams(prev)
+                          if (item !== "All location") {
+                            params.set("location", item)
+                            return params
+                          }
+                          params.delete("location")
+                          return params
+                        })
+                      }}
                     >
                       {item}
                     </button>
@@ -98,8 +161,20 @@ function EventPage() {
                 <div className="flex gap-2 flex-wrap">
                   {sortBy.map((item) => (
                     <button
-                      className="border border-gray-300 px-3 py-1 rounded-lg text-color-text cursor-pointer"
+                      className={`border border-gray-300 px-3 py-1 rounded-lg  $ cursor-pointer ${sort === item ? "bg-primary text-white" :" text-color-text"}`}
+
                       key={item}
+                      onClick={() => {
+                        setSearchParams((prev) => {
+                          const params = new URLSearchParams(prev)
+                          if (item !== "Upcoming") {
+                            params.set("sortBy", item)
+                            return params
+                          }
+                          params.delete("sortBy")
+                          return params
+                        })
+                      }}
                     >
                       {item}
                     </button>
@@ -115,7 +190,7 @@ function EventPage() {
           <span className="font-bold">{events.length}</span> events found
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
-          {events.map((event) => (
+          {filteredEvents.map((event) => (
             <EventItemCard key={event.id} event={event} />
           ))}
         </div>
