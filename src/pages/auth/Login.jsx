@@ -3,17 +3,17 @@ import { useForm } from "react-hook-form";
 import { FiEye } from "react-icons/fi";
 import { FiEyeOff } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
-// import useLocalStorage from "../../hooks/useLocalStorage";
 import toast, { Toaster } from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../redux/slices/authSlices";
+import {  useSelector } from "react-redux";
+import { useAuth } from "../../hooks/useAuth";
 
 function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
-  const users = useSelector((state)=> state.users.users)
+  const { login } = useAuth()
+  const users = useSelector((state) => state.users.users)
+
 
   const navigate = useNavigate();
-  const dispatch = useDispatch()
   const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
   const adminPass = import.meta.env.VITE_ADMIN_PASSWORD;
   const organizerEmail = import.meta.env.VITE_ORGANIZER_EMAIL
@@ -38,8 +38,7 @@ function Login() {
         email: adminEmail,
         role: "admin",
       };
-      // setUserActive(admin);
-      dispatch(login(admin))
+      login(admin)
       navigate("/explore");
       return;
     }
@@ -50,7 +49,7 @@ function Login() {
         email: organizerEmail,
         role: "organizer"
       }
-      dispatch(login(organizer))
+      login(organizer)
       navigate("/explore");
       return
     }
@@ -63,16 +62,16 @@ function Login() {
         user.password === data.password,
     );
 
+
     if (!userFound) {
       setError("email", { message: "wrong email or password" });
       setError("password", { message: "wrong email or password" });
       return;
     }
 
-    toast.success("berhasil login", { duration: 1500 });
 
-    // setUserActive(userFound);
-    dispatch(login(userFound))
+    toast.success("berhasil login", { duration: 1500 });
+    login(userFound)
     setTimeout(() => {
       navigate("/explore");
     }, 1500);
