@@ -1,14 +1,17 @@
 import React from "react";
-import { LuMapPin, LuPencil } from "react-icons/lu";
+import { LuCalendar, LuMapPin, LuPencil } from "react-icons/lu";
 import EditProfileModal from "../components/EditProfileModal";
 import { Toaster } from "react-hot-toast";
 import { NavLink, Outlet } from "react-router";
 import { useSelector } from "react-redux";
+import { useAuth } from "../hooks/useAuth";
 
 function ProfileLayout() {
   const [isShow, setIsShow] = React.useState(false);
-  const isLoggedIn = useSelector(state => state.auth.auth)
-
+  // const isLoggedIn = useSelector(state => state.auth.auth)
+  const { users } = useSelector((state) => state.users);
+  const { user } = useAuth();
+  const personalInfo = users.find((u) => u.email === user.email);
 
   const handleEditProfile = () => {
     setIsShow((prev) => !prev);
@@ -33,15 +36,16 @@ function ProfileLayout() {
       <EditProfileModal isShow={isShow} setIsShow={setIsShow} />
       <div className="max-w-5xl mx-auto p-6">
         <div className=" flex gap-3">
-          <div className="w-20 h-20 rounded-xl overflow-hidden">
-            <img src="/images/alex-kim.jpg" alt="" className="w-full h-full" />
+          <div className="w-20 h-20 rounded-xl overflow-hidden bg-orange-500">
+            {personalInfo.photoProfile ? (<img src={personalInfo?.photoProfile} alt="" className="w-full h-full" />) : (<span className="text-3xl w-full h-full flex items-center justify-center capitalize text-white">{ personalInfo.fullName.charAt(0) }</span>) }
+
           </div>
           <div className="w-full">
-            <div className="flex flex-col md:flex-row justify-between">
+            <div className="flex flex-col md:flex-row md:justify-between">
               <div className="pb-3">
-                <p className="text-xl font-medium">{ isLoggedIn.fullName }</p>
+                <p className="text-xl font-medium">{personalInfo?.fullName}</p>
                 <p className="text-color-text cursor-pointer">
-                  {isLoggedIn.email}
+                  {personalInfo?.email}
                 </p>
               </div>
               <div>
@@ -55,20 +59,25 @@ function ProfileLayout() {
                 </button>
               </div>
             </div>
-            <div className="flex items-center">
-              <LuMapPin />
-              <p className="text-color-text">Bandung, Indonesia</p>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
+                <LuMapPin />
+                <p className="text-color-text">
+                  {personalInfo.location ? personalInfo.location : " "}
+                </p>
+              </div>
+              <div className="flex items-center gap-2 text-color-text">
+                <LuCalendar />
+
+                <p> Joined March 2025</p>
+              </div>
             </div>
-            <div className="flex items-center">
-              <p className="text-color-text"> Joined March 2025</p>
-            </div>
-            <span className="text-red-400 bg-red-100 rounded-lg px-2">
-              Attendee
-            </span>
+              <span className=" text-red-400 bg-red-100 rounded-lg px-2">
+                Attendee
+              </span>
             <div className="max-w-2xl">
               <p className="text-color-text">
-                Backend engineer & community builder. Passionate about Go,
-                distributed systems, and connecting people through events.
+                {personalInfo.bio ? personalInfo.bio : "don't have bio yet"}
               </p>
             </div>
           </div>
@@ -89,7 +98,7 @@ function ProfileLayout() {
         </div>
       </div>
       <div className="mt-5 border-b border-gray-200">
-        <div className=" max-w-5xl mx-auto flex gap-6">
+        <div className=" max-w-5xl mx-auto flex gap-6 px-4">
           {tabs.map((tab) => (
             <NavLink
               key={tab.path}
