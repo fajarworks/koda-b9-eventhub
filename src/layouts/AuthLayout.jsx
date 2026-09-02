@@ -1,11 +1,12 @@
 // AuthLayout.jsx
 import { Navigate, Outlet } from "react-router";
 import SidePanel from "../components/SidePanel";
-import useLocalStorage from "../hooks/useLocalStorage";
+import { useAuth } from "../hooks/useAuth";
 
 function AuthLayout() {
-  const [userActive] = useLocalStorage("userActive", null)
-  if (userActive) {
+  const { user } = useAuth()
+
+  if (user) {
     return <Navigate to={"/explore"} replace/>
   }
   return (
