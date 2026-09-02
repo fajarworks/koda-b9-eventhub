@@ -69,17 +69,25 @@ function App() {
             />*/}
           </Route>
         </Route>
-        <Route element={<ProtectedRoute allowedRoles={["organizer, admin"]} />}>
-          {/* <Route path="profile" element={<ProfilePage />} />*/}
-          {/* <Route path="my-events" element={<MyEventPage />} />*/}
-          <Route path="profile" element={<ProfileLayout />}>
-            <Route index element={<Navigate to="events" replace />} />
-            <Route path="events" element={<ProfileEventPage />} />
-            <Route path="communities" element={<ProfileCommunityPage />} />
-            <Route path="saved" element={<ProfileEventSaved />} />
-          </Route>
-          <Route path="notifications" element={<NotificationPage />} />
+   <Route element={<ProtectedRoute />}>
+  {/* Semua user yang login boleh */}
+  <Route path="profile" element={<ProfileLayout />}>
+    <Route index element={<Navigate to="events" replace />} />
+    <Route path="events" element={<ProfileEventPage />} />
+    <Route path="communities" element={<ProfileCommunityPage />} />
+    <Route path="saved" element={<ProfileEventSaved />} />
+  </Route>
+        <Route path="my-events" element={<MyEventLayout />}>
+          <Route index element={<Navigate to="upcoming" replace />} />
+          <Route path="upcoming" element={<UpcomingEventPage />} />
+          <Route path="past" element={<PastEventPage />} />
+          <Route path="saved" element={<SavedEventPage />} />
+        </Route>
 
+  <Route path="notifications" element={<NotificationPage />} />
+</Route>
+
+              <Route element={<ProtectedRoute allowedRoles={["organizer", "admin"]}/>}>
         <Route path="organizer-dashboard" element={<OrganizerDashboard />} />
         <Route path="create-event" element={<CreateEventLayout />}>
           <Route path="1" element={<CreateEvent />} />
@@ -87,12 +95,6 @@ function App() {
           <Route path="3" element={<CreateEvent3 />} />
         </Route>
 
-        <Route path="my-events" element={<MyEventLayout />}>
-          <Route index element={<Navigate to="upcoming" replace />} />
-          <Route path="upcoming" element={<UpcomingEventPage />} />
-          <Route path="past" element={<PastEventPage />} />
-          <Route path="saved" element={<SavedEventPage />} />
-        </Route>
         <Route path="create-event-success" element={<CreateEventSuccess />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="admin-dashboard" element={<AdminDashboardLayout />}>
@@ -102,7 +104,7 @@ function App() {
           <Route path="communities" element={<AdminCommunitiesDashboard />} />
           <Route path="events" element={<AdminEventsDashboard />} />
         </Route>
-        </Route>
+              </Route>
 
       </Route>
     </Routes>
