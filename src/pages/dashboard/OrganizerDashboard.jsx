@@ -9,23 +9,27 @@ import {
 } from "react-icons/fi";
 import EventChart from "../../components/EventChart";
 import { IoBarChartOutline } from "react-icons/io5";
+import { Link } from "react-router";
 
 function OrganizerDashboard() {
   return (
     <div className="py-8 px-4">
       <div className="max-w-7xl   mx-auto">
         <div className="flex flex-col lg:items-center lg:flex-row lg:justify-between">
-        <div className="mb-4">
-          <h1 className="text-2xl font-semibold">Organizer Dashboard</h1>
-          <p className="text-color-text">
-            Manage your events and track performance.
-          </p>
-        </div>
-        <div>
-          <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg cursor-pointer">
-            <FiPlus /> Create Event
-          </button>
-        </div>
+          <div className="mb-4">
+            <h1 className="text-2xl font-semibold">Organizer Dashboard</h1>
+            <p className="text-color-text">
+              Manage your events and track performance.
+            </p>
+          </div>
+          <div>
+            <Link
+              to="/create-event/1"
+              className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg cursor-pointer"
+            >
+              <FiPlus /> Create Event
+            </Link>
+          </div>
         </div>
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 mt-8">
           <div className="bg-white rounded-2xl border border-gray-300">
@@ -175,8 +179,8 @@ function OrganizerDashboard() {
           <div className="flex flex-col gap-4">
             <div className="bg-white border border-gray-300 rounded-2xl p-4">
               <div className="flex items-center gap-2">
-                <IoBarChartOutline  size={20} />
-              <h3 className="font-medium">Registrations (6 months)</h3>
+                <IoBarChartOutline size={20} />
+                <h3 className="font-medium">Registrations (6 months)</h3>
               </div>
               <EventChart />
             </div>
@@ -184,10 +188,10 @@ function OrganizerDashboard() {
               <h3 className="font-medium mb-3">Quick Actions</h3>
               <div className="flex flex-col gap-2">
                 <button className="flex items-center justify-center gap-2  bg-primary text-white py-2 rounded-lg cursor-pointer">
-                  <FiPlus/> Create New Event
+                  <FiPlus /> Create New Event
                 </button>
                 <button className="flex items-center gap-2 justify-center bg-gray-100 py-2 rounded-lg cursor-pointer">
-                  <FiEye/> Preview as Attendee
+                  <FiEye /> Preview as Attendee
                 </button>
               </div>
             </div>
