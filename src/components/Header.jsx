@@ -1,31 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { FiBell, FiGrid, FiMenu, FiMoon, FiUsers, FiX } from "react-icons/fi";
 import Logo from "./Logo";
 import Navbar from "./Navbar";
-import { Link, useNavigate } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import NavbarMobile from "./NavbarMobile";
-import { useDispatch, useSelector } from "react-redux";
-import {logout} from "../redux/slices/authSlices"
+import { useSelector } from "react-redux";
+import { useAuth } from "../hooks/useAuth";
+import ModalLogoutAlert from "./ModalLogoutAlert";
 
 function Header() {
+  const [show, setShow] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isMobileMenu, setIsMobileMenu] = React.useState(false);
-  const users = useSelector(state => state.users.users)
-  const userActive = useSelector(state => state.auth.auth)
-  const dispatch = useDispatch()
-  const personalInfo = users.find((u) => u.email === userActive?.email);
-  const navigate = useNavigate()
+  const {users} = useSelector((state) => state.users);
+  const { user } = useAuth();
+
+  const personalInfo = users.find((u) => u.email === user?.email);
+
+  const navigate = useNavigate();
 
   const handleSignOut = () => {
-    dispatch(logout())
     setIsMenuOpen(false);
     setIsMobileMenu(false);
+    setShow(true)
   };
 
   const handleProfile = () => {
-    setIsMenuOpen(false)
-    navigate("/profile")
-  }
+    setIsMenuOpen(false);
+    navigate("/profile");
+  };
 
   return (
     <header className="w-full px-6 py-4 bg-white border-b border-gray-300 sticky top-0 z-50">
@@ -37,19 +40,40 @@ function Header() {
 
         <div className="flex items-center justify-center gap-2">
           <div>
-            {userActive?.role === "organizer" && (
-               <Link
-                 to="/organizer-dashboard"
-                 className="hidden  lg:flex items-center justify-center gap-2 text-color-text p-2 hover:bg-gray-100 rounded-full"
-                 title="Dashboard"
-               >
+            {user?.role === "organizer" && (
+              <NavLink
+                to="/organizer-dashboard"
+                className={({ isActive }) =>
+                  `hidden lg:flex items-center justify-center gap-2 p-2 rounded-full ${
+                    isActive
+                      ? "bg-orange-100 text-primary"
+                      : "text-color-text hover:bg-gray-100"
+                  }`
+                }
+              >
                 <FiGrid size={24} />
-                Dasboard
-               </Link>
-             )}
+                Dashboard
+              </NavLink>
+            )}
+
+            {user?.role === "admin" && (
+              <NavLink
+                to="/admin-dashboard"
+                className={({ isActive }) =>
+                  `hidden lg:flex items-center justify-center gap-2 p-2 rounded-full ${
+                    isActive
+                      ? "bg-orange-100 text-primary"
+                      : "text-color-text hover:bg-gray-100"
+                  }`
+                }
+              >
+                <FiGrid size={24} />
+                Dashboard
+              </NavLink>
+            )}
           </div>
           <div>
-            {userActive ? (
+            {user ? (
               <Link to="/notifications">
                 <FiBell size={24} />
               </Link>
@@ -70,40 +94,40 @@ function Header() {
             </button>
             {isMobileMenu && (
               <NavbarMobile
-                userActive={userActive}
+                userActive={user}
                 onClose={() => setIsMobileMenu(false)}
                 onSignOut={handleSignOut}
               />
             )}
           </div>
           <div className=" hidden relative md:block">
-            {userActive ? (
+            {user ? (
               <>
                 <button
                   onClick={() => setIsMenuOpen((prev) => !prev)}
                   className="cursor-pointer"
                 >
-                  <div className="w-7 h-7 rounded-full overflow-hidden">
-                    <img
-                      src="/images/alex-kim.jpg"
-                      alt="Profile"
-                      className="w-full h-full object-cover"
-                    />
+                  <div className="w-7 h-7 rounded-full overflow-hidden bg-orange-500">
+                    {personalInfo?.photoProfile ? (<img src={personalInfo?.photoProfile || user?.photoProfile} alt="" className="w-full h-full" />) : (<span className="text-lg w-full h-full flex items-center justify-center capitalize text-white">{ personalInfo?.fullName.charAt(0) || user.fullName.charAt(0) }</span>) }
+
                   </div>
                 </button>
 
                 {isMenuOpen && (
                   <div className="absolute right-0 mt-2 w-50 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-50 text-clip">
                     <div className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-default">
-                      <p className="font-medium">
-                        {personalInfo?.fullName || userActive.fullName}
-                      </p>
+                      <p className="font-medium">{personalInfo?.fullName || user.fullName}</p>
                     </div>
                     <div className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-default">
-                      <p>{personalInfo?.email || userActive.email}</p>
+                      <p>{personalInfo?.email || user.email}</p>
                     </div>
-                    <div onClick={handleProfile} className="flex items-center gap-2 w-full px-4 py-2 text-sm text-color-text hover:bg-gray-100">
-                      <span><FiUsers/></span>
+                    <div
+                      onClick={handleProfile}
+                      className="flex items-center gap-2 w-full px-4 py-2 text-sm text-color-text hover:bg-gray-100"
+                    >
+                      <span>
+                        <FiUsers />
+                      </span>
                       <span>Profile</span>
                     </div>
                     <button
@@ -126,6 +150,7 @@ function Header() {
           </div>
         </div>
       </nav>
+      <ModalLogoutAlert show={show} setShow={setShow}/>
     </header>
   );
 }
