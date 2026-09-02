@@ -1,8 +1,11 @@
 import { NavLink } from "react-router";
-import { useSelector } from "react-redux";
+import { useAuth } from "../hooks/useAuth";
+// import { useSelector } from "react-redux";
 
 function Navbar() {
-  const isLoggedin = useSelector(state => state.auth.auth)
+  // const isLoggedin = useSelector(state => state.auth.auth)
+
+   const {isAuthenticated} = useAuth()
   return (
     <ul className=" hidden lg:flex flex-col lg:flex-row text-color-text gap-2" >
       <li>
@@ -52,7 +55,7 @@ function Navbar() {
         </NavLink>
       </li>
 
-      {isLoggedin && (<li>
+      {isAuthenticated && (<li>
         <NavLink to="/my-events">
           {({ isActive }) => (
             <span

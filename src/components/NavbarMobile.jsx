@@ -7,21 +7,25 @@ import {
   FiLogOut,
 } from "react-icons/fi";
 import { Link } from "react-router";
+import { useAuth } from "../hooks/useAuth";
+import { useSelector } from "react-redux";
 
 function NavbarMobile({ userActive, onClose, onSignOut }) {
+  const { users } = useSelector(state => state.users)
+  const { user } = useAuth()
+  const personalInfo = users.find((u)=> u.email === user.email)
   return (
     <div className="absolute right-0 top-14 w-72 bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden z-50">
       {userActive ? (
         <>
           <div className="p-4 flex items-center gap-3">
-            <img
-              src="/images/alex-kim.jpg"
-              alt="Profile"
-              className="w-12 h-12 rounded-full object-cover"
-            />
+            <div className="w-7 h-7 rounded-full overflow-hidden bg-orange-500">
+              {personalInfo?.photoProfile ? (<img src={personalInfo?.photoProfile || user?.photoProfile} alt="" className="w-full h-full" />) : (<span className="text-lg w-full h-full flex items-center justify-center capitalize text-white">{ personalInfo?.fullName.charAt(0) || user.fullName.charAt(0) }</span>) }
+
+            </div>
             <div>
-              <p className="font-semibold">{userActive.fullName}</p>
-              <p className="text-sm text-gray-400">{userActive.email}</p>
+              <p className="font-semibold">{personalInfo?.fullName || user.fullName}</p>
+              <p className="text-sm text-gray-400">{personalInfo?.email ||  user.email}</p>
             </div>
           </div>
           <div className="border-t border-gray-200" />
