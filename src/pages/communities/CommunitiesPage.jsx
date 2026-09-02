@@ -2,9 +2,16 @@
 import { useSelector } from "react-redux";
 import CommunityItemCard from "../../components/CommunityItemCard";
 import { FiSearch } from "react-icons/fi";
+import { useSearchParams } from "react-router";
 
 function CommunitiesPage() {
-  const communities = useSelector(state=> state.communities.communities)
+  const communities = useSelector(state => state.communities.communities)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const search = searchParams.get("search") || ""
+
+  // const filteredCommunities = communities.filter((com) => com.name.toLowerCase().includes(search.toLowerCase()))
+
+
   return (
     <main className="">
       <section className="bg-black px-4 py-10  flex my-center ">
@@ -20,6 +27,18 @@ function CommunitiesPage() {
             <div className="flex relative">
               <FiSearch className="text-color-text self-center absolute left-2 " />
               <input
+                value={search}
+                onChange={(e) => {
+                  setSearchParams((prev) => {
+                    const params = new URLSearchParams(prev, e.target.value)
+                    if (e.target.value) {
+                      params.set("search", e.target.value)
+                      return params
+                    }
+                    params.delete("search")
+                    return params
+                  })
+                }}
                 className="bg-white w-full px-3.5 py-3 pl-8 rounded-xl focus:outline-none"
                 type="text"
                 id="search"
