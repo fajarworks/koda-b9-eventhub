@@ -1,7 +1,39 @@
-import React from "react";
-import { FiArrowLeft, FiCheck, FiX } from "react-icons/fi";
+import { FiArrowLeft, FiPlus, FiX } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import TagBadge from "../components/TagBadge.jsx";
+import {
+  addSpeaker,
+  createEventThunk,
+  removeSpeaker,
+  resetEvent,
+} from "../redux/slices/eventSlices";
 
 function CreateEvent3() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const { event } = useSelector((state) => state.events);
+
+  const handleAddSpeaker = (e) => {
+    e.preventDefault();
+    const name = e.target.name.value.trim();
+    const role = e.target.role.value.trim();
+    if (!name || !role) return;
+    dispatch(
+      addSpeaker({
+        name,
+        role,
+      }),
+    );
+    e.target.reset();
+  };
+
+  const handlePublishEvent = () => {
+    dispatch(createEventThunk(event));
+    dispatch(resetEvent())
+    navigate("/create-event-success")
+  };
+
   return (
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto p-8">
@@ -13,29 +45,54 @@ function CreateEvent3() {
             </p>
           </div>
           <div className="pt-6">
-            <form action="">
+            <form onSubmit={handleAddSpeaker} action="">
               <div>
                 <label htmlFor="speakers">Speakers (optional)</label>
 
-                <div className=" flex items-center gap-2">
+                <div className=" w-full flex items-center gap-2">
                   <input
-                    className="border border-gray-300 rounded-lg w-full bg-white px-3 py-2.5 focus:outline-none"
+                    className="border border-gray-300 rounded-lg w-full bg-white px-3 py-2.5 focus:outline-orange-500"
                     type="text"
-                    name="speakers"
+                    name="name"
+                    placeholder="John Doe"
                     id="speakers"
                   />
-                  <button className="border border-gray-300 rounded-lg w-15 bg-white px-3 py-2.5 focus:outline-none">
+                  <input
+                    className="w-full border border-gray-300 rounded-lg  bg-white px-3 py-2.5 focus:outline-orange-500"
+                    type="text"
+                    name="role"
+                    placeholder="Backend Developer"
+                  />
+                  <button className="border border-gray-300 rounded-lg w-15 bg-white px-3 py-2.5 focus:outline-none cursor-pointer">
                     Add
                   </button>
                 </div>
               </div>
             </form>
             <div>
-              <div className="mt-2">
-                <span className="flex bg-gray-300 rounded-full w-20 items-center gap-1 px-3 py-1 border border-gray-500">
-                  Alwi
-                  <FiX />
-                </span>
+              <div className="flex flex-wrap gap-2 mt-3">
+                {event.speakers.length > 0 &&
+                  event.speakers.map((speaker, index) => {
+                    return (
+                      <div
+                        className="bg-white rounded-lg border border-gray-300 px-2 py-0.5 flex gap-2 "
+                        key={index}
+                      >
+                        <div>
+                          <p className="font-medium">{speaker.name}</p>
+                          <p className="text-gray-500">{speaker.role}</p>
+                        </div>
+                        <div
+                          onClick={() => {
+                            dispatch(removeSpeaker(index));
+                          }}
+                          className="p-1"
+                        >
+                          <FiX />
+                        </div>
+                      </div>
+                    );
+                  })}
               </div>
             </div>
           </div>
@@ -43,40 +100,45 @@ function CreateEvent3() {
         <div className=" border border-gray-300 bg-white rounded-lg mt-6">
           <div className="px-4 py-2.5 flex items-center justify-between">
             <p className="text-color-text">Title</p>
-            <span>My Event</span>
+            <span>{event?.title}</span>
           </div>
           <div className="px-4 py-2.5 flex items-center justify-between">
             <p className="text-color-text">Category</p>
-            <span className="px-2 py-0.5 rounded-full bg-blue-100 text-blue-500">Technology</span>
+
+            <TagBadge label={event.tags} />
           </div>
           <div className="px-4 py-2.5 flex items-center justify-between">
             <p className="text-color-text">Date</p>
-            <span>2026-08-27</span>
+            <span>{event.title}</span>
           </div>
           <div className="px-4 py-2.5 flex items-center justify-between">
             <p className="text-color-text">Time</p>
-            <span>11:11 - 12:12 WIB</span>
+            <span>
+              {event.startTime} - {event.endTime}{" "}
+            </span>
           </div>
           <div className="px-4 py-2.5 flex items-center justify-between">
             <p className="text-color-text">Format</p>
-            <span>Legenda Wisata</span>
+            <span>{event?.location}</span>
           </div>
           <div className="px-4 py-2.5 flex items-center justify-between">
             <p className="text-color-text">Capacity</p>
-            <span>400 Attendees</span>
+            <span>{event?.capacity} Attendees</span>
           </div>
           <div className="px-4 py-2.5 flex items-center justify-between">
             <p className="text-color-text">Speakers</p>
-            <span>1 added</span>
+            <span>{event.speakers?.length} added</span>
           </div>
-
         </div>
         <div className="flex justify-between items-center mt-6 pt-6 border-t border-t-gray-300">
           <button className=" flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg cursor-pointer">
             <FiArrowLeft /> Back
           </button>
-          <button className="flex items-center justify-center px-4 py-2 bg-green-500 text-white rounded-lg gap-2 cursor-pointer">
-            <FiCheck /> Publish Event
+          <button
+            className="flex items-center justify-center px-4 py-2 bg-orange-500 text-white rounded-lg gap-2 cursor-pointer"
+            onClick={handlePublishEvent}
+          >
+            <FiPlus /> Publish Event
           </button>
         </div>
       </div>
