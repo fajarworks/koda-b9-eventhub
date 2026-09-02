@@ -2,18 +2,48 @@ import React from "react";
 import { BsShare } from "react-icons/bs";
 import { CiChat1 } from "react-icons/ci";
 import { FiArrowLeft, FiUsers } from "react-icons/fi";
-import events from "../../data/events.json";
+// import events from "../../data/events.json";
 import { LuBookmark, LuCalendar, LuClock, LuMapPin, LuSendHorizontal } from "react-icons/lu";
 import { Link, useParams } from "react-router";
 import TagBadge from "../../components/TagBadge";
+import { useDispatch, useSelector } from "react-redux";
+import { addJoinEventThunk, removeJoinedEventThunk } from "../../redux/slices/eventSlices";
+import ModalLoginALert from "../../components/ModalLoginAlert";
 
 function EventDetailPage() {
+  const [show, setShow] = React.useState(false);
+  const events = useSelector(state => state.events.events)
+  const isLoggedIn = useSelector((state)=> state.auth.auth)
+  const dispatch = useDispatch()
   const { id } = useParams();
   const event = events.find((e) => e.id === Number(id));
   const progress = Math.min(
     (event.attendees.length / event.capacity) * 100,
     100,
   );
+  const isJoined = event.attendees.includes(isLoggedIn?.email)
+
+  const handleJoinEvent = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isLoggedIn) {
+      setShow(true);
+      return
+    }
+    if (!isJoined) {
+    dispatch(
+      addJoinEventThunk({
+        eventId: event.id,
+        userEmail: isLoggedIn.email,
+      }),
+    );
+    } else {
+      dispatch(removeJoinedEventThunk({
+        eventId: event.id,
+        userEmail: isLoggedIn.email
+      }))
+    }
+  };
 
   return (
     <main className="p-6">
@@ -51,8 +81,8 @@ function EventDetailPage() {
                 ></div>
               </div>
               <div className="w-full py-4">
-                <button className="w-full bg-primary px-3 py-1.5 text-white rounded-lg cursor-pointer">
-                  Join Event
+                <button onClick={handleJoinEvent} className={`w-full ${isJoined ? "bg-green-500" : "bg-orange-500" } px-3 py-1.5 text-white rounded-lg cursor-pointer`}>
+                 {isJoined ? "Registered" : "Join Event"}
                 </button>
               </div>
               <div className="flex w-full gap-2 items-center">
@@ -106,7 +136,7 @@ function EventDetailPage() {
                 <p className="font-semibold text-xl">Discussion</p>
                 <p>(3)</p>
               </div>
-              {event.discussions.map((item) => {
+              {event.discussions?.map((item) => {
                 return (
                   <div key={item.id} className="py-2">
                     <div className="flex gap-2">
@@ -228,8 +258,8 @@ function EventDetailPage() {
               </div>
             </div>
             <div className="w-full py-4">
-              <button className="w-full bg-primary px-3 py-1.5 text-white rounded-lg cursor-pointer">
-                Join Event
+              <button onClick={handleJoinEvent} className={`w-full ${isJoined ? "bg-green-500" : "bg-orange-500" } px-3 py-1.5 text-white rounded-lg cursor-pointer`}>
+                {isJoined ? "Registered" : "Join Event"}
               </button>
             </div>
             <div className="flex gap-2 items-center">
@@ -247,7 +277,7 @@ function EventDetailPage() {
             <div className="flex items-center gap-3 py-1">
               <div className="w-10 h-10 rounded-full overflow-hidden">
                 <img
-                  src={event.organizer.avatar}
+                  src={event.organizer.avatar || null}
                   alt={event.organizer.name}
                   className="object-cover"
                 />
@@ -260,6 +290,7 @@ function EventDetailPage() {
           </article>
         </section>
       </div>
+      <ModalLoginALert show={show} setShow={setShow} />
     </main>
   );
 }
