@@ -119,9 +119,9 @@ function EventItemCard({ event }) {
 
               <button
                 onClick={handleBookmark}
-                className={` p-2 rounded-lg border  flex items-center cursor-pointer ${isSaved? "border-blue-500 bg-blue-100 text-blue-500" : "border-gray-300"}`}
+                className={` p-2 rounded-lg border  flex items-center cursor-pointer ${isSaved? "border-orange-300 bg-amber-500 text-orange-100" : "border-gray-300"}`}
               >
-                <LuBookmark />
+                <LuBookmark  />
               </button>
             </div>
           </div>
