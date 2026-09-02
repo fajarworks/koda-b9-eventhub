@@ -28,7 +28,7 @@ const persistAuthConfig = {
 const persistEventConfig = {
   key: "events",
   storage,
-  whitelist: ["events"]
+
 }
 
 const persistCommunityConfig = {

@@ -2,6 +2,25 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  event: {
+    title: "",
+    capacity: 0,
+    description: "",
+    tags: [],
+    date: "",
+    location: "",
+    community: "",
+    startTime: "",
+    endTime: "",
+    speakers: [],
+    attendees: [],
+    userSaved: [],
+    organizer: {
+      name: "",
+      community: "",
+      avatar: "",
+    },
+  },
   events: [],
   isPending: false,
   isFulfilled: false,
@@ -17,6 +36,27 @@ export const getEventThunk = createAsyncThunk(
         setTimeout(() => {
           resolve(payload);
         }, 2000);
+      });
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  },
+);
+
+export const createEventThunk = createAsyncThunk(
+  "events/createEvent",
+  async (payload, { rejectWithValue, getState }) => {
+    try {
+      const { events } = getState().events;
+
+      const data = await new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            id: events[events.length - 1].id + 1,
+            ...payload,
+          });
+        }, 1000);
       });
       return data;
     } catch (err) {
@@ -94,6 +134,25 @@ export const removeSavedEventThunk = createAsyncThunk(
 const eventSlice = createSlice({
   name: "events",
   initialState,
+  reducers: {
+    updateEvent: (state, { payload }) => {
+      state.event = {
+        ...state.event,
+        ...payload,
+      };
+    },
+    addSpeaker: (state, { payload }) => {
+      state.event.speakers.push(payload);
+    },
+    removeSpeaker: (state, { payload }) => {
+      state.event.speakers = state.event.speakers.filter(
+        (_, index) => index !== payload,
+      );
+    },
+    resetEvent: (state) => {
+      state.event = initialState.event;
+    },
+  },
   extraReducers: (builder) => {
     return builder
       .addAsyncThunk(getEventThunk, {
@@ -104,6 +163,23 @@ const eventSlice = createSlice({
         },
         fulfilled: (state, { payload }) => {
           state.events = payload;
+          state.isPending = false;
+          state.isFulfilled = true;
+        },
+        rejected: (state, { payload }) => {
+          state.isPending = false;
+          state.isRejected = true;
+          state.error = payload;
+        },
+      })
+      .addAsyncThunk(createEventThunk, {
+        pending: (state) => {
+          state.isPending = true;
+          state.isFulfilled = false;
+          state.isRejected = false;
+        },
+        fulfilled: (state, { payload }) => {
+          state.events.push(payload);
           state.isPending = false;
           state.isFulfilled = true;
         },
@@ -204,4 +280,6 @@ const eventSlice = createSlice({
   },
 });
 
+export const { updateEvent, addSpeaker, removeSpeaker, resetEvent } =
+  eventSlice.actions;
 export default eventSlice.reducer;
