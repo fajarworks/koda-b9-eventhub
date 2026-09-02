@@ -16,7 +16,7 @@ function ModalLoginALert({ show, setShow }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex h-screen w-screen justify-center bg-black/50"
+      className="fixed inset-0 z-50 flex h-screen w-screen justify-center backdrop-blur-xl"
       onClick={() => setShow(false)}
     >
       <div
@@ -37,7 +37,7 @@ function ModalLoginALert({ show, setShow }) {
           <div className="rounded-2xl bg-orange-100 text-orange-500 p-2">
            <LuTicketX/>
           </div>
-          <div className="veryCenter text-center">
+          <div className=" text-center">
             Create a free account to register for events, save favourites, join
             communities, and get personalised recommendations.
           </div>
