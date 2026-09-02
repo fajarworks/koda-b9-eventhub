@@ -1,15 +1,19 @@
 import { FiArrowRight, FiSearch } from "react-icons/fi";
-// import events from "../../data/events.json";
-// import communities from "../../data/communities.json";
 import EventItemCard from "../../components/EventItemCard";
 import CommunityItemCard from "../../components/CommunityItemCard";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { useSelector } from "react-redux";
 
-
 function ExplorePage() {
-  const events = useSelector(state => state.events.events)
-  const communities = useSelector(state => state.communities.communities)
+  const events = useSelector((state) => state.events.events);
+  const communities = useSelector((state) => state.communities.communities);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const search = searchParams.get("search") || "";
+
+  const filteredEvents = events.filter((event)=> event.title.toLowerCase().includes(search.toLowerCase()))
+  const filteredCommunities = communities.filter((communities)=> communities.name.toLowerCase().includes(search.toLowerCase()))
+
   return (
     <>
       <main className="min-h-screen w-full">
@@ -36,6 +40,18 @@ function ExplorePage() {
               <div className="relative w-full">
                 <FiSearch className="absolute left-3 text-gray-400 text-lg pointer-events-none self-center" />
                 <input
+                  value={search}
+                  onChange={(e) => {
+                    setSearchParams((prev) => {
+                      const params = new URLSearchParams(prev);
+                      if (e.target.value) {
+                        params.set("search", e.target.value);
+                        return params;
+                      }
+                      params.delete("search");
+                      return params;
+                    });
+                  }}
                   className="w-full bg-white rounded-lg py-3.5 pl-10 pr-24 border border-gray-200 focus:outline-none text-color-text"
                   placeholder="Search events, topics, or locations..."
                   type="text"
@@ -78,7 +94,7 @@ function ExplorePage() {
             </button>
           </div>
           <div className="grid grid-cols-1 gap-2 lg:grid-cols-3">
-            {events.map((event) => (
+            {filteredEvents.map((event) => (
               <EventItemCard key={event.id} event={event} />
             ))}
           </div>
@@ -94,7 +110,7 @@ function ExplorePage() {
             </button>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
-            {communities.map((community) => (
+            {filteredCommunities.map((community) => (
               <CommunityItemCard key={community.id} communities={community} />
             ))}
           </div>
