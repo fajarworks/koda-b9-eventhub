@@ -31,6 +31,11 @@ import ProfileEventPage from "../pages/profile/ProfileEventPage";
 import ProfileCommunityPage from "../pages/profile/ProfileCommunityPage";
 import ProfileEventSaved from "../pages/profile/ProfileEventSaved";
 import NotFoundPage from "../pages/NotFoundPage";
+import AdminDashboardLayout from "../layouts/AdminDashboardLayout";
+import AdminOverviewDashboard from "../pages/dashboard/AdminOverviewDashboard";
+import AdminUsersDashboard from "../pages/dashboard/AdminUsersDashboard";
+import AdminCommunitiesDashboard from "../pages/dashboard/AdminCommunitiesDashboard";
+import AdminEventsDashboard from "../pages/dashboard/AdminEventsDashboard";
 
 function App() {
   return (
@@ -64,21 +69,20 @@ function App() {
             />*/}
           </Route>
         </Route>
-        <Route element={<ProtectedRoute />}>
+        <Route element={<ProtectedRoute allowedRoles={["organizer, admin"]} />}>
           {/* <Route path="profile" element={<ProfilePage />} />*/}
           {/* <Route path="my-events" element={<MyEventPage />} />*/}
           <Route path="profile" element={<ProfileLayout />}>
-            <Route index element={ <Navigate to="events" replace/> } />
+            <Route index element={<Navigate to="events" replace />} />
             <Route path="events" element={<ProfileEventPage />} />
             <Route path="communities" element={<ProfileCommunityPage />} />
-            <Route path="saved" element= {<ProfileEventSaved/>}/>
+            <Route path="saved" element={<ProfileEventSaved />} />
           </Route>
           <Route path="notifications" element={<NotificationPage />} />
-        </Route>
 
         <Route path="organizer-dashboard" element={<OrganizerDashboard />} />
         <Route path="create-event" element={<CreateEventLayout />}>
-          <Route path="" element={<CreateEvent />} />
+          <Route path="1" element={<CreateEvent />} />
           <Route path="2" element={<CreateEvent2 />} />
           <Route path="3" element={<CreateEvent3 />} />
         </Route>
@@ -90,7 +94,16 @@ function App() {
           <Route path="saved" element={<SavedEventPage />} />
         </Route>
         <Route path="create-event-success" element={<CreateEventSuccess />} />
-        <Route path="*" element={<NotFoundPage/> } />
+        <Route path="*" element={<NotFoundPage />} />
+        <Route path="admin-dashboard" element={<AdminDashboardLayout />}>
+          <Route index element={ <Navigate to="overview" replace /> } />
+          <Route path="overview" element={<AdminOverviewDashboard />} />
+          <Route path="users" element={<AdminUsersDashboard />} />
+          <Route path="communities" element={<AdminCommunitiesDashboard />} />
+          <Route path="events" element={<AdminEventsDashboard />} />
+        </Route>
+        </Route>
+
       </Route>
     </Routes>
   );
