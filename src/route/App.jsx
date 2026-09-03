@@ -70,7 +70,6 @@ function App() {
           </Route>
         </Route>
    <Route element={<ProtectedRoute />}>
-  {/* Semua user yang login boleh */}
   <Route path="profile" element={<ProfileLayout />}>
     <Route index element={<Navigate to="events" replace />} />
     <Route path="events" element={<ProfileEventPage />} />
