@@ -1,18 +1,45 @@
-import { useSelector } from "react-redux";
-import { NavLink, Outlet, useParams } from "react-router";
-import { FiArrowLeft } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, NavLink, Outlet, useParams } from "react-router";
+import { FiArrowLeft, FiCheck } from "react-icons/fi";
 import TagBadge from "../components/TagBadge";
+import { useAuth } from "../hooks/useAuth";
+import { useState } from "react";
+import { JoinCommunitiesThunk, unJoinedCommunitiesThunk } from "../redux/slices/communitySlices";
+import ModalLoginALert from "../components/ModalLoginAlert";
 
 function CommunityDetailLayout() {
   const { id } = useParams();
+  const { user, isAuthenticated } = useAuth()
+  const [show, setShow] = useState(false)
+  const dispatch = useDispatch()
 
   const communities = useSelector(
     (state) => state.communities.communities
   );
-
   const community = communities.find(
     (community) => community.id === Number(id)
   );
+
+  const isJoined = community.members.includes(user.email)
+  const handleJoinCommunity = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isAuthenticated) {
+      setShow(true);
+      return;
+    }
+    if (!isJoined) {
+      dispatch(JoinCommunitiesThunk({
+        communityId: community.id,
+        userEmail: user.email
+      }))
+    } else {
+      dispatch(unJoinedCommunitiesThunk({
+        communityId: community.id,
+        userEmail: user.email
+      }))
+    }
+  };
 
   if (!community) {
     return (
@@ -40,10 +67,10 @@ function CommunityDetailLayout() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-5xl mx-auto px-4 pt-4">
-        <button className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700">
+        <Link to="/communities" className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700">
           <FiArrowLeft />
           Back to Communities
-        </button>
+        </Link>
       </div>
 
       <div className="relative h-48 md:h-56 overflow-hidden flex items-end">
@@ -64,8 +91,9 @@ function CommunityDetailLayout() {
               {community.upcomingEvents} upcoming events
             </p>
           </div>
-          <button className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors shrink-0">
-            Join Community
+          <button onClick={handleJoinCommunity} className={`  flex items-center justify-center gap-2  px-3 py-1.5 rounded-lg text-white cursor-pointer ${isJoined ? "bg-green-500" : "bg-primary"}`}>
+            <FiCheck className={`${isJoined ? "block" : "hidden"}`} size={21} />
+            {isJoined ? "Joined" : "Join Community"  }
           </button>
         </div>
       </div>
@@ -105,6 +133,7 @@ function CommunityDetailLayout() {
       <div className="max-w-5xl mx-auto px-4 py-5">
         <Outlet />
       </div>
+      <ModalLoginALert show={show} setShow={setShow}/>
     </div>
   );
 }
