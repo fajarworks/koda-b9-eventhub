@@ -37,7 +37,7 @@ function ProfileLayout() {
       <div className="max-w-5xl mx-auto p-6">
         <div className=" flex gap-3">
           <div className="w-20 h-20 rounded-xl overflow-hidden bg-orange-500">
-            {personalInfo.photoProfile ? (<img src={personalInfo?.photoProfile} alt="" className="w-full h-full" />) : (<span className="text-3xl w-full h-full flex items-center justify-center capitalize text-white">{ personalInfo.fullName.charAt(0) }</span>) }
+            {personalInfo?.photoProfile ? (<img src={personalInfo?.photoProfile} alt="" className="w-full h-full" />) : (<span className="text-3xl w-full h-full flex items-center justify-center capitalize text-white">{ personalInfo?.fullName.charAt(0) }</span>) }
 
           </div>
           <div className="w-full">
@@ -63,7 +63,7 @@ function ProfileLayout() {
               <div className="flex items-center gap-2">
                 <LuMapPin />
                 <p className="text-color-text">
-                  {personalInfo.location ? personalInfo.location : " "}
+                  {personalInfo?.location ? personalInfo.location : " "}
                 </p>
               </div>
               <div className="flex items-center gap-2 text-color-text">
@@ -77,7 +77,7 @@ function ProfileLayout() {
               </span>
             <div className="max-w-2xl">
               <p className="text-color-text">
-                {personalInfo.bio ? personalInfo.bio : "don't have bio yet"}
+                {personalInfo?.bio ? personalInfo.bio : "don't have bio yet"}
               </p>
             </div>
           </div>
