@@ -20,7 +20,7 @@ function CommunityDetailLayout() {
     (community) => community.id === Number(id)
   );
 
-  const isJoined = community.members.includes(user.email)
+  const isJoined = community.members.includes(user?.email)
   const handleJoinCommunity = (e) => {
     e.preventDefault();
     e.stopPropagation();
