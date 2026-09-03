@@ -1,7 +1,17 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { FiCheck } from 'react-icons/fi';
+import { useNavigate } from 'react-router';
 
 function CreateEventSuccess() {
+    const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigate('/organizer-dashboard');
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [navigate]);
   return (
     <div className='h-[calc(100vh-78px)] flex items-center justify-center'>
       <div className='flex flex-col items-center gap-2'>
