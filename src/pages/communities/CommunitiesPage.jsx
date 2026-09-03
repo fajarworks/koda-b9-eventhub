@@ -9,7 +9,7 @@ function CommunitiesPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const search = searchParams.get("search") || ""
 
-  // const filteredCommunities = communities.filter((com) => com.name.toLowerCase().includes(search.toLowerCase()))
+  const filteredCommunities = communities.filter((com) => com.name.toLowerCase().includes(search.toLowerCase()))
 
 
   return (
@@ -29,8 +29,9 @@ function CommunitiesPage() {
               <input
                 value={search}
                 onChange={(e) => {
+                  e.preventDefault()
                   setSearchParams((prev) => {
-                    const params = new URLSearchParams(prev, e.target.value)
+                    const params = new URLSearchParams(prev)
                     if (e.target.value) {
                       params.set("search", e.target.value)
                       return params
@@ -90,13 +91,13 @@ function CommunitiesPage() {
       </div>
       <div className="px-6">
         <p>
-          <span className="font-semibold">{communities.length}</span>{" "}
+          <span className="font-semibold">{filteredCommunities.length}</span>{" "}
           Communities
         </p>
       </div>
       <section className="p-6">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-2">
-          {communities.map((community) => (
+          {filteredCommunities.map((community) => (
             <CommunityItemCard key={community.id} communities={community} />
           ))}
         </div>
