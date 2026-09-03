@@ -7,12 +7,17 @@ import {
   createEventThunk,
   removeSpeaker,
   resetEvent,
+  updateEvent,
 } from "../redux/slices/eventSlices";
+import { useAuth } from "../hooks/useAuth.js";
 
 function CreateEvent3() {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const { event } = useSelector((state) => state.events);
+  const { user } = useAuth()
+  console.log(user);
+
 
   const handleAddSpeaker = (e) => {
     e.preventDefault();
@@ -25,6 +30,13 @@ function CreateEvent3() {
         role,
       }),
     );
+    dispatch(updateEvent({
+      organizer: {
+        name: user.name
+
+
+      }
+    }))
     e.target.reset();
   };
 
