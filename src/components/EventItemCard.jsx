@@ -7,13 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { addJoinEventThunk, addSaveEventThunk, removeJoinedEventThunk, removeSavedEventThunk } from "../redux/slices/eventSlices";
 import { FiCheck } from "react-icons/fi";
 function EventItemCard({ event }) {
-  const progress = Math.min((event.attendees.length / event.capacity) * 100, 100);
+  const progress = Math.min((event.attendees?.length / event.capacity) * 100, 100);
   const isLoggedin = useSelector((state) => state.auth.auth);
   const [show, setShow] = React.useState(false);
   const dispatch = useDispatch();
 
-  const isJoined = event.attendees.includes(isLoggedin?.email)
-  const isSaved = event.userSaved.includes(isLoggedin?.email)
+  const isJoined = event.attendees?.includes(isLoggedin?.email)
+  const isSaved = event.userSaved?.includes(isLoggedin?.email)
 
   const handleJoinEvent = (e) => {
     e.preventDefault();
@@ -92,12 +92,12 @@ function EventItemCard({ event }) {
             <div className="flex gap-1.5 items-center text-color-text">
               <LuUsers />
               <span>
-                {event.attendees.length} / {event.capacity} attendees
+                {event.attendees?.length} / {event.capacity} attendees
               </span>
             </div>
             <div className="w-full flex flex-col gap-2 mt-2">
               <div className="w-full flex justify-between">
-                <span>{event.attendees.length} attendees</span>
+                <span>{event.attendees?.length} attendees</span>
                 <span>{event.capacity} capacity</span>
               </div>
 
