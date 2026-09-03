@@ -1,4 +1,3 @@
-import React from "react";
 import { CiEdit } from "react-icons/ci";
 import {
   FiCalendar,
@@ -10,8 +9,18 @@ import {
 import EventChart from "../../components/EventChart";
 import { IoBarChartOutline } from "react-icons/io5";
 import { Link } from "react-router";
+import { useAuth } from "../../hooks/useAuth";
+import { useSelector } from "react-redux";
 
 function OrganizerDashboard() {
+  const { user } = useAuth();
+
+  const events = useSelector((state) => state.events.events);
+
+  const myEvents = events.filter(
+    (event) => event.organizer?.name === user?.name,
+  );
+
   return (
     <div className="py-8 px-4">
       <div className="max-w-7xl   mx-auto">
@@ -85,95 +94,81 @@ function OrganizerDashboard() {
           <div className="lg:col-span-2">
             <h2 className="font-medium text-xl mb-3">Your Events</h2>
             <div className="flex flex-col gap-4">
-              <div className="p-4 bg-white rounded-2xl border border-gray-300 shadow-md">
-                <div className="flex gap-2">
-                  <div className="p-2">
-                    <img
-                      className="w-40 h-20 object-cover rounded-lg"
-                      src="/images/image1.png"
-                      alt="Event"
-                    />
-                  </div>
-                  <div className="w-full">
-                    <p className="font-medium text-lg">
-                      Go Concurency Workshop
-                    </p>
-                    <p>Aug 22, 2026 · Bandung</p>
-                    <span className="bg-green-100 text-green-600 px-2 py-0.5 rounded-full">
-                      Active
-                    </span>
-                    <div className="flex items-center justify-between my-2">
-                      <span className="text-color-text">48 attendees</span>
+              {myEvents.length > 0 ? (
+                myEvents.map((event) => {
+                  const attendees = event.attendees?.length || 0;
+                  const capacity = event.capacity || 0;
 
-                      <span className="text-color-text">100 capacity</span>
-                    </div>
-                    <div className="w-full bg-gray-100 rounded-full h-2">
-                      <div
-                        className="bg-green-500 h-2 rounded-full"
-                        style={{ width: "48%" }}
-                      />
-                    </div>
+                  const fillRate =
+                    capacity > 0
+                      ? Math.min((attendees / capacity) * 100, 100)
+                      : 0;
 
-                    <div className="flex items-center gap-3 my-3">
-                      <button className="flex items-center gap-2 cursor-pointer px-3 py-1 bg-white border border-gray-300 rounded-lg">
-                        <CiEdit /> Edit
-                      </button>
+                  return (
+                    <div
+                      key={event.id}
+                      className="p-4 bg-white rounded-2xl border border-gray-300 shadow-md"
+                    >
+                      <div className="flex gap-2">
+                        <div className="p-2">
+                          <img
+                            className="w-40 h-20 object-cover rounded-lg"
+                            src={event.image}
+                            alt={event.title}
+                          />
+                        </div>
 
-                      <div className="flex items-center gap-2">
-                        <FiEye />
-                        <p>55 attendees</p>
+                        <div className="w-full">
+                          <p className="font-medium text-lg">{event.title}</p>
+
+                          <p>
+                            {event.date} · {event.location}
+                          </p>
+
+                          <span className="bg-green-100 text-green-600 px-2 py-0.5 rounded-full">
+                            {event.status}
+                          </span>
+
+                          <div className="flex items-center justify-between my-2">
+                            <span className="text-color-text">
+                              {attendees} attendees
+                            </span>
+
+                            <span className="text-color-text">
+                              {capacity} capacity
+                            </span>
+                          </div>
+
+                          <div className="w-full bg-gray-100 rounded-full h-2">
+                            <div
+                              className="bg-green-500 h-2 rounded-full"
+                              style={{ width: `${fillRate}%` }}
+                            />
+                          </div>
+
+                          <div className="flex items-center gap-3 my-3">
+                            <button className="flex items-center gap-2 cursor-pointer px-3 py-1 bg-white border border-gray-300 rounded-lg">
+                              <CiEdit />
+                              Edit
+                            </button>
+
+                            <div className="flex items-center gap-2">
+                              <FiEye />
+                              <p>{attendees} attendees</p>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  );
+                })
+              ) : (
+                <div className="p-6 bg-white rounded-2xl border border-gray-300 text-center">
+                  <p className="text-color-text">
+                    You haven't created any events yet.
+                  </p>
                 </div>
-              </div>
-              <div className="p-4 bg-white rounded-2xl border border-gray-300 shadow-md">
-                <div className="flex gap-2">
-                  <div className="p-2">
-                    <img
-                      className="w-40 h-20 object-cover rounded-lg"
-                      src="/images/image1.png"
-                      alt="Event"
-                    />
-                  </div>
-
-                  <div className="w-full">
-                    <p className="font-medium text-lg">
-                      Go Concurency Workshop
-                    </p>
-
-                    <p>Aug 22, 2026 · Bandung</p>
-
-                    <span className="bg-green-100 text-green-600 px-2 py-0.5 rounded-full">
-                      Active
-                    </span>
-
-                    <div className="flex items-center justify-between my-2">
-                      <span className="text-color-text">48 attendees</span>
-
-                      <span className="text-color-text">100 capacity</span>
-                    </div>
-
-                    <div className="w-full bg-gray-100 rounded-full h-2">
-                      <div
-                        className="bg-green-500 h-2 rounded-full"
-                        style={{ width: "48%" }}
-                      />
-                    </div>
-
-                    <div className="flex items-center gap-3 my-3">
-                      <button className="flex items-center gap-2 cursor-pointer px-3 py-1 bg-white border border-gray-300 rounded-lg">
-                        <CiEdit /> Edit
-                      </button>
-
-                      <div className="flex items-center gap-2">
-                        <FiEye />
-                        <p>55 attendees</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
           </div>
           <div className="flex flex-col gap-4">
