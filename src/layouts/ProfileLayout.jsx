@@ -63,7 +63,7 @@ function ProfileLayout() {
               <div className="flex items-center gap-2">
                 <LuMapPin />
                 <p className="text-color-text">
-                  {personalInfo?.location ? personalInfo.location : " "}
+                  {personalInfo?.location ? personalInfo.location : "don't set location yet "}
                 </p>
               </div>
               <div className="flex items-center gap-2 text-color-text">
