@@ -5,9 +5,12 @@ import { Toaster } from "react-hot-toast";
 import { NavLink, Outlet } from "react-router";
 import { useSelector } from "react-redux";
 import { useAuth } from "../hooks/useAuth";
+import ChangePasswordModal from "../components/ChangePasswordModal";
+import { FiKey } from "react-icons/fi";
 
 function ProfileLayout() {
   const [isShow, setIsShow] = React.useState(false);
+  const [isShowChangePass, setIsShowChangePass] = React.useState(false)
   // const isLoggedIn = useSelector(state => state.auth.auth)
   const { users } = useSelector((state) => state.users);
   const { user } = useAuth();
@@ -34,6 +37,7 @@ function ProfileLayout() {
     <main>
       <Toaster />
       <EditProfileModal isShow={isShow} setIsShow={setIsShow} />
+      <ChangePasswordModal showModal= {isShowChangePass} setShowModal={setIsShowChangePass}/>
       <div className="max-w-5xl mx-auto p-6">
         <div className=" flex gap-3">
           <div className="w-20 h-20 rounded-xl overflow-hidden bg-orange-500">
@@ -48,7 +52,7 @@ function ProfileLayout() {
                   {personalInfo?.email}
                 </p>
               </div>
-              <div>
+              <div className="">
                 <button
                   onClick={handleEditProfile}
                   type="button"
@@ -56,6 +60,14 @@ function ProfileLayout() {
                 >
                   <LuPencil />
                   Edit Profile
+                </button>
+                <button
+                  onClick={()=> setIsShowChangePass(prev => !prev)}
+                  type="button"
+                  className="bg-orange-500 flex items-center px-2 py-0.5 rounded-lg gap-2 text-white hover:bg-orange-400  cursor-pointer mt-2"
+                >
+                  <FiKey/>
+                  change Password
                 </button>
               </div>
             </div>
