@@ -24,9 +24,14 @@ function Register() {
   } = useForm();
 
   const onSubmit = (data) => {
-    dispatch(registerUserThunk(data));
+    const register = {
+      fullname: data.fullName,
+      email : data.email,
+      password : data.password
+    }
+    
+    dispatch(registerUserThunk(register));
     toast.success("registrasi berhasil", { duration: 1500 });
-    console.log(data);
 
     setTimeout(() => {
       navigate("/auth/login");

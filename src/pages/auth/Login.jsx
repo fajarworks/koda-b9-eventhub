@@ -3,27 +3,19 @@ import { useForm } from "react-hook-form";
 import { FiEye } from "react-icons/fi";
 import { FiEyeOff } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
-import toast, { Toaster } from "react-hot-toast";
-import {  useSelector } from "react-redux";
-import { useAuth } from "../../hooks/useAuth";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { loginUserThunk } from "../../redux/slices/authSlices";
 
 function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
-  const { login } = useAuth()
-  const users = useSelector((state) => state.users.users)
-
-
-  const navigate = useNavigate();
-  const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
-  const adminPass = import.meta.env.VITE_ADMIN_PASSWORD;
-  const organizerEmail = import.meta.env.VITE_ORGANIZER_EMAIL
-  const organizerPass = import.meta.env.VITE_ORGANIZER_PASSWORD
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
   } = useForm();
 
   const handleShowPassword = () => {
@@ -31,55 +23,28 @@ function Login() {
       return !prev;
     });
   };
-  const onSubmit = (data) => {
-    if (data.email === adminEmail && data.password === adminPass) {
-      const admin = {
-        fullName: "Admin Nih",
-        email: adminEmail,
-        role: "admin",
-      };
-      login(admin)
-      navigate("/explore");
-      return;
+
+const onSubmit = async(data) => {
+
+    try {
+      const dataLogin = {
+      email : data.email,
+      password : data.password
     }
-
-    if (data.email === organizerEmail && data.password === organizerPass) {
-      const organizer = {
-        fullName: "organizer",
-        email: organizerEmail,
-        role: "organizer"
-      }
-      login(organizer)
-      navigate("/explore");
-      return
+    await dispatch(loginUserThunk(dataLogin)).unwrap()
+    toast.success("success login",{duration:1500})
+    navigate("/explore")
+    
+    
+    }catch (err) {
+      toast.error(err)
     }
-
-
-
-    const userFound = users.find(
-      (user) =>
-        user.email.toLowerCase() === data.email.toLowerCase() &&
-        user.password === data.password,
-    );
-
-
-    if (!userFound) {
-      setError("email", { message: "wrong email or password" });
-      setError("password", { message: "wrong email or password" });
-      return;
-    }
-
-
-    toast.success("berhasil login", { duration: 1500 });
-    login(userFound)
-    setTimeout(() => {
-      navigate("/explore");
-    }, 1500);
+    
   };
+
 
   return (
     <div className=" max-w-md w-full mx-auto">
-      <Toaster />
       <div className="w-full">
         <div className="flex flex-col gap-2">
           <h1 className="font-semibold text-2xl">Welcome Back</h1>

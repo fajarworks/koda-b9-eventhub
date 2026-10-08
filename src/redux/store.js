@@ -22,7 +22,8 @@ const persistUsersConfig = {
 
 const persistAuthConfig = {
   key: "auth",
-  storage
+  storage,
+  
 }
 
 const persistEventConfig = {
@@ -34,7 +35,6 @@ const persistEventConfig = {
 const persistCommunityConfig = {
   key: "communities",
   storage,
-  whitelist: ["communities"]
 }
 
 const store = configureStore({
