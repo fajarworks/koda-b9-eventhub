@@ -33,7 +33,34 @@ export const profileUserThunk = createAsyncThunk(
         throw new Error(err.message || "login failed");
       }
       const data = await res.json();
+
       return data;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  },
+);
+
+export const ChangePasswordThunk = createAsyncThunk(
+  "user/changePass",
+  async (payload, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().auth.auth?.data.token;
+      const res = await fetch("http://localhost:8081/user/change-password", {
+        method: "POST",
+        headers: {
+          // "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok){
+       const err = await res.json()
+       throw new Error(err.message) 
+
+      }
+      const data = await res.json()
+      return data
     } catch (err) {
       return rejectWithValue(err.message);
     }
