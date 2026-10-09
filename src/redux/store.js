@@ -4,6 +4,7 @@ import usersReducer from "./slices/registerSlices.js";
 import authReducer from "./slices/authSlices.js";
 import eventReducer from "./slices/eventSlices.js"
 import communityReducer from "./slices/communitySlices.js"
+import userReducer from "./slices/userSlices.js"
 import {
   FLUSH,
   PAUSE,
@@ -42,7 +43,9 @@ const store = configureStore({
     users: persistReducer(persistUsersConfig, usersReducer),
     auth: persistReducer(persistAuthConfig, authReducer),
     events: persistReducer(persistEventConfig, eventReducer),
-    communities: persistReducer(persistCommunityConfig, communityReducer )
+    communities: persistReducer(persistCommunityConfig, communityReducer ),
+    user: userReducer
+    
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
