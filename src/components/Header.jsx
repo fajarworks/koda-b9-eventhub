@@ -4,7 +4,6 @@ import Logo from "./Logo";
 import Navbar from "./Navbar";
 import { Link, NavLink, useNavigate } from "react-router";
 import NavbarMobile from "./NavbarMobile";
-import { useSelector } from "react-redux";
 import { useAuth } from "../hooks/useAuth";
 import ModalLogoutAlert from "./ModalLogoutAlert";
 
@@ -12,11 +11,8 @@ function Header() {
   const [show, setShow] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isMobileMenu, setIsMobileMenu] = React.useState(false);
-  const {users} = useSelector((state) => state.users);
   const { user } = useAuth();
-
-  const personalInfo = users.find((u) => u.email === user?.email);
-
+  
   const navigate = useNavigate();
 
   const handleSignOut = () => {
@@ -30,6 +26,7 @@ function Header() {
     navigate("/profile");
   };
 
+  
   return (
     <header className="w-full px-6 py-4 bg-white border-b border-gray-300 sticky top-0 z-50">
       <nav className="flex mx-auto justify-between">
@@ -108,7 +105,7 @@ function Header() {
                   className="cursor-pointer"
                 >
                   <div className="w-7 h-7 rounded-full overflow-hidden bg-orange-500">
-                    {personalInfo?.photoProfile ? (<img src={personalInfo?.photoProfile || user?.photoProfile} alt="" className="w-full h-full" />) : (<span className="text-lg w-full h-full flex items-center justify-center capitalize text-white">{ personalInfo?.fullName.charAt(0) || user.fullName.charAt(0) }</span>) }
+                    {user.data.image ? (<img src={user.data.photo_profile} alt="" className="w-full h-full" />) : (<span className="text-lg w-full h-full flex items-center justify-center capitalize text-white">{ user.data.fullname.charAt(0) }</span>) }
 
                   </div>
                 </button>
@@ -116,14 +113,14 @@ function Header() {
                 {isMenuOpen && (
                   <div className="absolute right-0 mt-2 w-50 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-50 text-clip">
                     <div className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-default">
-                      <p className="font-medium">{personalInfo?.fullName || user.fullName}</p>
+                      <p className="font-medium">{user.data.fullname}</p>
                     </div>
                     <div className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-default">
-                      <p>{personalInfo?.email || user.email}</p>
+                      <p>{user.data.email}</p>
                     </div>
                     <div
                       onClick={handleProfile}
-                      className="flex items-center gap-2 w-full px-4 py-2 text-sm text-color-text hover:bg-gray-100"
+                      className="flex items-center gap-2 w-full px-4 py-2 text-sm text-color-text hover:bg-gray-100 cursor-pointer"
                     >
                       <span>
                         <FiUsers />
