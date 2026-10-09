@@ -3,19 +3,26 @@ import { LuCalendar, LuMapPin, LuPencil } from "react-icons/lu";
 import EditProfileModal from "../components/EditProfileModal";
 import { Toaster } from "react-hot-toast";
 import { NavLink, Outlet } from "react-router";
-import { useSelector } from "react-redux";
-import { useAuth } from "../hooks/useAuth";
+import { useDispatch, useSelector } from "react-redux";
 import ChangePasswordModal from "../components/ChangePasswordModal";
 import { FiKey } from "react-icons/fi";
+import { profileUserThunk } from "../redux/slices/userSlices";
+import { dateFormat } from "../utils/dateFormatter";
 
 function ProfileLayout() {
   const [isShow, setIsShow] = React.useState(false);
   const [isShowChangePass, setIsShowChangePass] = React.useState(false)
-  // const isLoggedIn = useSelector(state => state.auth.auth)
-  const { users } = useSelector((state) => state.users);
-  const { user } = useAuth();
-  const personalInfo = users.find((u) => u.email === user.email);
+  const dispatch = useDispatch()
+  
+  React.useEffect(()=> {
+    
+    dispatch(profileUserThunk())
+  },[dispatch])
 
+  const {user} = useSelector(state => state.user)
+
+  const date = dateFormat(user?.data?.created_at)
+  
   const handleEditProfile = () => {
     setIsShow((prev) => !prev);
   };
@@ -41,15 +48,19 @@ function ProfileLayout() {
       <div className="max-w-5xl mx-auto p-6">
         <div className=" flex gap-3">
           <div className="w-20 h-20 rounded-xl overflow-hidden bg-orange-500">
-            {personalInfo?.photoProfile ? (<img src={personalInfo?.photoProfile} alt="" className="w-full h-full" />) : (<span className="text-3xl w-full h-full flex items-center justify-center capitalize text-white">{ personalInfo?.fullName.charAt(0) }</span>) }
-
+            {user?.data?.photo_profile ? (<img src={user?.data?.photoProfile} alt="" className="w-full h-full" />) : (<span className="text-3xl w-full h-full flex items-center justify-center capitalize text-white">{ user?.data?.fullname?.charAt(0) }</span>) }
           </div>
           <div className="w-full">
+            <div>
+              <p className="font-medium text-xl">
+              {user?.data?.fullname}
+              </p>
+            </div>
             <div className="flex flex-col md:flex-row md:justify-between">
-              <div className="pb-3">
-                <p className="text-xl font-medium">{personalInfo?.fullName}</p>
-                <p className="text-color-text cursor-pointer">
-                  {personalInfo?.email}
+              <div className="center">
+                <p className="text-xl font-medium">{}</p>
+                <p className="text-gray-500">
+                  {user?.data?.email}
                 </p>
               </div>
               <div className="">
@@ -75,21 +86,21 @@ function ProfileLayout() {
               <div className="flex items-center gap-2">
                 <LuMapPin />
                 <p className="text-color-text">
-                  {personalInfo?.location ? personalInfo.location : "don't set location yet "}
+                  {user?.location ? user?.location : "don't set any location yet "}
                 </p>
               </div>
               <div className="flex items-center gap-2 text-color-text">
                 <LuCalendar />
-
-                <p> Joined March 2025</p>
+                
+                <p>{date}</p>
               </div>
             </div>
               <span className=" text-red-400 bg-red-100 rounded-lg px-2">
-                Attendee
+                {user?.data?.role}
               </span>
             <div className="max-w-2xl">
               <p className="text-color-text">
-                {personalInfo?.bio ? personalInfo.bio : "don't have bio yet"}
+                {user?.bio ? user.bio : "don't have bio yet"}
               </p>
             </div>
           </div>
