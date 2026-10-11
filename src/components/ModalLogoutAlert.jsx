@@ -1,14 +1,22 @@
 import { LuDoorOpen, LuX } from 'react-icons/lu';
 import { useAuth } from '../hooks/useAuth';
 import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { resetCommunityIds } from '../redux/slices/communitySlices';
+import { resetJoinedEvents } from '../redux/slices/eventSlices';
 
 function ModalLogoutAlert({show, setShow}) {
   const dispatch = useDispatch()
   const { logoutUser } = useAuth()
 
+  useEffect(()=> {
+    
+  })
   if (!show) return null
   const handleLogout = () => {
-    dispatch(logoutUser())
+    dispatch(logoutUser)
+    dispatch(resetCommunityIds())
+    dispatch(resetJoinedEvents())
     setShow(false)
   }
   return (
