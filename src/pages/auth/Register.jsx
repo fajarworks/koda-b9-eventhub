@@ -31,7 +31,7 @@ function Register() {
     }
     
     dispatch(registerUserThunk(register));
-    toast.success("registrasi berhasil", { duration: 1500 });
+    toast.success("registrastion success", { duration: 1500 });
 
     setTimeout(() => {
       navigate("/auth/login");
