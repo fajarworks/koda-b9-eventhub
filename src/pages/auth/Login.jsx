@@ -9,8 +9,8 @@ import { loginUserThunk } from "../../redux/slices/authSlices";
 
 function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -24,24 +24,19 @@ function Login() {
     });
   };
 
-const onSubmit = async(data) => {
-
+  const onSubmit = async (data) => {
     try {
       const dataLogin = {
-      email : data.email,
-      password : data.password
+        email: data.email,
+        password: data.password,
+      };
+      await dispatch(loginUserThunk(dataLogin)).unwrap();
+      toast.success("success login", { duration: 1500 });
+      navigate('/explore')
+    } catch (err) {
+      toast.error(err);
     }
-    await dispatch(loginUserThunk(dataLogin)).unwrap()
-    toast.success("success login",{duration:1500})
-    navigate("/explore")
-    
-    
-    }catch (err) {
-      toast.error(err)
-    }
-    
   };
-
 
   return (
     <div className=" max-w-md w-full mx-auto">
@@ -86,7 +81,9 @@ const onSubmit = async(data) => {
           <div className="flex flex-col gap-2 my-2">
             <div className="flex justify-between">
               <label htmlFor="password">Password </label>
-              <Link to={"/auth/forgot-password"} className="text-primary">Forgot Password?</Link>
+              <Link to={"/auth/forgot-password"} className="text-primary">
+                Forgot Password?
+              </Link>
             </div>
             <div className="relative">
               <input
