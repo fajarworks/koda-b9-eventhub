@@ -3,59 +3,66 @@ import { LuBookmark, LuCalendar, LuMapPin, LuUsers } from "react-icons/lu";
 import { Link } from "react-router";
 import TagBadge from "./TagBadge";
 import ModalLoginALert from "./ModalLoginAlert";
-import { useDispatch, useSelector } from "react-redux";
-import { addJoinEventThunk, addSaveEventThunk, removeJoinedEventThunk, removeSavedEventThunk } from "../redux/slices/eventSlices";
+import { useSelector } from "react-redux";
+// import {
+//   addJoinEventThunk,
+//   addSaveEventThunk,
+//   removeJoinedEventThunk,
+//   removeSavedEventThunk,
+// } from "../redux/slices/eventSlices";
 import { FiCheck } from "react-icons/fi";
+import { dateTimeFormatter } from "../utils/dateTimeFormatter";
 function EventItemCard({ event }) {
-  const progress = Math.min((event.attendees?.length / event.capacity) * 100, 100);
-  const isLoggedin = useSelector((state) => state.auth.auth);
+  const progress = Math.min((event.attendees / event.capacity) * 100, 100);
   const [show, setShow] = React.useState(false);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+  const { isFulfilled } = useSelector((state) => state.events);
+  // const isJoined = event.attendees?.includes(isLoggedin?.email)
+  // const isSaved = event.userSaved?.includes(isLoggedin?.email)
 
-  const isJoined = event.attendees?.includes(isLoggedin?.email)
-  const isSaved = event.userSaved?.includes(isLoggedin?.email)
+  const date = dateTimeFormatter(event.start_time);
 
   const handleJoinEvent = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!isLoggedin) {
-      setShow(true);
-      return
-    }
-    if (!isJoined) {
-    dispatch(
-      addJoinEventThunk({
-        eventId: event.id,
-        userEmail: isLoggedin.email,
-      }),
-    );
-    } else {
-      dispatch(removeJoinedEventThunk({
-        eventId: event.id,
-        userEmail: isLoggedin.email
-      }))
-    }
+    // if (!isLoggedin) {
+    //   setShow(true);
+    //   return
+    // }
+    // if (!isJoined) {
+    // dispatch(
+    //   addJoinEventThunk({
+    //     eventId: event.id,
+    //     userEmail: isLoggedin.email,
+    //   }),
+    // );
+    // } else {
+    //   dispatch(removeJoinedEventThunk({
+    //     eventId: event.id,
+    //     userEmail: isLoggedin.email
+    //   }))
+    // }
   };
 
   const handleBookmark = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!isLoggedin) {
-      setShow(true);
-      return
-    }
-    if (!isSaved) {
+    // if (!isLoggedin) {
+    //   setShow(true);
+    //   return
+    // }
+    // if (!isSaved) {
 
-    dispatch(addSaveEventThunk({
-      eventId: event.id,
-      userEmail: isLoggedin.email
-    }))
-    } else {
-      dispatch(removeSavedEventThunk({
-        eventId: event.id,
-        userEmail: isLoggedin.email
-      }))
-    }
+    // dispatch(addSaveEventThunk({
+    //   eventId: event.id,
+    //   userEmail: isLoggedin.email
+    // }))
+    // } else {
+    //   dispatch(removeSavedEventThunk({
+    //     eventId: event.id,
+    //     userEmail: isLoggedin.email
+    //   }))
+    // }
   };
   return (
     <>
@@ -68,7 +75,7 @@ function EventItemCard({ event }) {
               className="w-full h-48 object-cover"
             />
             <div className="flex gap-2 absolute bottom-2 left-2">
-              {event.tags.map((tag) => (
+              {event.categories.map((tag) => (
                 <TagBadge key={tag} label={tag} />
               ))}
             </div>
@@ -82,7 +89,7 @@ function EventItemCard({ event }) {
             <div className="flex gap-1.5 items-center text-color-text">
               <LuCalendar />
               <span>
-                {event.date} · {event.startTime} WIB
+                {date} WIB
               </span>
             </div>
             <div className="flex gap-1.5 items-center text-color-text">
@@ -92,12 +99,12 @@ function EventItemCard({ event }) {
             <div className="flex gap-1.5 items-center text-color-text">
               <LuUsers />
               <span>
-                {event.attendees?.length} / {event.capacity} attendees
+                {event.attendees} / {event.capacity} attendees
               </span>
             </div>
             <div className="w-full flex flex-col gap-2 mt-2">
               <div className="w-full flex justify-between">
-                <span>{event.attendees?.length} attendees</span>
+                <span>{event.attendees} attendees</span>
                 <span>{event.capacity} capacity</span>
               </div>
 
@@ -111,17 +118,17 @@ function EventItemCard({ event }) {
             <div className="w-full flex items-center gap-2 py-2 mt-auto">
               <button
                 onClick={handleJoinEvent}
-                className={`w-full flex items-center justify-center gap-2 ${isJoined ? "bg-green-500"  : "bg-primary"} px-3 py-1.5 text-white rounded-lg cursor-pointer`}
+                className={`w-full flex items-center justify-center gap-2 ${isFulfilled ? "bg-green-500" : "bg-primary"} px-3 py-1.5 text-white rounded-lg cursor-pointer`}
               >
-                <FiCheck className={ `${isJoined ? "block" : "hidden"}` } />
-                {isJoined?  "Registered" : "Join Event"}
+                <FiCheck className={`${isFulfilled ? "block" : "hidden"}`} />
+                {isFulfilled ? "Registered" : "Join Event"}
               </button>
 
               <button
                 onClick={handleBookmark}
-                className={` p-2 rounded-lg border  flex items-center cursor-pointer ${isSaved? "border-orange-300 bg-amber-500 text-orange-100" : "border-gray-300"}`}
+                className={` p-2 rounded-lg border  flex items-center cursor-pointer ${isFulfilled ? "border-orange-300 bg-amber-500 text-orange-100" : "border-gray-300"}`}
               >
-                <LuBookmark  />
+                <LuBookmark />
               </button>
             </div>
           </div>

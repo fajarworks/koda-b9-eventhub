@@ -27,23 +27,24 @@ const persistAuthConfig = {
   
 }
 
-const persistEventConfig = {
-  key: "events",
-  storage,
+// const persistEventConfig = {
+//   key: "events",
+//   storage,
 
-}
+// }
 
 const persistCommunityConfig = {
   key: "communities",
   storage,
+  whitelist: ['joinedCommunityIds']
 }
 
 const store = configureStore({
   reducer: {
     users: persistReducer(persistUsersConfig, usersReducer),
     auth: persistReducer(persistAuthConfig, authReducer),
-    events: persistReducer(persistEventConfig, eventReducer),
-    communities: persistReducer(persistCommunityConfig, communityReducer ),
+    events: eventReducer,
+    communities: persistReducer(persistCommunityConfig,communityReducer),
     user: userReducer
     
   },
