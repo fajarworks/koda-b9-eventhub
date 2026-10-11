@@ -5,6 +5,7 @@ import authReducer from "./slices/authSlices.js";
 import eventReducer from "./slices/eventSlices.js"
 import communityReducer from "./slices/communitySlices.js"
 import userReducer from "./slices/userSlices.js"
+import categoriesReducer from "./slices/categoriesSlices.js"
 import {
   FLUSH,
   PAUSE,
@@ -27,11 +28,12 @@ const persistAuthConfig = {
   
 }
 
-// const persistEventConfig = {
-//   key: "events",
-//   storage,
+const persistEventConfig = {
+  key: "events",
+  storage,
+  whitelist: ['joinedEventids', 'savedEventIds']
 
-// }
+}
 
 const persistCommunityConfig = {
   key: "communities",
@@ -43,9 +45,10 @@ const store = configureStore({
   reducer: {
     users: persistReducer(persistUsersConfig, usersReducer),
     auth: persistReducer(persistAuthConfig, authReducer),
-    events: eventReducer,
+    events: persistReducer(persistEventConfig, eventReducer),
     communities: persistReducer(persistCommunityConfig,communityReducer),
-    user: userReducer
+    user: userReducer,
+    categories: categoriesReducer
     
   },
   middleware: (getDefaultMiddleware) =>
