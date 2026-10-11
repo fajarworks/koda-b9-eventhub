@@ -2,7 +2,9 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   user: null,
-  updateUser:null,
+  updateUser: null,
+  userEvents: null,
+  userCommunities: null,
   getProfile: {
     isPending: false,
     isFulfilled: false,
@@ -15,14 +17,28 @@ const initialState = {
     isRejected: false,
     error: null,
   },
+  getEvents: {
+    isPending: false,
+    isFulfilled: false,
+    isRejected: false,
+    error: null,
+  },
+  getCommunities: {
+    isPending: false,
+    isFulfilled: false,
+    isRejected: false,
+    error: null,
+  },
 };
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const profileUserThunk = createAsyncThunk(
   "user/profile",
   async (_, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.auth?.data?.token;
-      const res = await fetch("http://localhost:8081/user/detail", {
+      const res = await fetch(`${API_URL}/user/detail`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -47,7 +63,7 @@ export const ChangePasswordThunk = createAsyncThunk(
   async (payload, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.auth?.data.token;
-      const res = await fetch("http://localhost:8081/user/change-password", {
+      const res = await fetch(`${API_URL}/user/change-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -71,20 +87,66 @@ export const updateUserThunk = createAsyncThunk(
   "user/update",
   async (payload, { rejectWithValue, getState }) => {
     try {
-    const  token = getState().auth.auth?.data.token
-    const res = await fetch("http://localhost:8081/user/update", {
-      method: "PATCH",
-      headers: {
-        "Authorization": `Bearer ${token}`
-      },
-      body: payload
-    })
-    if (!res.ok){
-      const err = await res.json()
-      throw new Error(err.message)
+      const token = getState().auth.auth?.data.token;
+      const res = await fetch(`${API_URL}/user/update`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: payload,
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message);
+      }
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.message);
     }
-    const data = await res.json()
-    return data
+  },
+);
+
+export const getEventsUser = createAsyncThunk(
+  "user/events",
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().auth.auth?.data.token;
+      const res = await fetch(`${API_URL}/events/my-events`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message);
+      }
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  },
+);
+
+export const getCommunitiesUser = createAsyncThunk(
+  "user/communites",
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().auth.auth?.data.token;
+      const res = await fetch(`${API_URL}/communities/my-communities`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message);
+      }
+      const data = await res.json();
+      return data;
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -116,20 +178,56 @@ const userSlice = createSlice({
       })
       .addAsyncThunk(updateUserThunk, {
         pending: (state) => {
-          state.isPending = true;
-          state.isFulfilled = false;
-          state.isRejected = false;
+          state.update.isPending = true;
+          state.update.isFulfilled = false;
+          state.update.isRejected = false;
         },
         fulfilled: (state, { payload }) => {
-          state.update.isFulfilled = true
-          state.update.isPending = false
-          state.updateUser = payload
+          state.update.isFulfilled = true;
+          state.update.isPending = false;
+          state.updateUser = payload;
         },
         rejected: (state, { payload }) => {
-          state.isPending = false;
-          state.isFulfilled = false;
-          state.isRejected = true;
-          state.error = payload;
+          state.update.isPending = false;
+          state.update.isFulfilled = false;
+          state.update.isRejected = true;
+          state.update.error = payload;
+        },
+      })
+      .addAsyncThunk(getEventsUser, {
+        pending: (state) => {
+          state.getEvents.isPending = true;
+          state.getEvents.isFulfilled = false;
+          state.getEvents.isRejected = false;
+        },
+        fulfilled: (state, { payload }) => {
+          state.getEvents.isFulfilled = true;
+          state.getEvents.isPending = false;
+          state.userEvents = payload;
+        },
+        rejected: (state, { payload }) => {
+          state.getEvents.isPending = false;
+          state.getEvents.isFulfilled = false;
+          state.getEvents.isRejected = true;
+          state.getEvents.error = payload;
+        },
+      })
+      .addAsyncThunk(getCommunitiesUser, {
+        pending: (state) => {
+          state.getCommunities.isPending = true;
+          state.getCommunities.isFulfilled = false;
+          state.getCommunities.isRejected = false;
+        },
+        fulfilled: (state, { payload }) => {
+          state.getCommunities.isFulfilled = true;
+          state.getCommunities.isPending = false;
+          state.userCommunities = payload;
+        },
+        rejected: (state, { payload }) => {
+          state.getCommunities.isPending = false;
+          state.getCommunities.isFulfilled = false;
+          state.getCommunities.isRejected = true;
+          state.getCommunities.error = payload;
         },
       });
   },
