@@ -2,7 +2,7 @@ import Logo from "./Logo";
 
 function SidePanel() {
   return (
-    <div className=" justify-between min-h-screen bg-red-950 p-10 relative flex flex-col">
+    <div className=" justify-between min-h-screen  p-10 relative flex flex-col">
       <div className="">
         <Logo className= "text-white"/>
       </div>
