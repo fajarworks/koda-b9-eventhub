@@ -2,17 +2,36 @@ import { FiArrowRight, FiSearch } from "react-icons/fi";
 import EventItemCard from "../../components/EventItemCard";
 import CommunityItemCard from "../../components/CommunityItemCard";
 import { Link, useSearchParams } from "react-router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { upcomingEventsThunk } from "../../redux/slices/eventSlices";
+import { popularCommunitiesThunk } from "../../redux/slices/communitySlices";
 
 function ExplorePage() {
-  const events = useSelector((state) => state.events.events);
-  const communities = useSelector((state) => state.communities.communities);
+  const dispatch = useDispatch()
+  // const events = useSelector((state) => state.events.events);
+  // const communities = useSelector((state) => state.communities.communities);
 
+  const {upcomingEvent} = useSelector(state => state.events)
+  const {communities} = useSelector(state => state.communities)
+  
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get("search") || "";
 
-  const filteredEvents = events.filter((event)=> event.title.toLowerCase().includes(search.toLowerCase()))
-  const filteredCommunities = communities.filter((communities)=> communities.name.toLowerCase().includes(search.toLowerCase()))
+  // const filteredEvents = events.filter((event)=> event.title.toLowerCase().includes(search.toLowerCase()))
+  // const filteredCommunities = communities.filter((communities)=> communities.name.toLowerCase().includes(search.toLowerCase()))
+  
+  useEffect(()=> {
+    dispatch(popularCommunitiesThunk())
+  },[dispatch])
+
+
+  useEffect(()=> {
+    dispatch(upcomingEventsThunk())
+    
+  }, [dispatch])
+  
+
 
   return (
     <>
@@ -93,10 +112,12 @@ function ExplorePage() {
               See all <FiArrowRight />
             </button>
           </div>
-          <div className="grid grid-cols-1 gap-2 lg:grid-cols-3">
-            {filteredEvents.map((event) => (
-              <EventItemCard key={event.id} event={event} />
-            ))}
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+            {
+              upcomingEvent?.data?.map((event)=> (
+                <EventItemCard key={event.id} event={event}/>
+              ))
+            }
           </div>
         </section>
 
@@ -109,8 +130,8 @@ function ExplorePage() {
               See all <FiArrowRight />
             </button>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
-            {filteredCommunities.map((community) => (
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-2">
+            {communities?.data?.map((community) => (
               <CommunityItemCard key={community.id} communities={community} />
             ))}
           </div>
