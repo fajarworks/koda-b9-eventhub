@@ -3,45 +3,30 @@ import { LuBookmark, LuCalendar, LuMapPin, LuUsers } from "react-icons/lu";
 import { Link } from "react-router";
 import TagBadge from "./TagBadge";
 import ModalLoginALert from "./ModalLoginAlert";
-import { useSelector } from "react-redux";
-// import {
-//   addJoinEventThunk,
-//   addSaveEventThunk,
-//   removeJoinedEventThunk,
-//   removeSavedEventThunk,
-// } from "../redux/slices/eventSlices";
+import { useDispatch, useSelector } from "react-redux";
+
 import { FiCheck } from "react-icons/fi";
 import { dateTimeFormatter } from "../utils/dateTimeFormatter";
+import { JoinEventThunk, leaveEventThunk } from "../redux/slices/eventSlices";
 function EventItemCard({ event }) {
   const progress = Math.min((event.attendees / event.capacity) * 100, 100);
   const [show, setShow] = React.useState(false);
-  // const dispatch = useDispatch();
-  const { isFulfilled } = useSelector((state) => state.events);
-  // const isJoined = event.attendees?.includes(isLoggedin?.email)
+  const dispatch = useDispatch();
+  const { isFulfilled, joinedEventIds } = useSelector((state) => state.events);
+  const isJoined = joinedEventIds.includes(event?.id)
+  console.log(isJoined)
   // const isSaved = event.userSaved?.includes(isLoggedin?.email)
-
+  console.log(joinedEventIds)
   const date = dateTimeFormatter(event.start_time);
-
+  
   const handleJoinEvent = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    // if (!isLoggedin) {
-    //   setShow(true);
-    //   return
-    // }
-    // if (!isJoined) {
-    // dispatch(
-    //   addJoinEventThunk({
-    //     eventId: event.id,
-    //     userEmail: isLoggedin.email,
-    //   }),
-    // );
-    // } else {
-    //   dispatch(removeJoinedEventThunk({
-    //     eventId: event.id,
-    //     userEmail: isLoggedin.email
-    //   }))
-    // }
+    if (isJoined) {
+      dispatch(leaveEventThunk(event.id))
+    }else{
+      dispatch(JoinEventThunk(event.id))
+    }
   };
 
   const handleBookmark = (e) => {
@@ -118,10 +103,10 @@ function EventItemCard({ event }) {
             <div className="w-full flex items-center gap-2 py-2 mt-auto">
               <button
                 onClick={handleJoinEvent}
-                className={`w-full flex items-center justify-center gap-2 ${isFulfilled ? "bg-green-500" : "bg-primary"} px-3 py-1.5 text-white rounded-lg cursor-pointer`}
+                className={`w-full flex items-center justify-center gap-2 ${isJoined ? "bg-green-500" : "bg-primary"} px-3 py-1.5 text-white rounded-lg cursor-pointer`}
               >
-                <FiCheck className={`${isFulfilled ? "block" : "hidden"}`} />
-                {isFulfilled ? "Registered" : "Join Event"}
+                <FiCheck className={`${isJoined ? "block" : "hidden"}`} />
+                {isJoined ? "Registered" : "Join Event"}
               </button>
 
               <button
