@@ -2,55 +2,33 @@ import React from "react";
 import { FiSearch } from "react-icons/fi";
 import { LuSlidersHorizontal } from "react-icons/lu";
 import EventItemCard from "../../components/EventItemCard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router";
+import { getCategoriesThunk } from "../../redux/slices/categoriesSlices";
+import { getEventThunk } from "../../redux/slices/eventSlices";
 
 function EventPage() {
   const [showFilter, setShowFilter] = React.useState(false);
-  const events = useSelector(state => state.events.events)
-  const [searchParams, setSearchParams] = useSearchParams()
-
-  const search = searchParams.get("search") || ""
-  const location = searchParams.get("location") || "All location"
-  const category = searchParams.get("category") || "All"
-  const sort = searchParams.get("sortBy") || "Upcoming"
-
-  let filteredEvents = [...events]
-  if (search) {
-    filteredEvents = filteredEvents.filter((event) => event.title.toLowerCase().includes(search.toLowerCase()))
-  }
-  if (category !== "All") {
-    filteredEvents = filteredEvents.filter((event)=> event.tags.includes(category))
-  }
-  if (location !== "All location") {
-    filteredEvents = filteredEvents.filter((event)=> event.location === location)
-  }
-
-  if (sort === "Upcoming") {
-    filteredEvents = filteredEvents.sort((a, b) => new Date(a.date) - new Date(b.date))
-
-  }
-
-  if (sort === "Most Popular") {
-    filteredEvents = filteredEvents.sort((a, b)=> b.attendees.length - a.attendees.length)
-  }
-
+  const [searchParams, setSearchParams] = useSearchParams();
+  const dispatch = useDispatch();
+  const { categories } = useSelector((state) => state.categories);
+  const { events } = useSelector((state) => state.events);
+  const search = searchParams.get("search") || "";
+  const location = searchParams.get("location") || "All location";
+  const category = searchParams.get("category") || "All";
+  const sort = searchParams.get("sortBy") || "Upcoming";
+  React.useEffect(() => {
+    dispatch(getCategoriesThunk());
+  }, [dispatch]);
+  React.useEffect(() => {
+    dispatch(getEventThunk())
+  }, [dispatch]);
 
   const handleShowFilter = () => {
-    setShowFilter(prev => !prev)
+    setShowFilter((prev) => !prev);
 
     return;
   };
-  const categories = [
-    "All",
-    "Arts",
-    "Food",
-    "Business",
-    "Career",
-    "AI",
-    "Programming",
-    "Health",
-  ];
 
   const locations = [
     "All location",
@@ -83,21 +61,21 @@ function EventPage() {
                 placeholder="Search events..."
                 onChange={(e) => {
                   setSearchParams((prev) => {
-                    const params = new URLSearchParams(prev)
+                    const params = new URLSearchParams(prev);
                     if (e.target.value) {
-                      params.set("search", e.target.value)
-                      return params
+                      params.set("search", e.target.value);
+                      return params;
                     }
-                    params.delete("search")
-                    return params
-                  })
+                    params.delete("search");
+                    return params;
+                  });
                 }}
               />
             </div>
-            <button onClick={handleShowFilter}
+            <button
+              onClick={handleShowFilter}
               type="button"
-
-              className={`flex items-center gap-2  px-3 py-2.5 rounded-lg whitespace-nowrap cursor-pointer ${showFilter ? "border border-orange-500 text-orange-500" :"border border-gray-300"}`}
+              className={`flex items-center gap-2  px-3 py-2.5 rounded-lg whitespace-nowrap cursor-pointer ${showFilter ? "border border-orange-500 text-orange-500" : "border border-gray-300"}`}
             >
               <LuSlidersHorizontal />
               Filters
@@ -108,25 +86,23 @@ function EventPage() {
               <div>
                 <p className="text-color-text text-sm mb-2">CATEGORY</p>
                 <div className="flex gap-2 flex-wrap">
-                  {categories.map((item) => (
-
+                  {categories?.data?.map((item) => (
                     <button
-                      className={`border border-gray-300 px-3 py-1 rounded-lg  $ cursor-pointer ${category === item ? "bg-primary text-white" :" text-color-text"}`}
-
-                      key={item}
+                      className={`border border-gray-300 px-3 py-1 rounded-lg  $ cursor-pointer ${category === item.name ? "bg-primary text-white" : " text-color-text"}`}
+                      key={item.id}
                       onClick={() => {
                         setSearchParams((prev) => {
-                          const params = new URLSearchParams(prev)
-                          if (item !== "All") {
-                            params.set("category", item)
-                            return params
+                          const params = new URLSearchParams(prev);
+                          if (item.name !== "All") {
+                            params.set("category", item.name);
+                            return params;
                           }
-                          params.delete("category")
-                          return params
-                        })
+                          params.delete("category");
+                          return params;
+                        });
                       }}
                     >
-                      {item}
+                      {item.name}
                     </button>
                   ))}
                 </div>
@@ -137,18 +113,18 @@ function EventPage() {
                 <div className="flex gap-2 flex-wrap">
                   {locations.map((item) => (
                     <button
-                      className={`border border-gray-300 px-3 py-1 rounded-lg  $ cursor-pointer ${location === item ? "bg-primary text-white" :" text-color-text"}`}
+                      className={`border border-gray-300 px-3 py-1 rounded-lg  $ cursor-pointer ${location === item ? "bg-primary text-white" : " text-color-text"}`}
                       key={item}
-                      onClick={()=>{
+                      onClick={() => {
                         setSearchParams((prev) => {
-                          const params = new URLSearchParams(prev)
+                          const params = new URLSearchParams(prev);
                           if (item !== "All location") {
-                            params.set("location", item)
-                            return params
+                            params.set("location", item);
+                            return params;
                           }
-                          params.delete("location")
-                          return params
-                        })
+                          params.delete("location");
+                          return params;
+                        });
                       }}
                     >
                       {item}
@@ -161,19 +137,18 @@ function EventPage() {
                 <div className="flex gap-2 flex-wrap">
                   {sortBy.map((item) => (
                     <button
-                      className={`border border-gray-300 px-3 py-1 rounded-lg  $ cursor-pointer ${sort === item ? "bg-primary text-white" :" text-color-text"}`}
-
+                      className={`border border-gray-300 px-3 py-1 rounded-lg  $ cursor-pointer ${sort === item ? "bg-primary text-white" : " text-color-text"}`}
                       key={item}
                       onClick={() => {
                         setSearchParams((prev) => {
-                          const params = new URLSearchParams(prev)
+                          const params = new URLSearchParams(prev);
                           if (item !== "Upcoming") {
-                            params.set("sortBy", item)
-                            return params
+                            params.set("sortBy", item);
+                            return params;
                           }
-                          params.delete("sortBy")
-                          return params
-                        })
+                          params.delete("sortBy");
+                          return params;
+                        });
                       }}
                     >
                       {item}
@@ -190,7 +165,7 @@ function EventPage() {
           <span className="font-bold">{events.length}</span> events found
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
-          {filteredEvents.map((event) => (
+          {events?.map((event) => (
             <EventItemCard key={event.id} event={event} />
           ))}
         </div>
