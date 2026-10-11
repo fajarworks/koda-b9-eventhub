@@ -4,7 +4,7 @@ import { FiArrowLeft, FiCheck } from "react-icons/fi";
 import TagBadge from "../components/TagBadge";
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
-import { JoinCommunitiesThunk, unJoinedCommunitiesThunk } from "../redux/slices/communitySlices";
+import { JoinCommunitiesThunk, leaveCommunitiesThunk } from "../redux/slices/communitySlices";
 import ModalLoginALert from "../components/ModalLoginAlert";
 
 function CommunityDetailLayout() {
@@ -34,7 +34,7 @@ function CommunityDetailLayout() {
         userEmail: user.email
       }))
     } else {
-      dispatch(unJoinedCommunitiesThunk({
+      dispatch(leaveCommunitiesThunk({
         communityId: community.id,
         userEmail: user.email
       }))
