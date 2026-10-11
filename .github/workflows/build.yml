@@ -12,11 +12,8 @@ jobs:
     steps:
       - name: check out repository
         uses: actions/checkout@v7
-      - name: build and push image
-        uses: mr-smithers-excellent/docker-build-push@v7
-        with:
-          image: ${{github.repository}}
-          registry: ghcr.io
-          tags: v${{github.run_number}}
-          username: ${{github.actor}}
-          password: ${{secrets.GITHUB_TOKEN}}
+      - name: login to ghcr
+        run: |
+          echo "${{secrets.GITHUB_TOKEN}}" | docker login ghcr.io --username ${{github.actor}} --password-stdin
+      - name: push to ghcr
+        run: docker push ghcr.io/${{github.repository}}:latest
