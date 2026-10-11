@@ -7,43 +7,53 @@ import { LuBookmark, LuCalendar, LuClock, LuMapPin, LuSendHorizontal } from "rea
 import { Link, useParams } from "react-router";
 import TagBadge from "../../components/TagBadge";
 import { useDispatch, useSelector } from "react-redux";
-import { addJoinEventThunk, removeJoinedEventThunk } from "../../redux/slices/eventSlices";
+import { detailEventThunk } from "../../redux/slices/eventSlices";
 import ModalLoginALert from "../../components/ModalLoginAlert";
+import { dateFormat } from "../../utils/dateFormatter";
+import { timeFormatter } from "../../utils/timeFormatter";
 
 function EventDetailPage() {
   const [show, setShow] = React.useState(false);
-  const events = useSelector(state => state.events.events)
-  const isLoggedIn = useSelector((state)=> state.auth.auth)
+  // const events = useSelector(state => state.events.events)
+  const {eventDetail} = useSelector (state => state.events)
+  const {isFulfilled} = useSelector(state=> state.events?.detailEvent)
+  // const isLoggedIn = useSelector((state)=> state.auth.auth)
+  console.log(eventDetail)
   const dispatch = useDispatch()
   const { id } = useParams();
-  const event = events.find((e) => e.id === Number(id));
   const progress = Math.min(
-    (event.attendees.length / event.capacity) * 100,
+    (eventDetail?.attendees / eventDetail?.capacity) * 100,
     100,
   );
-  const isJoined = event.attendees.includes(isLoggedIn?.email)
+  // const isJoined = event.attendees.includes(isLoggedIn?.email)
 
+  React.useEffect(()=> {
+    dispatch(detailEventThunk(id))
+  },[dispatch,id])  
   const handleJoinEvent = (e) => {
     e.preventDefault();
-    e.stopPropagation();
-    if (!isLoggedIn) {
-      setShow(true);
-      return
-    }
-    if (!isJoined) {
-    dispatch(
-      addJoinEventThunk({
-        eventId: event.id,
-        userEmail: isLoggedIn.email,
-      }),
-    );
-    } else {
-      dispatch(removeJoinedEventThunk({
-        eventId: event.id,
-        userEmail: isLoggedIn.email
-      }))
-    }
+    // e.stopPropagation();
+    // if (!isLoggedIn) {
+    //   setShow(true);
+    //   return
+    // }
+    // if (!isJoined) {
+    // dispatch(
+    //   addJoinEventThunk({
+    //     eventId: event.id,
+    //     userEmail: isLoggedIn.email,
+    //   }),
+    // );
+    // } else {
+    //   dispatch(removeJoinedEventThunk({
+    //     eventId: event.id,
+    //     userEmail: isLoggedIn.email
+    //   }))
+    // }
   };
+  const date = dateFormat(eventDetail?.start_time)
+  const startTime = timeFormatter(eventDetail?.start_time)
+  const endTime = timeFormatter(eventDetail?.end_time)
 
   return (
     <main className="p-6">
@@ -57,22 +67,22 @@ function EventDetailPage() {
           <div className="w-full rounded-lg overflow-hidden">
             <img
               className="w-full object-cover"
-              src={event.image || "/images/image1.png"}
-              alt={event.title}
+              src={eventDetail?.image || "/images/image1.png"}
+              alt={eventDetail?.title}
             />
           </div>
           <div className="flex gap-2">
-            {event.tags.map((t) => (
+            {eventDetail?.categories.map((t) => (
               <TagBadge key={t} label={t} />
             ))}
           </div>
 
-          <h1 className="font-medium text-2xl">{event.title}</h1>
+          <h1 className="font-medium text-2xl">{eventDetail?.title}</h1>
           <div className="md:hidden border border-gray-300 rounded-lg bg-white w-full p-4 mt-2  ">
             <div className="flex gap-1.5 items-center text-color-text justify-between flex-col">
               <div className="w-full flex justify-between">
-                <span>{event.attendees.length} attendees</span>
-                <span>{event.capacity} capacity</span>
+                <span>{eventDetail?.attendees.length} attendees</span>
+                <span>{eventDetail?.capacity} capacity</span>
               </div>
               <div className=" w-full bg-gray-300 rounded-full h-2">
                 <div
@@ -81,8 +91,8 @@ function EventDetailPage() {
                 ></div>
               </div>
               <div className="w-full py-4">
-                <button onClick={handleJoinEvent} className={`w-full ${isJoined ? "bg-green-500" : "bg-orange-500" } px-3 py-1.5 text-white rounded-lg cursor-pointer`}>
-                 {isJoined ? "Registered" : "Join Event"}
+                <button onClick={handleJoinEvent} className={`w-full ${isFulfilled ? "bg-green-500" : "bg-orange-500" } px-3 py-1.5 text-white rounded-lg cursor-pointer`}>
+                 {isFulfilled ? "Registered" : "Join Event"}
                 </button>
               </div>
               <div className="flex w-full gap-2 items-center">
@@ -98,17 +108,17 @@ function EventDetailPage() {
           </div>
           <div className="py-2">
             <h2 className="font-medium text-xl py-2">About this event</h2>
-            <p className="text-color-text">{event.description}</p>
+            <p className="text-color-text">{eventDetail?.description}</p>
           </div>
           <div>
             <div className="py-2">
               <p className="font-medium">Speakers</p>
             </div>
             <div className="flex gap-4">
-              {event.speakers.map((item, idx) => {
+              {eventDetail?.speakers.map((item) => {
                 return (
                   <div
-                    key={idx}
+                    key={item.id}
                     className="flex items-center border border-gray-300 p-4 rounded-lg gap-2 w-full"
                   >
                     <div className="w-10 h-10 rounded-full overflow-hidden shrink-0">
@@ -120,10 +130,10 @@ function EventDetailPage() {
                     </div>
                     <div>
                       <p className="font-medium text-sm md:text-lg">
-                        {item.name}
+                        {item.Name}
                       </p>
                       <p className="text-color-text  text-sm md:text-lg">
-                        {item.role}
+                        {item.JobPosition}
                       </p>
                     </div>
                   </div>
@@ -136,7 +146,7 @@ function EventDetailPage() {
                 <p className="font-semibold text-xl">Discussion</p>
                 <p>(3)</p>
               </div>
-              {event.discussions?.map((item) => {
+              {eventDetail?.discussions?.map((item) => {
                 return (
                   <div key={item.id} className="py-2">
                     <div className="flex gap-2">
@@ -227,28 +237,28 @@ function EventDetailPage() {
               <span>Event Info</span>
               <span className="flex gap-1 items-center text-color-text">
                 <LuCalendar />
-                {event.date}
+                {date}
               </span>
               <span className="flex gap-1 items-center text-color-text">
                 <LuClock />
-                {event.startTime} - {event.endTime} WIB
+                {startTime} - {endTime} WIB
               </span>
               <span className="flex gap-1 items-center text-color-text">
                 <LuMapPin />
-                {event.location}
+                {eventDetail?.location}
               </span>
               <div className="flex items-center gap-2 ">
                 <FiUsers />
                 <span className="text-color-text">
-                  {Math.round((event.attendees.length / event.capacity) * 100)}%
-                  full · {event.capacity - event.attendees.length} spots left
+                  {Math.round((eventDetail?.attendees / eventDetail?.capacity) * 100)}%
+                  full · {eventDetail?.capacity - eventDetail?.attendees} spots left
                 </span>
               </div>
             </div>
             <div className="flex gap-1.5 items-center text-color-text justify-between flex-col">
               <div className="w-full flex justify-between">
-                <span>{event.attendees.length} attendees</span>
-                <span>{event.capacity} capacity</span>
+                <span>{eventDetail?.attendees.length} attendees</span>
+                <span>{eventDetail?.capacity} capacity</span>
               </div>
               <div className="w-full bg-gray-300 rounded-full h-2">
                 <div
@@ -258,8 +268,8 @@ function EventDetailPage() {
               </div>
             </div>
             <div className="w-full py-4">
-              <button onClick={handleJoinEvent} className={`w-full ${isJoined ? "bg-green-500" : "bg-orange-500" } px-3 py-1.5 text-white rounded-lg cursor-pointer`}>
-                {isJoined ? "Registered" : "Join Event"}
+              <button onClick={handleJoinEvent} className={`w-full ${isFulfilled ? "bg-green-500" : "bg-orange-500" } px-3 py-1.5 text-white rounded-lg cursor-pointer`}>
+                {isFulfilled ? "Registered" : "Join Event"}
               </button>
             </div>
             <div className="flex gap-2 items-center">
@@ -277,14 +287,14 @@ function EventDetailPage() {
             <div className="flex items-center gap-3 py-1">
               <div className="w-10 h-10 rounded-full overflow-hidden">
                 <img
-                  src={event.organizer.avatar || null}
-                  alt={event.organizer.name}
+                  src={eventDetail?.organizer?.avatar || null}
+                  alt={eventDetail?.organizer?.name}
                   className="object-cover"
                 />
               </div>
               <div className="">
-                <p className="font-medium">{event.organizer.name}</p>
-                <p className="text-blue-500">{event.organizer.community}</p>
+                <p className="font-medium">{eventDetail?.organizer?.name}</p>
+                <p className="text-blue-500">{eventDetail?.organizer?.community}</p>
               </div>
             </div>
           </article>
