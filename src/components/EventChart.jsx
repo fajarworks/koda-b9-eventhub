@@ -24,6 +24,9 @@ function EventChart() {
       legend: {
         display: true,
       },
+      Tooltip: {
+        enabled:true,
+      },
     },
     scales: {
       y: {
