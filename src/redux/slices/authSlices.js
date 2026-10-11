@@ -69,7 +69,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     resetState: (state) => {
-      state.auth = null
+      state.auth = null;
       state.login.isFulfilled = false;
       state.login.isPending = false;
       state.login.isRejected = false;
@@ -116,7 +116,7 @@ const authSlice = createSlice({
           state.logout.isRejected = true;
           state.logout.error = payload;
         },
-      })
+      });
   },
 });
 
