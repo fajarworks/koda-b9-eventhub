@@ -1,14 +1,18 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CommunityItemCard from '../../components/CommunityItemCard';
+import { useEffect } from 'react';
+import { getCommunitiesUser } from '../../redux/slices/userSlices';
 
 function ProfileCommunityPage() {
-  const communities = useSelector(state => state.communities.communities)
-  const isLoggedIn = useSelector(state => state.auth.auth)
-  const getCommunities = communities.filter((com)=> com.members.includes(isLoggedIn.email))
+  const {userCommunities} = useSelector(state => state.user)
+  const dispatch = useDispatch()
+  useEffect(()=> {
+    dispatch(getCommunitiesUser())
+  },[dispatch, userCommunities])
   return (
     <div className='max-w-5xl mx-auto'>
     <div className='grid grid-cols-1 lg:grid-cols-3 gap-3'>
-      {getCommunities.map((item) =>
+      {userCommunities?.data?.map((item) =>
         <CommunityItemCard communities={item} key={item.id} />
       )}
     </div>
