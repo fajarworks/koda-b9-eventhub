@@ -1,17 +1,20 @@
-import React from "react";
-import { useSelector } from "react-redux";
+// import React from "react";
 import EventItemCard from "../../components/EventItemCard";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getEventsUser } from "../../redux/slices/userSlices";
 
 function ProfileEventPage() {
-  const events = useSelector((state) => state.events.events);
-  const isLoggedIn = useSelector((state) => state.auth.auth);
-  const getEvents = events.filter((event) =>
-    event.attendees?.includes(isLoggedIn?.email),
-  );
+  const dispatch = useDispatch()
+  const {userEvents} = useSelector((state)=> state.user )
+  useEffect(()=> {
+    dispatch(getEventsUser())
+  },[dispatch])
+  
   return (
     <div className="max-w-5xl mx-auto">
   <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
-      {getEvents.map((item) => {
+      {userEvents?.data?.map((item) => {
         return (
           <EventItemCard key={item.id} event={item} />
       )
