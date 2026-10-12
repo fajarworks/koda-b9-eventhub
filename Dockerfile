@@ -9,8 +9,7 @@ ENV VITE_API_URL=/api
 
 FROM nginx:stable-alpine
 
-ARG VITE_API_URL
-ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_API_URL=/api
 
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
