@@ -6,10 +6,7 @@ COPY . .
 ENV VITE_API_URL=/api
 RUN npm run build
 
-
 FROM nginx:stable-alpine
-
-ENV VITE_API_URL=/api
 
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
