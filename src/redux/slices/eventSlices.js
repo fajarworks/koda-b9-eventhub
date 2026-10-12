@@ -248,7 +248,7 @@ export const upcomingEventsThunk = createAsyncThunk(
         const err = res.json();
         throw new Error(err.message || "failed fetch upcoming events");
       }
-      const data = res.json();
+      const data = await res.json();
       return data;
     } catch (err) {
       return rejectWithValue(err.message);
