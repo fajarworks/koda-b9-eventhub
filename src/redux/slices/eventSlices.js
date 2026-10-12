@@ -72,7 +72,7 @@ const initialState = {
   },
 };
 
-const API_URL = "/api";
+const API_URL = import.meta.env.VITE_API_URL;
 export const getEventThunk = createAsyncThunk(
   "events/getEvents",
   async (_, { rejectWithValue }) => {
