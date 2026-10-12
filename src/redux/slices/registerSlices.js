@@ -9,11 +9,13 @@ const initialState = {
   error: null,
 };
 
+const API_URL = import.meta.env.VITE_API_URL
+
 export const registerUserThunk = createAsyncThunk(
   "user/register",
   async (payload, { rejectWithValue }) => {
     try {
-      const res = await fetch("http://localhost:8081/auth/register", {
+      const res = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
