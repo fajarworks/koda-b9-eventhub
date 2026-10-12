@@ -20,7 +20,6 @@ function ChangePasswordModal({ showModal, setShowModal }) {
         old_password: oldPass,
         new_password: newPass,
       };
-      console.log(data)
       await dispatch(ChangePasswordThunk(data)).unwrap();
       toast.success("success change password", { duration: 1500 });
       setShowModal(false)

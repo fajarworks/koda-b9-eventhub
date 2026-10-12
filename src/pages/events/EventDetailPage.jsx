@@ -18,7 +18,6 @@ function EventDetailPage() {
   const {eventDetail} = useSelector (state => state.events)
   const {isFulfilled} = useSelector(state=> state.events?.detailEvent)
   // const isLoggedIn = useSelector((state)=> state.auth.auth)
-  console.log(eventDetail)
   const dispatch = useDispatch()
   const { id } = useParams();
   const progress = Math.min(

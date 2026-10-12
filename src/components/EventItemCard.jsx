@@ -14,9 +14,7 @@ function EventItemCard({ event }) {
   const dispatch = useDispatch();
   const { isFulfilled, joinedEventIds } = useSelector((state) => state.events);
   const isJoined = joinedEventIds.includes(event?.id)
-  console.log(isJoined)
   // const isSaved = event.userSaved?.includes(isLoggedin?.email)
-  console.log(joinedEventIds)
   const date = dateTimeFormatter(event.start_time);
   
   const handleJoinEvent = (e) => {
