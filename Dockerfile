@@ -3,9 +3,9 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
+ENV VITE_API_URL=/api
 RUN npm run build
 
-ENV VITE_API_URL=/api
 
 FROM nginx:stable-alpine
 
