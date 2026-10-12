@@ -17,12 +17,12 @@ const initialState = {
   },
 };
 
-const API_URL = import.meta.env.VITE_API_URL
+// const API_URL = import.meta.env.VITE_API_URL
 export const loginUserThunk = createAsyncThunk(
   "auth/login",
   async (payload, { rejectWithValue }) => {
     try {
-      const res = await fetch(`${API_URL}/auth/login`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,7 +46,7 @@ export const logoutUserThunk = createAsyncThunk(
   async (_, { getState, rejectWithValue }) => {
     try {
       const token = getState().auth.auth?.data?.token;
-      const res = await fetch(`${API_URL}/auth/logout`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/logout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

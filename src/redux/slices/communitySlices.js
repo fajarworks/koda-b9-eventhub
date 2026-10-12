@@ -28,7 +28,7 @@ const initialState = {
   },
 };
 
-const API_URL = import.meta.env.VITE_API_URL;
+// const import.meta.env.VITE_API_URL = import.meta.env.VITE_API_URL;
 
 export const getCommunitiesThunk = createAsyncThunk(
   "communities/getCommunities",
@@ -51,7 +51,7 @@ export const JoinCommunitiesThunk = createAsyncThunk(
   async ({ communityId }, { rejectWithValue, getState }) => {
     const token = getState().auth.auth?.data?.token;
     try {
-      const res = await fetch(`${API_URL}/communities/${communityId}/join`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/communities/${communityId}/join`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -74,7 +74,7 @@ export const GetJoinedCommunities = createAsyncThunk(
     const token = getState().auth.auth?.data?.token;
 
     try {
-      const res = await fetch(`${API_URL}/communities/join`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/communities/join`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -97,7 +97,7 @@ export const leaveCommunitiesThunk = createAsyncThunk(
   async ({ communityId }, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.auth?.data?.token;
-      const res = await fetch(`${API_URL}/communities/${communityId}/leave`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/communities/${communityId}/leave`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -119,7 +119,7 @@ export const popularCommunitiesThunk = createAsyncThunk(
   "communities/popularCommunities",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await fetch(`${API_URL}/communities/popular`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/communities/popular`);
       if (!res.ok) {
         const err = await res.json();
         throw new Error(err.message || "failed to fetch popular communites");

@@ -72,12 +72,12 @@ const initialState = {
   },
 };
 
-const API_URL = import.meta.env.VITE_API_URL;
+// const API_URL = import.meta.env.VITE_API_URL;
 export const getEventThunk = createAsyncThunk(
   "events/getEvents",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await fetch(`${API_URL}/events`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/events`);
       if (!res.ok) {
         const err = await res.json();
         throw new Error(err.message);
@@ -96,7 +96,7 @@ export const joinedEventIdsThunk = createAsyncThunk(
     const token = getState().auth.auth?.data?.token;
 
     try {
-      const res = await fetch(`${API_URL}/events/join`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/events/join`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -119,7 +119,7 @@ export const savedEventIdsThunk = createAsyncThunk(
     const token = getState().auth.auth?.data?.token;
 
     try {
-      const res = await fetch(`${API_URL}/events/save`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/events/save`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -163,7 +163,7 @@ export const JoinEventThunk = createAsyncThunk(
   async (id, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.auth?.data?.token;
-      const res = await fetch(`${API_URL}/events/${id}/join`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/events/${id}/join`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -187,7 +187,7 @@ export const leaveEventThunk = createAsyncThunk(
   async (id, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.auth?.data?.token;
-      const res = await fetch(`${API_URL}/events/${id}/leave`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/events/${id}/leave`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -243,7 +243,7 @@ export const upcomingEventsThunk = createAsyncThunk(
   "events/upcoming",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await fetch(`${API_URL}/events/upcoming`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/events/upcoming`);
       if (!res.ok) {
         const err = res.json();
         throw new Error(err.message || "failed fetch upcoming events");
@@ -260,7 +260,7 @@ export const detailEventThunk = createAsyncThunk(
   "events/detail",
   async (eventId, { rejectWithValue }) => {
     try {
-      const res = await fetch(`${API_URL}/events/${eventId}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/events/${eventId}`);
       if (!res.ok) {
         const err = res.json();
         throw new Error(err.message || "failed fetch upcoming events");
