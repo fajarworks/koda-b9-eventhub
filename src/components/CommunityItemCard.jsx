@@ -8,6 +8,7 @@ import {
   JoinCommunitiesThunk,
   leaveCommunitiesThunk,
 } from "../redux/slices/communitySlices";
+import { useAuth } from "../hooks/useAuth";
 
 function CommunityItemCard({ communities }) {
   const [show, setShow] = React.useState(false);
@@ -15,13 +16,18 @@ function CommunityItemCard({ communities }) {
   const { joinedCommunityIds, joinCommunity, leaveCommunity } = useSelector(
     (state) => state.communities,
   );
+  const { isAuthenticated } = useAuth();
   const isJoined = joinedCommunityIds.includes(communities?.id);
-  console.log(isJoined)
+  console.log(isJoined);
   const isLoading = joinCommunity?.isPending || leaveCommunity?.isPending;
   console.log(joinedCommunityIds);
   const handleJoinCommunity = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    if (!isAuthenticated) {
+      setShow(true);
+      return;
+    }
     if (isJoined) {
       dispatch(leaveCommunitiesThunk({ communityId: communities?.id }));
     } else {
@@ -32,7 +38,7 @@ function CommunityItemCard({ communities }) {
   return (
     <>
       <Link to={`/communities/${communities?.id}`} className="block h-full">
-        <article className="w-full max-w-sm h-full overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md flex flex-col">
+        <article className="w-full h-full overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md flex flex-col">
           <div>
             <img
               src={communities.image}
