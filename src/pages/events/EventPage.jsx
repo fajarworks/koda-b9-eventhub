@@ -44,7 +44,7 @@ function EventPage() {
   return (
     <main className="min-h-screen">
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="mx-auto px-6">
           <form className="w-full flex gap-2 items-center py-4">
             <div className="w-full relative">
               <FiSearch
@@ -160,7 +160,7 @@ function EventPage() {
           )}
         </div>
       </div>
-      <section className="max-w-7xl mx-auto px-4 py-6">
+      <section className="mx-auto p-6">
         <p className="text-color-text mb-4">
           <span className="font-bold">{events.length}</span> events found
         </p>
