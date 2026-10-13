@@ -103,8 +103,8 @@ function ExplorePage() {
             </div>
           </div>
         </section>
-        <section className="flex my-center flex-col p-5">
-          <div className=" max-w-7xl flex justify-between items w-full p-5">
+        <section className="flex flex-col p-6">
+          <div className=" flex justify-between items w-full pb-5">
             <h2 className="font-semibold text-wrap text-2xl">
               Discover events that interest you
             </h2>
@@ -121,12 +121,12 @@ function ExplorePage() {
           </div>
         </section>
 
-        <section className="flex my-center flex-col p-5">
-          <div className=" max-w-7xl flex justify-between w-full p-5">
+        <section className="flex flex-col p-5">
+          <div className="flex justify-between w-full pb-5">
             <h2 className="font-semibold text-wrap text-2xl">
               Popular Communities
             </h2>
-            <button className="flex my-center text-color-text cursor-pointer">
+            <button className="flex items-center justify-center gap-1 text-color-text cursor-pointer">
               See all <FiArrowRight />
             </button>
           </div>
