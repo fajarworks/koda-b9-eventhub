@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FiCheck } from "react-icons/fi";
 import { dateTimeFormatter } from "../utils/dateTimeFormatter";
 import { JoinEventThunk, leaveEventThunk } from "../redux/slices/eventSlices";
+import { useAuth } from "../hooks/useAuth";
 function EventItemCard({ event }) {
   const progress = Math.min((event.attendees / event.capacity) * 100, 100);
   const [show, setShow] = React.useState(false);
@@ -16,16 +17,25 @@ function EventItemCard({ event }) {
   const isJoined = joinedEventIds.includes(event?.id)
   // const isSaved = event.userSaved?.includes(isLoggedin?.email)
   const date = dateTimeFormatter(event.start_time);
-  
+  const {isAuthenticated} = useAuth()
+
   const handleJoinEvent = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    if (!isAuthenticated){
+      setShow(true)
+      return
+    }
+
     if (isJoined) {
+      
       dispatch(leaveEventThunk(event.id))
     }else{
       dispatch(JoinEventThunk(event.id))
     }
   };
+  
 
   const handleBookmark = (e) => {
     e.preventDefault();
@@ -49,9 +59,9 @@ function EventItemCard({ event }) {
   };
   return (
     <>
-      <Link to={`/events/${event.id}`} className="block h-full">
-        <article className="w-full max-w-sm h-full overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm hover:-translate-y-0.5 hover:shadow-md flex flex-col">
-          <div className="relative">
+      <Link to={`/events/${event.id}`} className="flex">
+        <article className="w-full h-full overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm hover:-translate-y-0.5 hover:shadow-md flex flex-col">
+          <div className="relative w-full">
             <img
               src={event.image}
               alt={event.title}
