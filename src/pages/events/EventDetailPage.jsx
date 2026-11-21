@@ -2,57 +2,65 @@ import React from "react";
 import { BsShare } from "react-icons/bs";
 import { CiChat1 } from "react-icons/ci";
 import { FiArrowLeft, FiUsers } from "react-icons/fi";
-// import events from "../../data/events.json";
-import { LuBookmark, LuCalendar, LuClock, LuMapPin, LuSendHorizontal } from "react-icons/lu";
+import {
+  LuBookmark,
+  LuCalendar,
+  LuClock,
+  LuMapPin,
+  LuSendHorizontal,
+} from "react-icons/lu";
 import { Link, useParams } from "react-router";
 import TagBadge from "../../components/TagBadge";
 import { useDispatch, useSelector } from "react-redux";
-import { detailEventThunk } from "../../redux/slices/eventSlices";
+import { detailEventThunk, JoinEventThunk, leaveEventThunk } from "../../redux/slices/eventSlices";
 import ModalLoginALert from "../../components/ModalLoginAlert";
 import { dateFormat } from "../../utils/dateFormatter";
 import { timeFormatter } from "../../utils/timeFormatter";
+import { useEventAttendees } from "../../hooks/useAttendees";
+import { useAuth } from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 function EventDetailPage() {
   const [show, setShow] = React.useState(false);
-  // const events = useSelector(state => state.events.events)
-  const {eventDetail} = useSelector (state => state.events)
-  const {isFulfilled} = useSelector(state=> state.events?.detailEvent)
-  // const isLoggedIn = useSelector((state)=> state.auth.auth)
-  const dispatch = useDispatch()
+  const { eventDetail } = useSelector((state) => state.events);
+  const { joinedEventIds } = useSelector((state) => state.events);
+  const { isAuthenticated } = useAuth();
+
+  const dispatch = useDispatch();
   const { id } = useParams();
+  const isJoined = joinedEventIds.includes(Number(id));
+  console.log(isJoined);
+  const { count } = useEventAttendees(eventDetail?.id, eventDetail?.attendees);
   const progress = Math.min(
     (eventDetail?.attendees / eventDetail?.capacity) * 100,
     100,
   );
-  // const isJoined = event.attendees.includes(isLoggedIn?.email)
-
-  React.useEffect(()=> {
-    dispatch(detailEventThunk(id))
-  },[dispatch,id])  
-  const handleJoinEvent = (e) => {
+  
+  React.useEffect(() => {
+    dispatch(detailEventThunk(id));
+  }, [dispatch, id]);
+  const handleJoinEvent = async (e) => {
     e.preventDefault();
-    // e.stopPropagation();
-    // if (!isLoggedIn) {
-    //   setShow(true);
-    //   return
-    // }
-    // if (!isJoined) {
-    // dispatch(
-    //   addJoinEventThunk({
-    //     eventId: event.id,
-    //     userEmail: isLoggedIn.email,
-    //   }),
-    // );
-    // } else {
-    //   dispatch(removeJoinedEventThunk({
-    //     eventId: event.id,
-    //     userEmail: isLoggedIn.email
-    //   }))
-    // }
+    e.stopPropagation();
+    if (!isAuthenticated) {
+      setShow(true);
+      return;
+    }
+    try{
+      if(!isJoined){
+        await dispatch(JoinEventThunk(id)).unwrap()
+        toast.success("join event successfully")
+      }else {
+        await dispatch(leaveEventThunk(id)).unwrap()
+        toast.success("leave event successfully")
+      }
+    }catch(err){
+      toast.error(err.message)
+    }
   };
-  const date = dateFormat(eventDetail?.start_time)
-  const startTime = timeFormatter(eventDetail?.start_time)
-  const endTime = timeFormatter(eventDetail?.end_time)
+  const date = dateFormat(eventDetail?.start_time);
+  const startTime = timeFormatter(eventDetail?.start_time);
+  const endTime = timeFormatter(eventDetail?.end_time);
 
   return (
     <main className="p-6">
@@ -80,7 +88,7 @@ function EventDetailPage() {
           <div className="md:hidden border border-gray-300 rounded-lg bg-white w-full p-4 mt-2  ">
             <div className="flex gap-1.5 items-center text-color-text justify-between flex-col">
               <div className="w-full flex justify-between">
-                <span>{eventDetail?.attendees.length} attendees</span>
+                <span>{count} attendees</span>
                 <span>{eventDetail?.capacity} capacity</span>
               </div>
               <div className=" w-full bg-gray-300 rounded-full h-2">
@@ -90,8 +98,11 @@ function EventDetailPage() {
                 ></div>
               </div>
               <div className="w-full py-4">
-                <button onClick={handleJoinEvent} className={`w-full ${isFulfilled ? "bg-green-500" : "bg-orange-500" } px-3 py-1.5 text-white rounded-lg cursor-pointer`}>
-                 {isFulfilled ? "Registered" : "Join Event"}
+                <button
+                  onClick={handleJoinEvent}
+                  className={`w-full ${isJoined ? "bg-green-500" : "bg-orange-500"} px-3 py-1.5 text-white rounded-lg cursor-pointer`}
+                >
+                  {isJoined ? "Registered" : "Join Event"}
                 </button>
               </div>
               <div className="flex w-full gap-2 items-center">
@@ -117,7 +128,7 @@ function EventDetailPage() {
               {eventDetail?.speakers.map((item) => {
                 return (
                   <div
-                    key={item.id}
+                    key={item.ID}
                     className="flex items-center border border-gray-300 p-4 rounded-lg gap-2 w-full"
                   >
                     <div className="w-10 h-10 rounded-full overflow-hidden shrink-0">
@@ -249,14 +260,17 @@ function EventDetailPage() {
               <div className="flex items-center gap-2 ">
                 <FiUsers />
                 <span className="text-color-text">
-                  {Math.round((eventDetail?.attendees / eventDetail?.capacity) * 100)}%
-                  full · {eventDetail?.capacity - eventDetail?.attendees} spots left
+                  {Math.round(
+                    (eventDetail?.attendees / eventDetail?.capacity) * 100,
+                  )}
+                  % full · {eventDetail?.capacity - eventDetail?.attendees}{" "}
+                  spots left
                 </span>
               </div>
             </div>
             <div className="flex gap-1.5 items-center text-color-text justify-between flex-col">
               <div className="w-full flex justify-between">
-                <span>{eventDetail?.attendees.length} attendees</span>
+                <span>{count} attendees</span>
                 <span>{eventDetail?.capacity} capacity</span>
               </div>
               <div className="w-full bg-gray-300 rounded-full h-2">
@@ -267,8 +281,11 @@ function EventDetailPage() {
               </div>
             </div>
             <div className="w-full py-4">
-              <button onClick={handleJoinEvent} className={`w-full ${isFulfilled ? "bg-green-500" : "bg-orange-500" } px-3 py-1.5 text-white rounded-lg cursor-pointer`}>
-                {isFulfilled ? "Registered" : "Join Event"}
+              <button
+                onClick={handleJoinEvent}
+                className={`w-full ${isJoined ? "bg-green-500" : "bg-orange-500"} px-3 py-1.5 text-white rounded-lg cursor-pointer`}
+              >
+                {isJoined ? "Registered" : "Join Event"}
               </button>
             </div>
             <div className="flex gap-2 items-center">
@@ -293,7 +310,9 @@ function EventDetailPage() {
               </div>
               <div className="">
                 <p className="font-medium">{eventDetail?.organizer?.name}</p>
-                <p className="text-blue-500">{eventDetail?.organizer?.community}</p>
+                <p className="text-blue-500">
+                  {eventDetail?.organizer?.community}
+                </p>
               </div>
             </div>
           </article>
