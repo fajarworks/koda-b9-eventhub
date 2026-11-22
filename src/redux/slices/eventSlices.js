@@ -163,12 +163,15 @@ export const JoinEventThunk = createAsyncThunk(
   async (id, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.auth?.data?.token;
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/events/${id}/join`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/events/${id}/join`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       if (!res.ok) {
         const err = await res.json();
         throw new Error(err.message);
@@ -187,12 +190,15 @@ export const leaveEventThunk = createAsyncThunk(
   async (id, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.auth?.data?.token;
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/events/${id}/leave`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/events/${id}/leave`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       if (!res.ok) {
         const err = await res.json();
         throw new Error(err.message);
@@ -208,14 +214,23 @@ export const leaveEventThunk = createAsyncThunk(
 
 export const addSaveEventThunk = createAsyncThunk(
   "events/addSaveEvent",
-  async (payload, { rejectWithValue }) => {
+  async (id, { rejectWithValue, getState }) => {
+    const token = getState().auth.auth?.data?.token;
     try {
-      const data = await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(payload);
-        }, 1000);
-      });
-
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/events/${id}/save`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message);
+      }
+      const data = await res.json();
       return data;
     } catch (err) {
       return rejectWithValue(err.message);
@@ -225,13 +240,23 @@ export const addSaveEventThunk = createAsyncThunk(
 
 export const removeSavedEventThunk = createAsyncThunk(
   "events/removeSavedEvent",
-  async (payload, { rejectWithValue }) => {
+  async (id, { rejectWithValue, getState }) => {
+    const token = getState().auth.auth?.data?.token;
     try {
-      const data = await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(payload);
-        }, 1000);
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/events/${id}/remove`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message);
+      }
+      const data = await res.json();
       return data;
     } catch (err) {
       return rejectWithValue(err.message);
@@ -243,7 +268,9 @@ export const upcomingEventsThunk = createAsyncThunk(
   "events/upcoming",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/events/upcoming`);
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/events/upcoming`,
+      );
       if (!res.ok) {
         const err = res.json();
         throw new Error(err.message || "failed fetch upcoming events");
@@ -260,7 +287,9 @@ export const detailEventThunk = createAsyncThunk(
   "events/detail",
   async (eventId, { rejectWithValue }) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/events/${eventId}`);
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/events/${eventId}`,
+      );
       if (!res.ok) {
         const err = res.json();
         throw new Error(err.message || "failed fetch upcoming events");
@@ -364,17 +393,20 @@ const eventSlice = createSlice({
       })
       .addAsyncThunk(addSaveEventThunk, {
         pending: (state) => {
-          state.isPending = true;
-          state.isFulfilled = false;
-          state.isRejected = false;
+          state.joinEvent.isPending = true;
+          state.joinEvent.isFulfilled = false;
+          state.joinEvent.isRejected = false;
         },
-        fulfilled: (state, { payload }) => {
-          state.isPending = false;
-          const { eventId, userEmail } = payload;
-          const event = state.events.find((event) => event.id === eventId);
-          if (!event) return;
-          if (!event.userSaved.includes(userEmail)) {
-            event.userSaved.push(userEmail);
+        fulfilled: (state, action) => {
+          state.saveEvent.isPending = false;
+          state.saveEvent.isFulfilled = true;
+          state.saveEvent.isRejected = false;
+          const eventId = Number(action.meta.arg);
+          if (
+            Number.isInteger(eventId) &&
+            !state.savedEventIds.includes(eventId)
+          ) {
+            state.savedEventIds.push(eventId);
           }
         },
         rejected: (state, { payload }) => {
@@ -408,24 +440,24 @@ const eventSlice = createSlice({
       })
       .addAsyncThunk(removeSavedEventThunk, {
         pending: (state) => {
-          state.isPending = true;
-          state.isFulfilled = false;
-          state.isRejected = false;
+          state.removeSaveEvent.isPending = true;
+          state.removeSaveEvent.isFulfilled = false;
+          state.removeSaveEvent.isRejected = false;
         },
-        fulfilled: (state, { payload }) => {
-          state.isPending = false;
-          const { eventId, userEmail } = payload;
-          const event = state.events.find((event) => event.id === eventId);
-          if (!event) return;
-          event.userSaved = event.userSaved.filter(
-            (email) => email !== userEmail,
+        fulfilled: (state, action) => {
+          state.removeSaveEvent.isPending = false;
+          state.removeSaveEvent.isFulfilled = true;
+          state.removeSaveEvent.isRejected = false;
+          const eventId = Number(action.meta.arg);
+          state.savedEventIds = state.savedEventIds.filter(
+            (id) => Number(id) !== eventId,
           );
         },
         rejected: (state, { payload }) => {
-          state.isPending = false;
-          state.isFulfilled = false;
-          state.isRejected = true;
-          state.error = payload;
+          state.removeSaveEvent.isPending = false;
+          state.removeSaveEvent.isFulfilled = false;
+          state.removeSaveEvent.isRejected = true;
+          state.removeSaveEvent.error = payload;
         },
       })
       .addAsyncThunk(upcomingEventsThunk, {
@@ -476,6 +508,12 @@ const eventSlice = createSlice({
   },
 });
 
-export const { updateEvent, addSpeaker, removeSpeaker, resetEvent, resetJoinedEvents } =
-  eventSlice.actions;
+export const {
+  updateEvent,
+  addSpeaker,
+  removeSpeaker,
+  resetEvent,
+  resetJoinedEvents,
+  resetSavedevents,
+} = eventSlice.actions;
 export default eventSlice.reducer;

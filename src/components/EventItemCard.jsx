@@ -7,55 +7,59 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { FiCheck } from "react-icons/fi";
 import { dateTimeFormatter } from "../utils/dateTimeFormatter";
-import { JoinEventThunk, leaveEventThunk } from "../redux/slices/eventSlices";
+import { addSaveEventThunk, JoinEventThunk, leaveEventThunk, removeSavedEventThunk } from "../redux/slices/eventSlices";
 import { useAuth } from "../hooks/useAuth";
+import toast from "react-hot-toast";
 function EventItemCard({ event }) {
   const progress = Math.min((event.attendees / event.capacity) * 100, 100);
   const [show, setShow] = React.useState(false);
   const dispatch = useDispatch();
-  const { isFulfilled, joinedEventIds } = useSelector((state) => state.events);
-  const isJoined = joinedEventIds.includes(event?.id)
-  // const isSaved = event.userSaved?.includes(isLoggedin?.email)
+  const {  joinedEventIds } = useSelector((state) => state.events);
+  const isJoined = joinedEventIds.includes(Number(event?.id));
   const date = dateTimeFormatter(event.start_time);
-  const {isAuthenticated} = useAuth()
-
-  const handleJoinEvent = (e) => {
+  const { isAuthenticated } = useAuth();
+  const {savedEventIds} = useSelector((state)=> state.events)
+  const isSaved = savedEventIds.includes(Number(event?.id))
+  console.log(isSaved)
+  console.log(savedEventIds)
+  const handleJoinEvent = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    if (!isAuthenticated){
-      setShow(true)
-      return
+    if (!isAuthenticated) {
+      setShow(true);
+      return;
     }
-
-    if (isJoined) {
-      
-      dispatch(leaveEventThunk(event.id))
-    }else{
-      dispatch(JoinEventThunk(event.id))
+    try {
+      if (isJoined) {
+        await dispatch(leaveEventThunk(event.id)).unwrap();
+        toast.success("leave event successfully");
+      } else {
+        await dispatch(JoinEventThunk(event.id)).unwrap();
+        toast.success("join event successfully");
+      }
+    } catch (err) {
+      toast.error(err.message);
     }
   };
-  
 
-  const handleBookmark = (e) => {
+  const handleBookmark = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    // if (!isLoggedin) {
-    //   setShow(true);
-    //   return
-    // }
-    // if (!isSaved) {
-
-    // dispatch(addSaveEventThunk({
-    //   eventId: event.id,
-    //   userEmail: isLoggedin.email
-    // }))
-    // } else {
-    //   dispatch(removeSavedEventThunk({
-    //     eventId: event.id,
-    //     userEmail: isLoggedin.email
-    //   }))
-    // }
+    if (!isAuthenticated) {
+      setShow(true);
+      return;
+    }
+    try{
+      if (!isSaved) {
+        await dispatch(addSaveEventThunk(event?.id)).unwrap()
+        toast.success("save event successfully")
+      }else {
+        await dispatch(removeSavedEventThunk(event?.id)).unwrap()
+        toast.success("remove saved event successfully")
+      }
+    }catch(err){
+      toast.error(err.message)
+    }
   };
   return (
     <>
@@ -81,9 +85,7 @@ function EventItemCard({ event }) {
             </div>
             <div className="flex gap-1.5 items-center text-color-text">
               <LuCalendar />
-              <span>
-                {date} WIB
-              </span>
+              <span>{date} WIB</span>
             </div>
             <div className="flex gap-1.5 items-center text-color-text">
               <LuMapPin />
@@ -119,7 +121,7 @@ function EventItemCard({ event }) {
 
               <button
                 onClick={handleBookmark}
-                className={` p-2 rounded-lg border  flex items-center cursor-pointer ${isFulfilled ? "border-orange-300 bg-amber-500 text-orange-100" : "border-gray-300"}`}
+                className={` p-2 rounded-lg border  flex items-center cursor-pointer ${isSaved ? "border-orange-300 bg-amber-500 text-orange-100" : "border-gray-300"}`}
               >
                 <LuBookmark />
               </button>

@@ -12,7 +12,7 @@ import {
 import { Link, useParams } from "react-router";
 import TagBadge from "../../components/TagBadge";
 import { useDispatch, useSelector } from "react-redux";
-import { detailEventThunk, JoinEventThunk, leaveEventThunk } from "../../redux/slices/eventSlices";
+import { addSaveEventThunk, detailEventThunk, JoinEventThunk, leaveEventThunk, removeSavedEventThunk } from "../../redux/slices/eventSlices";
 import ModalLoginALert from "../../components/ModalLoginAlert";
 import { dateFormat } from "../../utils/dateFormatter";
 import { timeFormatter } from "../../utils/timeFormatter";
@@ -35,6 +35,8 @@ function EventDetailPage() {
     (eventDetail?.attendees / eventDetail?.capacity) * 100,
     100,
   );
+  const {savedEventIds} = useSelector((state) => state.events)
+  const isSaved = savedEventIds.includes(Number(id))
   
   React.useEffect(() => {
     dispatch(detailEventThunk(id));
@@ -53,6 +55,25 @@ function EventDetailPage() {
       }else {
         await dispatch(leaveEventThunk(id)).unwrap()
         toast.success("leave event successfully")
+      }
+    }catch(err){
+      toast.error(err.message)
+    }
+  };
+  const handleBookmark = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isAuthenticated) {
+      setShow(true);
+      return;
+    }
+    try{
+      if (!isSaved) {
+        await dispatch(addSaveEventThunk(id)).unwrap()
+        toast.success("save event successfully")
+      }else {
+        await dispatch(removeSavedEventThunk(id)).unwrap()
+        toast.success("remove saved event successfully")
       }
     }catch(err){
       toast.error(err.message)
@@ -106,7 +127,7 @@ function EventDetailPage() {
                 </button>
               </div>
               <div className="flex w-full gap-2 items-center">
-                <button className="px-3 py-1.5 border border-gray-300 w-full text-color-text rounded-lg flex items-center gap-2 justify-center cursor-pointer">
+                <button onClick={handleBookmark} className={`${isSaved ? "bg-green-500 text-white" : "bg-white text-color-text"} px-3 py-1.5 border border-gray-300 w-ful rounded-lg flex items-center gap-2 justify-center cursor-pointer`}>
                   {" "}
                   <LuBookmark /> Save
                 </button>
@@ -289,7 +310,7 @@ function EventDetailPage() {
               </button>
             </div>
             <div className="flex gap-2 items-center">
-              <button className="px-3 py-1.5 border border-gray-300 w-full text-color-text rounded-lg flex items-center gap-2 justify-center cursor-pointer">
+              <button onClick={handleBookmark} className={`${isSaved ? "bg-green-500 text-white" : "bg-white text-color-text"} px-3 py-1.5 border border-gray-300 w-full rounded-lg flex items-center gap-2 justify-center cursor-pointer`}>
                 {" "}
                 <LuBookmark /> Save
               </button>
