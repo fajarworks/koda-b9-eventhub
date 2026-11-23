@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   communities: [],
+  communityDetail: {},
   isPending: false,
   isFulfilled: false,
   isRejected: false,
@@ -26,20 +27,39 @@ const initialState = {
     isRejected: false,
     error: null,
   },
+  detail: {
+    isPending: false,
+    isFulfilled: false,
+    isRejected: false,
+    error: null,
+  },
 };
-
-// const import.meta.env.VITE_API_URL = import.meta.env.VITE_API_URL;
 
 export const getCommunitiesThunk = createAsyncThunk(
   "communities/getCommunities",
-  async (payload, { rejectWithValue }) => {
+  async (
+    { page = 1, limit = 8, search = "", category = "" } = {},
+    { rejectWithValue },
+  ) => {
+    const params = new URLSearchParams();
+    params.set("page", page);
+    params.set("limit", limit);
+    if (search) {
+      params.set("search", search);
+    }
+    if (category) {
+      params.set("category", category);
+    }
     try {
-      const data = await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(payload);
-        }, 2000);
-      });
-      return data;
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/communities?${params.toString()}`,
+      );
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message);
+      }
+      const result = await res.json();
+      return result.data;
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -51,12 +71,15 @@ export const JoinCommunitiesThunk = createAsyncThunk(
   async ({ communityId }, { rejectWithValue, getState }) => {
     const token = getState().auth.auth?.data?.token;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/communities/${communityId}/join`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/communities/${communityId}/join`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       if (!res.ok) {
         const err = await res.json();
         throw new Error(err.message);
@@ -68,18 +91,42 @@ export const JoinCommunitiesThunk = createAsyncThunk(
     }
   },
 );
+
 export const GetJoinedCommunities = createAsyncThunk(
   "communities/joinedCommunityIds",
   async (_, { rejectWithValue, getState }) => {
     const token = getState().auth.auth?.data?.token;
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/communities/join`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/communities/join`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message);
+      }
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  },
+);
+
+export const GetDetailCommunity = createAsyncThunk(
+  "communities/detail",
+  async (id, { rejectWithValue }) => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/communities/${id}`,
+        { method: "GET" },
+      );
       if (!res.ok) {
         const err = await res.json();
         throw new Error(err.message);
@@ -97,12 +144,15 @@ export const leaveCommunitiesThunk = createAsyncThunk(
   async ({ communityId }, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.auth?.data?.token;
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/communities/${communityId}/leave`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/communities/${communityId}/leave`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       if (!res.ok) {
         const err = await res.json();
         throw new Error(err.message);
@@ -119,7 +169,9 @@ export const popularCommunitiesThunk = createAsyncThunk(
   "communities/popularCommunities",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/communities/popular`);
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/communities/popular`,
+      );
       if (!res.ok) {
         const err = await res.json();
         throw new Error(err.message || "failed to fetch popular communites");
@@ -239,6 +291,24 @@ const communitySlice = createSlice({
         },
 
         rejected: () => {},
+      })
+      .addAsyncThunk(GetDetailCommunity, {
+        pending: (state) => {
+          state.detail.isPending = true;
+          state.detail.isFulfilled = false;
+          state.detail.isRejected = false;
+        },
+        fulfilled: (state, {payload}) => {
+          state.detail.isPending = false
+          state.detail.isFulfilled = true
+          state.communityDetail = payload
+
+        },
+        rejected: (state, {payload})=> {
+          state.isFulfilled = false
+          state.isRejected = true 
+          state.detail.error = payload
+        }
       });
   },
 });

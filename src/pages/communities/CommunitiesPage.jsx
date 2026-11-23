@@ -1,16 +1,34 @@
-
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CommunityItemCard from "../../components/CommunityItemCard";
 import { FiSearch } from "react-icons/fi";
 import { useSearchParams } from "react-router";
+import React from "react";
+import { getCategoriesThunk } from "../../redux/slices/categoriesSlices";
+import { getCommunitiesThunk } from "../../redux/slices/communitySlices";
 
 function CommunitiesPage() {
-  const communities = useSelector(state => state.communities.communities)
-  const [searchParams, setSearchParams] = useSearchParams()
-  const search = searchParams.get("search") || ""
+  const { communities } = useSelector((state) => state.communities);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const dispatch = useDispatch();
+  const search = searchParams.get("search") || "";
+  const category = searchParams.get("category") || "";
+  const page = Number(searchParams.get("page")) || 1;
+  const { categories } = useSelector((state) => state.categories);
 
-  const filteredCommunities = communities.filter((com) => com.name.toLowerCase().includes(search.toLowerCase()))
+  React.useEffect(() => {
+    dispatch(getCategoriesThunk());
+  }, [dispatch]);
 
+  React.useEffect(() => {
+    dispatch(
+      getCommunitiesThunk({
+        page,
+        limit: 8,
+        search,
+        category,
+      }),
+    );
+  }, [dispatch, search, category, page]);
 
   return (
     <main className="">
@@ -29,16 +47,16 @@ function CommunitiesPage() {
               <input
                 value={search}
                 onChange={(e) => {
-                  e.preventDefault()
+                  e.preventDefault();
                   setSearchParams((prev) => {
-                    const params = new URLSearchParams(prev)
+                    const params = new URLSearchParams(prev);
                     if (e.target.value) {
-                      params.set("search", e.target.value)
-                      return params
+                      params.set("search", e.target.value);
+                      return params;
                     }
-                    params.delete("search")
-                    return params
-                  })
+                    params.delete("search");
+                    return params;
+                  });
                 }}
                 className="bg-white w-full px-3.5 py-3 pl-8 rounded-xl focus:outline-none"
                 type="text"
@@ -50,7 +68,7 @@ function CommunitiesPage() {
           </form>
         </div>
       </section>
-      <div className="p-6 flex flex-col lg:flex-row gap-4">
+      <div className="p-6 flex flex-col gap-4">
         <div className="flex gap-2 flex-wrap">
           <button className="rounded-lg text-color-text px-3 py-0.5 border border-gray-500 cursor-pointer">
             All
@@ -63,41 +81,43 @@ function CommunitiesPage() {
           </button>
         </div>
         <div className="flex gap-2 flex-wrap items-center">
-          <button className="rounded-lg text-color-text px-3 py-0.5 border border-gray-500 cursor-pointer">
-            All Categories
-          </button>
-          <button className="rounded-lg text-color-text px-3 py-0.5 border border-gray-500 cursor-pointer">
-            Technology
-          </button>
-          <button className="rounded-lg text-color-text px-3 py-0.5 border border-gray-500 cursor-pointer">
-            AI
-          </button>
-          <button className="rounded-lg text-color-text px-3 py-0.5 border border-gray-500 cursor-pointer">
-            Design
-          </button>
-          <button className="rounded-lg text-color-text px-3 py-0.5 border border-gray-500 cursor-pointer">
-            Bussines
-          </button>
-          <button className="rounded-lg text-color-text px-3 py-0.5 border border-gray-500 cursor-pointer">
-            Career
-          </button>
-          <button className="rounded-lg text-color-text px-3 py-0.5 border border-gray-500 cursor-pointer">
-            Programming
-          </button>
-          <button className="rounded-lg text-color-text px-3 py-0.5 border border-gray-500 cursor-pointer">
-            Music
-          </button>
+          {categories?.data.map((item) => {
+            const isActive = category === String(item.id);
+
+            return (
+              <button
+                key={item.id}
+                className={`rounded-lg px-3 py-0.5 border cursor-pointer transition-colors ${
+                  isActive
+                    ? "text-white bg-orange-500 border-orange-500"
+                    : "text-color-text border-gray-500"
+                }`}
+                onClick={() => {
+                  setSearchParams((prev) => {
+                    const params = new URLSearchParams(prev);
+
+                    params.set("category", item.id);
+                    params.delete("page");
+
+                    return params;
+                  });
+                }}
+              >
+                {item.name}
+              </button>
+            );
+          })}
         </div>
       </div>
       <div className="px-6">
         <p>
-          <span className="font-semibold">{filteredCommunities.length}</span>{" "}
+          <span className="font-semibold">{communities?.data?.length}</span>{" "}  
           Communities
         </p>
       </div>
       <section className="p-6">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-2">
-          {filteredCommunities.map((community) => (
+          {communities?.data?.map((community) => (
             <CommunityItemCard key={community.id} communities={community} />
           ))}
         </div>
