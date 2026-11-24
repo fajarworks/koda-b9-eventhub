@@ -18,9 +18,7 @@ function CommunityItemCard({ communities }) {
   );
   const { isAuthenticated } = useAuth();
   const isJoined = joinedCommunityIds.includes(communities?.id);
-  console.log(isJoined);
   const isLoading = joinCommunity?.isPending || leaveCommunity?.isPending;
-  console.log(joinedCommunityIds);
   const handleJoinCommunity = (e) => {
     e.preventDefault();
     e.stopPropagation();
