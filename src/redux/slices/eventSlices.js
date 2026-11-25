@@ -302,6 +302,26 @@ export const detailEventThunk = createAsyncThunk(
   },
 );
 
+export const GetEventsByCommunityId = createAsyncThunk(
+  "events/community",
+  async({communityId}, {rejectWithValue}) => {
+    try{
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/events/communities/${communityId}`
+      )
+      if (!res.ok) {
+        const err = await res.json()
+        throw new Error(err.message)
+      }
+      const result = await res.json()
+      return result.data
+    }catch(err){
+      return rejectWithValue(err.message)
+    }
+
+  }
+)
+
 const eventSlice = createSlice({
   name: "events",
   initialState,
@@ -504,7 +524,28 @@ const eventSlice = createSlice({
           state.joinedEventIds = payload;
         },
         rejected: () => {},
-      });
+      })
+      .addAsyncThunk(GetEventsByCommunityId, {
+        pending: (state)=> {
+          state.isPending = true
+          state.isFulfilled = false
+          state.isRejected = false
+
+        },
+        fulfilled: (state, {payload})=> {
+          state.isPending = false
+          state.isRejected = false
+          state.isFulfilled = true
+          state.events = payload
+        },
+        rejected: (state, {payload})=> {
+          state.isPending = false
+          state.isFulfilled = false
+          state.isRejected = true
+          state.error = payload
+        }
+        
+      })
   },
 });
 
