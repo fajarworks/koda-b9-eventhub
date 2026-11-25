@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   communities: [],
+  communityMembers: [],
   communityDetail: {},
   isPending: false,
   isFulfilled: false,
@@ -28,6 +29,12 @@ const initialState = {
     error: null,
   },
   detail: {
+    isPending: false,
+    isFulfilled: false,
+    isRejected: false,
+    error: null,
+  },
+  comMembers: {
     isPending: false,
     isFulfilled: false,
     isRejected: false,
@@ -84,8 +91,8 @@ export const JoinCommunitiesThunk = createAsyncThunk(
         const err = await res.json();
         throw new Error(err.message);
       }
-      const data = await res.json();
-      return data;
+      const result = await res.json();
+      return result.data;
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -180,6 +187,25 @@ export const popularCommunitiesThunk = createAsyncThunk(
       return data;
     } catch (err) {
       return rejectWithValue(err.message);
+    }
+  },
+);
+
+export const getCommunityMembers = createAsyncThunk(
+  "communities/members",
+  async ({ id }, { rejectWithValue }) => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/communities/${id}/members`,
+      );
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message);
+      }
+      const result = await res.json()
+      return result.data
+    } catch (err) {
+      return rejectWithValue(err.message``);
     }
   },
 );
@@ -298,17 +324,34 @@ const communitySlice = createSlice({
           state.detail.isFulfilled = false;
           state.detail.isRejected = false;
         },
-        fulfilled: (state, {payload}) => {
-          state.detail.isPending = false
-          state.detail.isFulfilled = true
-          state.communityDetail = payload
-
+        fulfilled: (state, { payload }) => {
+          state.detail.isPending = false;
+          state.detail.isFulfilled = true;
+          state.communityDetail = payload;
         },
-        rejected: (state, {payload})=> {
-          state.isFulfilled = false
-          state.isRejected = true 
-          state.detail.error = payload
-        }
+        rejected: (state, { payload }) => {
+          state.isFulfilled = false;
+          state.isRejected = true;
+          state.detail.error = payload;
+        },
+      })
+      .addAsyncThunk(getCommunityMembers, {
+        pending: (state) => {
+          state.comMembers.isPending = true;
+          state.comMembers.isFulfilled = false;
+          state.comMembers.isRejected = false;
+        },
+        fulfilled: (state, { payload }) => {
+          state.comMembers.isPending = false;
+          state.comMembers.isFulfilled = true;
+          state.communityMembers = payload;
+        },
+        rejected: (state, { payload }) => {
+          state.comMembers.isPending = false;
+          state.comMembers.isFulfilled = false;
+          state.isRejected = true;
+          state.comMembers.error = payload;
+        },
       });
   },
 });
