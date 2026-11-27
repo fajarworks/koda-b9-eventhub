@@ -40,13 +40,22 @@ const initialState = {
     isRejected: false,
     error: null,
   },
+  listCommunities: {
+    items: [],
+    isPending: false,
+    isFulfilled: false,
+    isRejected: false,
+    error: null,
+    meta: null,
+    page: 1,
+  },
 };
 
 export const getCommunitiesThunk = createAsyncThunk(
   "communities/getCommunities",
   async (
     { page = 1, limit = 8, search = "", category = "" } = {},
-    { rejectWithValue },
+    { rejectWithValue, signal },
   ) => {
     const params = new URLSearchParams();
     params.set("page", page);
@@ -60,6 +69,7 @@ export const getCommunitiesThunk = createAsyncThunk(
     try {
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}/communities?${params.toString()}`,
+        { signal },
       );
       if (!res.ok) {
         const err = await res.json();
@@ -202,8 +212,8 @@ export const getCommunityMembers = createAsyncThunk(
         const err = await res.json();
         throw new Error(err.message);
       }
-      const result = await res.json()
-      return result.data
+      const result = await res.json();
+      return result.data;
     } catch (err) {
       return rejectWithValue(err.message``);
     }
@@ -222,19 +232,32 @@ const communitySlice = createSlice({
     return builder
       .addAsyncThunk(getCommunitiesThunk, {
         pending: (state) => {
-          state.isPending = true;
-          state.isFulfilled = false;
-          state.isRejected = false;
+          state.listCommunities.isPending = true;
+          state.listCommunities.isFulfilled = false;
+          state.listCommunities.isRejected = false;
         },
-        fulfilled: (state, { payload }) => {
-          state.isPending = false;
-          state.communities = payload;
-          state.isFulfilled = true;
+        fulfilled: (state, action) => {
+          const page = action.meta.arg?.page ?? 1;
+          const incoming = action.payload.data ?? [];
+          state.listCommunities.isPending = false;
+          state.listCommunities.isFulfilled = true;
+          state.listCommunities.page = page;
+          state.listCommunities.meta = action.payload.meta;
+          state.listCommunities.items =
+            page === 1
+              ? incoming
+              : [
+                  ...state.listCommunities.items,
+                  ...incoming.filter(
+                    (n) =>
+                      !state.listCommunities.items.some((o) => o.id === n.id),
+                  ),
+                ];
         },
-        rejected: (state, { payload }) => {
-          state.isPending = false;
-          state.isRejected = true;
-          state.error = payload;
+        rejected: (state, action) => {
+          if (!action.meta.aborted) return;
+          state.listCommunities.isPending = false;
+          state.listCommunities.error = action.payload;
         },
       })
       .addAsyncThunk(JoinCommunitiesThunk, {

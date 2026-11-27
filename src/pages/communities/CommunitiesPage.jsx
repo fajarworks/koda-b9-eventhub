@@ -7,28 +7,58 @@ import { getCategoriesThunk } from "../../redux/slices/categoriesSlices";
 import { getCommunitiesThunk } from "../../redux/slices/communitySlices";
 
 function CommunitiesPage() {
-  const { communities } = useSelector((state) => state.communities);
+  const { items, meta, isPending, page} = useSelector(
+    (state) => state.communities.listCommunities,
+  );
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
   const search = searchParams.get("search") || "";
   const category = searchParams.get("category") || "";
-  const page = Number(searchParams.get("page")) || 1;
   const { categories } = useSelector((state) => state.categories);
+  const requestRef = React.useRef(null);
 
+  const selectCategory = (id) => {
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      if (id) params.set("category", id);
+      else params.delete("category");
+      return params;
+    });
+  };
   React.useEffect(() => {
     dispatch(getCategoriesThunk());
   }, [dispatch]);
 
   React.useEffect(() => {
-    dispatch(
+    const timer = setTimeout(() => {
+      requestRef.current = dispatch(
+        getCommunitiesThunk({
+          page: 1,
+          limit: 8,
+          search,
+          category,
+        }),
+      );
+    }, 300);
+    return () => {
+      clearTimeout(timer);
+      requestRef.current?.abort();
+    };
+  }, [dispatch, search, category]);
+
+  const hasMore = meta ? items.length < meta.total_data : false;
+
+  const handleLoadMore = (e) => {
+    e.stopPropagation();
+    requestRef.current = dispatch(
       getCommunitiesThunk({
-        page,
+        page: page + 1,
         limit: 8,
         search,
         category,
       }),
     );
-  }, [dispatch, search, category, page]);
+  };
 
   return (
     <main className="">
@@ -81,27 +111,29 @@ function CommunitiesPage() {
           </button>
         </div>
         <div className="flex gap-2 flex-wrap items-center">
+          <button
+            onClick={() => selectCategory("")}
+            className={`rounded-lg px-3 py-0.5 border cursor-pointer transition-colors ${
+              category === ""
+                ? "text-white bg-orange-500 border-orange-500"
+                : "text-color-text border-gray-500"
+            }`}
+          >
+            All
+          </button>
+
           {categories?.data.map((item) => {
             const isActive = category === String(item.id);
 
             return (
               <button
                 key={item.id}
+                onClick={() => selectCategory(item.id)}
                 className={`rounded-lg px-3 py-0.5 border cursor-pointer transition-colors ${
                   isActive
                     ? "text-white bg-orange-500 border-orange-500"
                     : "text-color-text border-gray-500"
                 }`}
-                onClick={() => {
-                  setSearchParams((prev) => {
-                    const params = new URLSearchParams(prev);
-
-                    params.set("category", item.id);
-                    params.delete("page");
-
-                    return params;
-                  });
-                }}
               >
                 {item.name}
               </button>
@@ -111,17 +143,28 @@ function CommunitiesPage() {
       </div>
       <div className="px-6">
         <p>
-          <span className="font-semibold">{communities?.data?.length}</span>{" "}  
+          <span className="font-semibold">{meta?.total_data ?? 0}</span>{" "}
           Communities
         </p>
       </div>
       <section className="p-6">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-2">
-          {communities?.data?.map((community) => (
+          {items.map((community) => (
             <CommunityItemCard key={community.id} communities={community} />
           ))}
         </div>
       </section>
+      {hasMore && (
+        <div className="flex justify-center p-6">
+          <button
+            onClick={handleLoadMore}
+            disabled={isPending}
+            className="border border-gray-500 text-color-text rounded-lg px-3 py-1 cursor-pointer disabled:opacity-50"
+          >
+            {isPending ? "Loading..." : "Load more communities"}
+          </button>
+        </div>
+      )}
     </main>
   );
 }
